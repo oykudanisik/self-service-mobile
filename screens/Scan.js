@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 export default function Scan({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -49,6 +50,13 @@ export default function Scan({navigation}) {
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={{ height: 400, width: 400 }} />
       </View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Menu")}
+      >
+        <Text>
+          yes
+        </Text>
+      </TouchableOpacity>
       <Text style={styles.maintext}>{text}</Text>
       {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
     </View>

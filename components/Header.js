@@ -7,10 +7,11 @@ import {
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
-export default function Header(){
+export default function Header({navigation}){
     return (
             <View style={{ flexDirection: 'row', height: "13%" }}>
                 <TouchableOpacity
+                    onPress={() => navigation.navigate("Home")}
                     style={{
                         width: 50,
                         paddingLeft: SIZES.padding * 2,
@@ -21,8 +22,8 @@ export default function Header(){
                         source={icons.list}
                         resizeMode="contain"
                         style={{
-                            width: 30,
-                            height: 30
+                            width: 25,
+                            height: 25,
                         }}
                     />
                 </TouchableOpacity>
@@ -53,8 +54,8 @@ export default function Header(){
                         source={icons.user}
                         resizeMode="contain"
                         style={{
-                            width: 30,
-                            height: 30
+                            width: 25,
+                            height: 25,
                         }}
                     />
                 </TouchableOpacity>
