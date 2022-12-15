@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
-import Header from './Header';
+import Header from '../components/Header';
 
 const Home = ({ navigation }) => {
 
