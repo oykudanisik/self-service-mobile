@@ -9,7 +9,7 @@ import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 export default function Header({navigation}){
     return (
-            <View style={{ flexDirection: 'row', height: "13%" }}>
+            <View style={{ flexDirection: 'row', height: "13%" ,marginBottom:10}}>
                 <TouchableOpacity
                     onPress={() => navigation.navigate("Home")}
                     style={{
@@ -33,7 +33,7 @@ export default function Header({navigation}){
                          <Image 
                             style={{
                                 marginTop:10,
-                                width: 100,
+                                width: 180,
                                 height: 100,
                                 paddingRight: SIZES.padding * 2,
                                 justifyContent: 'center'
