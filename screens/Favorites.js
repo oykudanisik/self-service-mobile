@@ -11,12 +11,9 @@ import {
 } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
-import Header from './Header';
+import {Header} from '../screens';
 
 const Home = ({ navigation }) => {
-
-    // Dummy Datas
-
     const initialCurrentLocation = {
         streetName: "Kuching",
         gps: {
@@ -335,19 +332,7 @@ const Home = ({ navigation }) => {
     ]
 
     const [categories, setCategories] = React.useState(categoryData)
-    const [selectedCategory, setSelectedCategory] = React.useState(null)
     const [restaurants, setRestaurants] = React.useState(restaurantData)
-    const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
-
-
-    function onSelectCategory(category) {
-        //filter restaurant
-        let restaurantList = restaurantData.filter(a => a.categories.includes(category.id))
-
-        setRestaurants(restaurantList)
-
-        setSelectedCategory(category)
-    }
 
     function getCategoryNameById(id) {
         let category = categories.filter(a => a.id == id)
@@ -357,73 +342,58 @@ const Home = ({ navigation }) => {
 
         return ""
     }
-    function renderMainCategories() {
-        const renderItem = ({ item }) => {
-            return (
+
+    function renderHeader() {
+        return (
+            <View style={{ flexDirection: 'row', height: "13%" }}>
                 <TouchableOpacity
                     style={{
-                        padding: SIZES.padding,
-                        paddingBottom: SIZES.padding * 2,
-                        backgroundColor: (selectedCategory?.id == item.id) ? COLORS.primary : COLORS.white,
-                        borderRadius: SIZES.radius,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginRight: SIZES.padding,
-                        ...styles.shadow
+                        width: 50,
+                        paddingLeft: SIZES.padding * 2,
+                        justifyContent: 'center'
                     }}
-                    onPress={() => onSelectCategory(item)}
                 >
-                    <View
+                    <Image
+                        source={icons.list}
+                        resizeMode="contain"
                         style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 25,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            backgroundColor: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.lightGray
+                            width: 30,
+                            height: 30
                         }}
-                    >
-                        <Image
-                            source={item.icon}
-                            resizeMode="contain"
-                            style={{
-                                width: 30,
-                                height: 30
-                            }}
-                        />
-                    </View>
-
-                    <Text
-                        style={{
-                            marginTop: SIZES.padding,
-                            color: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.black,
-                            ...FONTS.body5
-                        }}
-                    >
-                        {item.name}
-                    </Text>
-                </TouchableOpacity>
-            )
-        }
-
-        return (
-            <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h1 }}>Main</Text>
-                <Text style={{ ...FONTS.h1 }}>Categories</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={{flex: 1, fontSize: 18}}
-                        placeholder="Search for food"
                     />
+                </TouchableOpacity>
+
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                
+                         <Image 
+                            style={{
+                                marginTop:10,
+                                width: 100,
+                                height: 100,
+                                paddingRight: SIZES.padding * 2,
+                                justifyContent: 'center'
+                            }}
+                            source={images.logo}>
+                        </Image>
                 </View>
-                <FlatList
-                    data={categories}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    keyExtractor={item => `${item.id}`}
-                    renderItem={renderItem}
-                    contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
-                />
+
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Profile")}
+                    style={{
+                        width: 50,
+                        paddingRight: SIZES.padding * 2,
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Image
+                        source={icons.user}
+                        resizeMode="contain"
+                        style={{
+                            width: 30,
+                            height: 30
+                        }}
+                    />
+                </TouchableOpacity>
             </View>
         )
     }
@@ -431,7 +401,9 @@ const Home = ({ navigation }) => {
     function renderRestaurantList() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
-                style={{ marginBottom: SIZES.padding * 2 }}
+                style={{ 
+                    marginBottom: SIZES.padding * 2,
+                }}
                 onPress={() => navigation.navigate("Restaurant", {
                     item,
                     currentLocation
@@ -546,7 +518,6 @@ const Home = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <Header></Header>
-            {renderMainCategories()}
             {renderRestaurantList()}
         </SafeAreaView>
     )
