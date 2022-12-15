@@ -3,11 +3,14 @@ import Restaurant from "./Restaurant"
 import OrderDelivery from "./OrderDelivery"
 import Scan from "./Scan"
 import OnBoarding from "./OnBoarding"
-
+import Favorites from'./Favorites'
+import Header from './Header';
 export {
     Home,
     Restaurant,
     OrderDelivery,
     Scan,
-    OnBoarding
+    OnBoarding,
+    Favorites,
+    Header
 }
