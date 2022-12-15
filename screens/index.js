@@ -1,16 +1,17 @@
 import Home from "./Home"
-import Restaurant from "./Restaurant"
-import OrderDelivery from "./OrderDelivery"
+import FoodItem from "./FoodItem"
 import Scan from "./Scan"
 import OnBoarding from "./OnBoarding"
 import Favorites from'./Favorites'
 import Header from '../components/Header';
+import Menu from './Menu'
+
 export {
     Home,
-    Restaurant,
-    OrderDelivery,
+    FoodItem,
     Scan,
     OnBoarding,
     Favorites,
-    Header
+    Header,
+    Menu
 }
