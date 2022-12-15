@@ -4,7 +4,7 @@ import OrderDelivery from "./OrderDelivery"
 import Scan from "./Scan"
 import OnBoarding from "./OnBoarding"
 import Favorites from'./Favorites'
-import Header from './Header';
+import Header from '../components/Header';
 export {
     Home,
     Restaurant,
