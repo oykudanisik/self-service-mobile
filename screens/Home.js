@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
+import Header from './Header';
 
 const Home = ({ navigation }) => {
 
@@ -356,62 +357,6 @@ const Home = ({ navigation }) => {
 
         return ""
     }
-
-    function renderHeader() {
-        return (
-            <View style={{ flexDirection: 'row', height: 50 }}>
-                <TouchableOpacity
-                    style={{
-                        width: 50,
-                        paddingLeft: SIZES.padding * 2,
-                        justifyContent: 'center'
-                    }}
-                >
-                    <Image
-                        source={icons.list}
-                        resizeMode="contain"
-                        style={{
-                            width: 30,
-                            height: 30
-                        }}
-                    />
-                </TouchableOpacity>
-
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                
-                         <Image 
-                            style={{
-                                marginTop:10,
-                                width: 100,
-                                height: 100,
-                                paddingRight: SIZES.padding * 2,
-                                justifyContent: 'center'
-                            }}
-                            source={images.logo}>
-                        </Image>
-                </View>
-
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("Profile")}
-                    style={{
-                        width: 50,
-                        paddingRight: SIZES.padding * 2,
-                        justifyContent: 'center'
-                    }}
-                >
-                    <Image
-                        source={icons.user}
-                        resizeMode="contain"
-                        style={{
-                            width: 30,
-                            height: 30
-                        }}
-                    />
-                </TouchableOpacity>
-            </View>
-        )
-    }
-
     function renderMainCategories() {
         const renderItem = ({ item }) => {
             return (
@@ -600,7 +545,7 @@ const Home = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            {renderHeader()}
+            <Header></Header>
             {renderMainCategories()}
             {renderRestaurantList()}
         </SafeAreaView>
