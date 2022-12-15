@@ -229,7 +229,7 @@ const Home = ({ navigation, route }) => {
                         }}
                     />
 
-                    <View
+                    {/* <View
                         style={{
                             position: 'absolute',
                             bottom: 0,
@@ -244,7 +244,7 @@ const Home = ({ navigation, route }) => {
                         }}
                     >
                         <Text style={{ ...FONTS.h4 }}>{item.duration}</Text>
-                    </View>
+                    </View> */}
                 </View>
 
                 {/* Restaurant Info */}
