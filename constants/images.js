@@ -29,39 +29,57 @@ const sushi = require("../assets/images/sushi.jpg");
 const teh_c_peng = require("../assets/images/teh-c-peng.jpg");
 const tomato_pasta = require("../assets/images/tomato-pasta.jpg");
 const logo = require("../assets/images/logo.png");
+const logoInside = require("../assets/images/logo1.png");
 const waiter = require("../assets/images/waiter.png");
+const pp = require("../assets/images/pp.jpg");
+const bground = require("../assets/images/bground.jpg");
+const bigchefs = require("../assets/images/bigchefs.jpg");
+const mickeys = require("../assets/images/mickeys.jpg");
+const quickchina = require("../assets/images/quickchina.jpg");
+const niyokki = require("../assets/images/niyokki.jpg");
+const mezzaluna = require("../assets/images/mezzaluna.jpg");
+const starbucks = require("../assets/images/starbucks.jpg");
 
 export default {
-    avatar_1,
-    avatar_2,
-    avatar_3,
-    avatar_4,
-    avatar_5,
-    baked_fries,
-    burger_restaurant_1,
-    burger_restaurant_2,
-    chicago_hot_dog,
-    crispy_chicken_burger,
+  avatar_1,
+  avatar_2,
+  avatar_3,
+  avatar_4,
+  avatar_5,
+  baked_fries,
+  burger_restaurant_1,
+  burger_restaurant_2,
+  chicago_hot_dog,
+  crispy_chicken_burger,
 
-    fries_restaurant,
-    hawaiian_pizza,
-    honey_mustard_chicken_burger,
-    hot_dog_restaurant,
-    ice_kacang,
+  fries_restaurant,
+  hawaiian_pizza,
+  honey_mustard_chicken_burger,
+  hot_dog_restaurant,
+  ice_kacang,
 
-    japanese_restaurant,
-    kek_lapis_shop,
-    kek_lapis,
-    kolo_mee,
-    nasi_briyani_mutton,
-    nasi_lemak,
-    noodle_shop,
-    pizza_restaurant,
-    pizza,
-    sarawak_laksa,
-    sushi,
-    teh_c_peng,
-    tomato_pasta,
-    logo,
-    waiter
-}
+  japanese_restaurant,
+  kek_lapis_shop,
+  kek_lapis,
+  kolo_mee,
+  nasi_briyani_mutton,
+  nasi_lemak,
+  noodle_shop,
+  pizza_restaurant,
+  pizza,
+  sarawak_laksa,
+  sushi,
+  teh_c_peng,
+  tomato_pasta,
+  logo,
+  waiter,
+  pp,
+  bground,
+  bigchefs,
+  mickeys,
+  quickchina,
+  niyokki,
+  mezzaluna,
+  starbucks,
+  logoInside,
+};
