@@ -6,6 +6,8 @@ import { useFonts } from 'expo-font';
 import { FoodItem, OnBoarding, Menu, Cart } from './screens'
 import Tabs from './navigation/tabs'
 import Header from "./components/Header";
+import Profile from "./screens/Profile";
+
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -35,6 +37,7 @@ const App = () => {
                   <Stack.Screen name="Menu" component={Menu}/>
                   <Stack.Screen name="Header" component={Header}/>
                   <Stack.Screen name="Cart" component={Cart}/>
+                  <Stack.Screen name="Profile" component={Profile} />
 
 
               </Stack.Navigator>

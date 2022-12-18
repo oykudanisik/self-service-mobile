@@ -517,7 +517,7 @@ const Home = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header></Header>
+            <Header navigation={navigation}></Header>
             {renderRestaurantList()}
         </SafeAreaView>
     )
