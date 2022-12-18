@@ -6,6 +6,7 @@ import Favorites from'./Favorites'
 import Header from '../components/Header';
 import Menu from './Menu'
 import Cart from './Cart'
+import OrderAccepted from './OrderAccepted'
 
 export {
     Home,
@@ -15,5 +16,6 @@ export {
     Favorites,
     Header,
     Menu,
-    Cart
+    Cart,
+    OrderAccepted
 }

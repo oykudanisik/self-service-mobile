@@ -14,6 +14,8 @@ import {
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 import Header from '../components/Header';
+import HeaderInside from "../components/HeaderInside";
+import Tabs from '../navigation/tabs';
 
 const Home = ({ navigation, route }) => {
 
@@ -353,6 +355,7 @@ const Home = ({ navigation, route }) => {
 
 
     ]
+
     const menuItems = [
         {
             menuId: 1,
@@ -648,7 +651,7 @@ const Home = ({ navigation, route }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header navigation={navigation}></Header>
+            <HeaderInside navigation={navigation}></HeaderInside>
             {RenderRestaurantName()}
             {renderMainCategories()}
             {renderRestaurantList()}

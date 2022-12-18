@@ -11,7 +11,7 @@ import {
     Animated
 } from "react-native";
 import { isIphoneX } from 'react-native-iphone-x-helper'
-import Header from '../components/Header';
+import HeaderInside from '../components/HeaderInside';
 import { icons, COLORS, SIZES, FONTS } from '../constants'
 
 const FoodItem = ({ route, navigation }) => {
@@ -258,10 +258,9 @@ const FoodItem = ({ route, navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header navigation={navigation}/>
+            <HeaderInside navigation={navigation}/>
             {renderFoodInfo()}
             {scanned ? renderOrder() : ""}
-            {/* {renderOrder()} */}
         </SafeAreaView>
     )
 }

@@ -36,7 +36,7 @@ const hotTacos = {
     price: 10.99,
     calories: 78,
     isFavourite: false,
-    image: require("../assets/icons/hamburger.png")
+    image: require("../assets/icons/pizza.png")
 }
 
 const vegBiryani = {
