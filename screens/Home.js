@@ -96,7 +96,7 @@ const Home = ({ navigation, route }) => {
             "id": "62babe8c80329c81068ecbb4",
             "name": "Big Chefs",
             "description": "Her mevsim yeni bir başlangıç ve her yeni başlangıç yeni mutluluklar",
-            "logo": images.avatar_1,
+            "logo": images.bigchefs,
             "address": "Bilkent Plaza",
             "district": "Çankaya",
             "city": "Ankara",
@@ -108,7 +108,7 @@ const Home = ({ navigation, route }) => {
             "id": "62babe8c80329c81068ecbb45",
             "name": "Big Chefs",
             "description": "Her mevsim yeni bir başlangıç ve her yeni başlangıç yeni mutluluklar",
-            "logo": images.tomato_pasta,
+            "logo": images.bigchefs,
             "address": "Bilkent Plaza",
             "district": "Çankaya",
             "city": "Ankara",
@@ -148,7 +148,7 @@ const Home = ({ navigation, route }) => {
                     }}
                 >
                     <Image
-                        source={item.photo}
+                        source={item.logo}
                         resizeMode="cover"
                         style={{
                             width: "100%",
@@ -186,7 +186,7 @@ const Home = ({ navigation, route }) => {
 
         return (
             <FlatList
-                data={restaurants}
+                data={restList}
                 keyExtractor={item => `${item.id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{

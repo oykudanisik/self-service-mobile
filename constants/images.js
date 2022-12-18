@@ -33,12 +33,12 @@ const logoInside = require("../assets/images/logo1.png");
 const waiter = require("../assets/images/waiter.png");
 const pp = require("../assets/images/pp.jpg");
 const bground = require("../assets/images/bground.jpg");
-const bigchefs = require("../assets/images/bigchefs.jpg");
+const bigchefs = require("../assets/images/bigchefs.png");
 const mickeys = require("../assets/images/mickeys.jpg");
-const quickchina = require("../assets/images/quickchina.jpg");
-const niyokki = require("../assets/images/niyokki.jpg");
+const quickchina = require("../assets/images/quickchina.png");
+const niyokki = require("../assets/images/niyokki.png");
 const mezzaluna = require("../assets/images/mezzaluna.jpg");
-const starbucks = require("../assets/images/starbucks.jpg");
+const starbucks = require("../assets/images/starbucks.png");
 
 export default {
   avatar_1,
