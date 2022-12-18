@@ -1,4 +1,6 @@
 import React from "react";
+import { useEffect } from "react";
+import axios from'axios';
 import {
     StyleSheet,
     SafeAreaView,
@@ -14,9 +16,25 @@ import { icons, COLORS, SIZES, FONTS } from '../constants'
 
 const FoodItem = ({ route, navigation }) => {
 
+    // axios.get('/GeeksforGeeks', {
+    //     params: {
+    //         articleID: articleID
+    //     }
+    // })
+    // .then(function (response) {
+    //     console.log(response);
+    // })
+    // .catch(function (error) {
+    //     console.log(error);
+    // })
+    // .then(function () {
+    //     // always executed
+    // });  
+
     const scrollX = new Animated.Value(0);
     const [currentLocation, setCurrentLocation] = React.useState(null);
     const [orderItems, setOrderItems] = React.useState([]);
+    const [scanned, setScanned] = React.useState(route.params.scanned);
 
     React.useEffect(() => {
         let item = route.params.item;
@@ -119,8 +137,15 @@ const FoodItem = ({ route, navigation }) => {
                                 <Text style={{ ...FONTS.h2 }}>{route.params.item.price} $</Text>
 
                             </View>
-                             {/* Quantity */}
-                             <View
+                        </View>
+            </Animated.ScrollView>
+        )
+    }
+    function renderOrder() {
+        return (
+            <View>
+                 {/* Quantity */}
+                 <View
                                     style={{
                                         position: 'absolute',
                                         bottom: 30,
@@ -169,13 +194,6 @@ const FoodItem = ({ route, navigation }) => {
                                         <Text style={{ ...FONTS.body1 }}>+</Text>
                                     </TouchableOpacity>
                                 </View>
-                        </View>
-            </Animated.ScrollView>
-        )
-    }
-    function renderOrder() {
-        return (
-            <View>
                 <View
                     style={{
                         backgroundColor: COLORS.white,
@@ -242,7 +260,8 @@ const FoodItem = ({ route, navigation }) => {
         <SafeAreaView style={styles.container}>
             <Header/>
             {renderFoodInfo()}
-            {renderOrder()}
+            {scanned ? renderOrder() : ""}
+            {/* {renderOrder()} */}
         </SafeAreaView>
     )
 }

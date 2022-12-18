@@ -8,7 +8,7 @@ import { createBottomTabNavigator, BottomTabBar } from "@react-navigation/bottom
 import Svg, { Path } from 'react-native-svg';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 
-import { Home, Scan, OnBoarding, Favorites } from "../screens"
+import { Home, Scan, Cart, Favorites } from "../screens"
 
 import { COLORS, icons } from "../constants"
 
@@ -216,8 +216,8 @@ const Tabs = () => {
             />
 
             <Tab.Screen
-                name="OnBoarding"
-                component={OnBoarding}
+                name="Cart"
+                component={Cart}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (

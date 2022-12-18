@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import axios from'axios';
 import {
     SafeAreaView,
@@ -16,14 +17,12 @@ import Header from '../components/Header';
 
 const Home = ({ navigation, route }) => {
 
+
     // // Dummy Datas
-    // axios.get('/GeeksforGeeks', {
-    //     params: {
-    //         articleID: articleID
-    //     }
-    // })
+    // axios.get('http://3.67.89.171:8080/restaurants') 
     // .then(function (response) {
     //     console.log(response);
+    //     setRestaurants(JSON.stringify(response));
     // })
     // .catch(function (error) {
     //     console.log(error);
@@ -92,125 +91,54 @@ const Home = ({ navigation, route }) => {
     const fairPrice = 2
     const expensive = 3
 
-    const restaurantData = [
+    const restList = [
         {
-            id: 1,
-            name: "Big Chefs",
-            rating: 4.8,
-            categories: [5, 7],
-            priceRating: affordable,
-            photo: images.burger_restaurant_1,
-            duration: "30 - 45 min",
-            location: {
-                latitude: 1.5347282806345879,
-                longitude: 110.35632207358996,
-            },
-            courier: {
-                avatar: images.avatar_1,
-                name: "Amy"
-            },
+            "id": "62babe8c80329c81068ecbb4",
+            "name": "Big Chefs",
+            "description": "Her mevsim yeni bir başlangıç ve her yeni başlangıç yeni mutluluklar",
+            "logo": images.avatar_1,
+            "address": "Bilkent Plaza",
+            "district": "Çankaya",
+            "city": "Ankara",
+            "country": "Türkiye",
+            "phone": "0555 444 0 999",
+            "tags": "#fast-food, #ev-yemekleri"
         },
         {
-            id: 2,
-            name: "Mickeys",
-            rating: 4.8,
-            categories: [2, 4, 6],
-            priceRating: expensive,
-            photo: images.pizza_restaurant,
-            duration: "15 - 20 min",
-            location: {
-                latitude: 1.556306570595712,
-                longitude: 110.35504616746915,
-            },
-            courier: {
-                avatar: images.avatar_2,
-                name: "Jackson"
-            },
+            "id": "62babe8c80329c81068ecbb45",
+            "name": "Big Chefs",
+            "description": "Her mevsim yeni bir başlangıç ve her yeni başlangıç yeni mutluluklar",
+            "logo": images.tomato_pasta,
+            "address": "Bilkent Plaza",
+            "district": "Çankaya",
+            "city": "Ankara",
+            "country": "Türkiye",
+            "phone": "0555 444 0 999",
+            "tags": "#fast-food, #ev-yemekleri"
         },
         {
-            id: 3,
-            name: "Quick China",
-            rating: 4.8,
-            categories: [3],
-            priceRating: expensive,
-            photo: images.hot_dog_restaurant,
-            duration: "20 - 25 min",
-            location: {
-                latitude: 1.5238753474714375,
-                longitude: 110.34261833833622,
-            },
-            courier: {
-                avatar: images.avatar_3,
-                name: "James"
-            },
-        },
-        {
-            id: 4,
-            name: "Quick China",
-            rating: 4.8,
-            categories: [8],
-            priceRating: expensive,
-            photo: images.japanese_restaurant,
-            duration: "10 - 15 min",
-            location: {
-                latitude: 1.5578068150528928,
-                longitude: 110.35482523764315,
-            },
-            courier: {
-                avatar: images.avatar_4,
-                name: "Ahmad"
-            },
-        },
-        {
-            id: 5,
-            name: "Mezzaluna",
-            rating: 4.8,
-            categories: [1, 2],
-            priceRating: affordable,
-            photo: images.noodle_shop,
-            duration: "15 - 20 min",
-            location: {
-                latitude: 1.558050496260768,
-                longitude: 110.34743759630511,
-            },
-            courier: {
-                avatar: images.avatar_4,
-                name: "Muthu"
-            },
-        },
-        {
-    
-            id: 6,
-            name: "Starbucks",
-            rating: 4.9,
-            categories: [9, 10],
-            priceRating: affordable,
-            photo: images.kek_lapis_shop,
-            duration: "35 - 40 min",
-            location: {
-                latitude: 1.5573478487252896,
-                longitude: 110.35568783282145,
-            },
-            courier: {
-                avatar: images.avatar_1,
-                name: "Jessie"
-            },
-        
-    
+            "id": "62babe8c80329c81068ecbb456",
+            "name": "Big Chefs",
+            "description": "Her mevsim yeni bir başlangıç ve her yeni başlangıç yeni mutluluklar",
+            "logo": images.tomato_pasta,
+            "address": "Bilkent Plaza",
+            "district": "Çankaya",
+            "city": "Ankara",
+            "country": "Türkiye",
+            "phone": "0555 444 0 999",
+            "tags": "#fast-food, #ev-yemekleri"
         }
-    
-    
     ]
     
-    const [restaurants, setRestaurants] = React.useState(restaurantData)
-
+    const [scanned, setScananed] = useState(false);
+    const [restaurants, setRestaurants] = useState(restList);
 
     function renderRestaurantList() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
                 style={{ marginBottom: SIZES.padding * 2 }}
                 onPress={() => navigation.navigate("Menu", {
-                    item
+                    item, scanned
                 })}
             >
                 {/* Image */}
@@ -228,37 +156,14 @@ const Home = ({ navigation, route }) => {
                             borderRadius: SIZES.radius
                         }}
                     />
-
-                    {/* <View
-                        style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            height: 50,
-                            width: SIZES.width * 0.3,
-                            backgroundColor: COLORS.white,
-                            borderTopRightRadius: SIZES.radius,
-                            borderBottomLeftRadius: SIZES.radius,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            ...styles.shadow
-                        }}
-                    >
-                        <Text style={{ ...FONTS.h4 }}>{item.duration}</Text>
-                    </View> */}
                 </View>
 
                 {/* Restaurant Info */}
                 <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
-
-                <View
-                    style={{
-                        marginTop: SIZES.padding,
-                        flexDirection: 'row'
-                    }}
-                >
-                    {/* Rating */}
+                <Text style={{ ...FONTS.body4 }}>{item.description}</Text>
+                <View>
                     <Image
-                        source={icons.star}
+                        source={icons.location}
                         style={{
                             height: 20,
                             width: 20,
@@ -266,14 +171,22 @@ const Home = ({ navigation, route }) => {
                             marginRight: 10
                         }}
                     />
-                    <Text style={{ ...FONTS.body3 }}>{item.rating}</Text>
+                    <Text style={{ 
+                            ...FONTS.body3,
+                            marginTop: SIZES.padding,
+                            flexDirection: 'row',
+                            alignItems:'center',
+                            justifyContent:'center'
+                        }}>
+                        {item.address}
+                    </Text>
                 </View>
             </TouchableOpacity>
         )
 
         return (
             <FlatList
-                data={restaurantData}
+                data={restaurants}
                 keyExtractor={item => `${item.id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{

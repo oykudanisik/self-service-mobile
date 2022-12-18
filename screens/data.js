@@ -1,3 +1,5 @@
+import { images } from "../constants"
+
 const menuItems = [
     {
         menuId: 1,
@@ -127,4 +129,44 @@ const menuItems = [
         calories: 300,
         price: 20
     }
+]
+
+const restList = [
+    {
+        "id": "62babe8c80329c81068ecbb4",
+        "name": "Big Chefs",
+        "summary": "Her mevsim yeni bir başlangıç ve her yeni başlangıç yeni mutluluklar",
+        "logo": images.tomato_pasta,
+        "address": "Bilkent Plaza",
+        "district": "Çankaya",
+        "city": "Ankara",
+        "country": "Türkiye",
+        "phone": "0555 444 0 999",
+        "tags": "#fast-food, #ev-yemekleri"
+    },
+    {
+        "id": "62babe8c80329c81068ecbb45",
+        "name": "Big Chefs",
+        "summary": "Her mevsim yeni bir başlangıç ve her yeni başlangıç yeni mutluluklar",
+        "logo": images.tomato_pasta,
+        "address": "Bilkent Plaza",
+        "district": "Çankaya",
+        "city": "Ankara",
+        "country": "Türkiye",
+        "phone": "0555 444 0 999",
+        "tags": "#fast-food, #ev-yemekleri"
+    },
+    {
+        "id": "62babe8c80329c81068ecbb456",
+        "name": "Big Chefs",
+        "summary": "Her mevsim yeni bir başlangıç ve her yeni başlangıç yeni mutluluklar",
+        "logo": images.tomato_pasta,
+        "address": "Bilkent Plaza",
+        "district": "Çankaya",
+        "city": "Ankara",
+        "country": "Türkiye",
+        "phone": "0555 444 0 999",
+        "tags": "#fast-food, #ev-yemekleri"
+    }
+    
 ]
