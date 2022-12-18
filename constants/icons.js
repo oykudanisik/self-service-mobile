@@ -24,7 +24,8 @@ export const star = require("../assets/icons/star.png");
 export const sushi = require("../assets/icons/sushi.png");
 export const user = require("../assets/icons/user.png");
 export const scan = require("../assets/icons/tabler-icon-scan.png");
-
+export const plus = require("../assets/icons/plus.png");
+export const minus = require("../assets/icons/minus.png");
 
 export default {
     back,
@@ -52,5 +53,7 @@ export default {
     star,
     sushi,
     user,
-    scan
+    scan,
+    plus,
+    minus
 }

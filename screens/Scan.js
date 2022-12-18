@@ -6,7 +6,12 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 export default function Scan({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState('Not yet scanned')
+  const [text, setText] = useState('Not yet scanned');
+  const [restaurantId, setRestaurantId] = useState(null);
+  const [restaurantName, setRestaurantName] = useState(null);
+
+  const [tableId, setTableId] = useState(null);
+
 
   const askForCameraPermission = () => {
     (async () => {
@@ -20,11 +25,23 @@ export default function Scan({navigation}) {
     askForCameraPermission();
   }, []);
 
+  // useEffect(() => {
+  //   navigation.navigate("Menu",{
+  //     restaurantId, scanned
+  //   });
+
+  // }, [restaurantId,tableId]);
+
   // What happens when we scan the bar code
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     setText(data)
-    console.log('Type: ' + type + '\nData: ' + data)
+    setRestaurantId(JSON.parse(data).restaurantId);
+    setRestaurantName(JSON.parse(data).restaurantName);
+    setTableId(JSON.parse(data).tableId);
+
+    console.log('Type: ' + type + '\nData: ' + JSON.parse(data).restaurantId)
+
   };
 
   // Check permissions and return the screens
@@ -51,7 +68,9 @@ export default function Scan({navigation}) {
           style={{ height: 400, width: 400 }} />
       </View>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Menu")}
+        onPress={() => navigation.navigate("Menu",{
+          restaurantId, tableId, scanned
+        })}
       >
         <Text>
           yes

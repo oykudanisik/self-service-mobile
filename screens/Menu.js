@@ -21,6 +21,13 @@ const Home = ({ navigation, route }) => {
         console.log(route.params);
     })
 
+    // route.params.restaurantId AL AXIOSLA ISTEĞİ GÖNDER DÖNENİ 
+    // 1) GETSUBMENU İLE SUBMENULERİ ÇEK
+    // 2) GET MENUITEMS DIYE MENU ITEMLERINI ÇEKIP VARIABLEA EŞİTLE İTEM YERİNE 
+    // FULL O GELICEK
+    // İSTER SCAN.JS DEN GELSİN İSTER MENU.JSDEN TIKLANIP GELSİN İKİSİ İÇİN DE restaurantId 
+    // ŞEKLİNDE GELİCEK
+    
     // // Dummy Datas
     // axios.get('/GeeksforGeeks', {
     //     params: {
@@ -477,10 +484,15 @@ const Home = ({ navigation, route }) => {
         }
     ]
 
-    const [categories, setCategories] = React.useState(categoryData)
-    const [selectedCategory, setSelectedCategory] = React.useState(null)
-    const [restaurants, setRestaurants] = React.useState(restaurantData)
+    const [categories, setCategories] = React.useState(categoryData);
+    const [selectedCategory, setSelectedCategory] = React.useState(null);
+    const [restaurants, setRestaurants] = React.useState(restaurantData);
+    const [scanned, setScanned] = React.useState(route.params.scanned);
 
+    React.useEffect(() => {
+        let item = route.params.item;
+        console.log(item)
+    })
 
     function onSelectCategory(category) {
         //filter restaurant
@@ -506,10 +518,10 @@ const Home = ({ navigation, route }) => {
                 padding: SIZES.padding * 2,
                 textAlign: "center"
             }}>
-                <Text style={{ ...FONTS.h1 }}>{route.params.item.name}</Text>
+                <Text style={{ ...FONTS.h1 }}>{route.params.restaurantName}</Text>
             </View>
         )
-    }
+    } 
     function renderMainCategories() {
         const renderItem = ({ item }) => {
             return (
@@ -579,7 +591,7 @@ const Home = ({ navigation, route }) => {
             <TouchableOpacity
                 style={{ marginBottom: SIZES.padding * 2 }}
                 onPress={() => navigation.navigate("FoodItem", {
-                    item
+                    item, scanned
                 })}
             >
                 {/* Image */}

@@ -5,6 +5,7 @@ import OnBoarding from "./OnBoarding"
 import Favorites from'./Favorites'
 import Header from '../components/Header';
 import Menu from './Menu'
+import Cart from './Cart'
 
 export {
     Home,
@@ -13,5 +14,6 @@ export {
     OnBoarding,
     Favorites,
     Header,
-    Menu
+    Menu,
+    Cart
 }
