@@ -14,6 +14,8 @@ import {
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 import Header from '../components/Header';
+import Tabs from '../navigation/tabs';
+
 
 const Home = ({ navigation, route }) => {
 
@@ -108,7 +110,7 @@ const Home = ({ navigation, route }) => {
             "id": "62babe8c80329c81068ecbb45",
             "name": "Big Chefs",
             "description": "Her mevsim yeni bir başlangıç ve her yeni başlangıç yeni mutluluklar",
-            "logo": images.bigchefs,
+            "logo": images.niyokki,
             "address": "Bilkent Plaza",
             "district": "Çankaya",
             "city": "Ankara",
@@ -120,7 +122,7 @@ const Home = ({ navigation, route }) => {
             "id": "62babe8c80329c81068ecbb456",
             "name": "Big Chefs",
             "description": "Her mevsim yeni bir başlangıç ve her yeni başlangıç yeni mutluluklar",
-            "logo": images.tomato_pasta,
+            "logo": images.mickeys,
             "address": "Bilkent Plaza",
             "district": "Çankaya",
             "city": "Ankara",

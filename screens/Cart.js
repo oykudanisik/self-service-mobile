@@ -6,9 +6,15 @@ import {
     StyleSheet
 } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { icons, images, SIZES, COLORS, FONTS, dummyData } from '../constants'
+
 import Header from '../components/Header';
+import IconButton from '../components/IconButton';
 import StepperInput from '../components/StepperInput';
+import CartQuantityButton from '../components/CartQuantityButton';
+import FooterTotal from '../components/FooterTotal';
+import { FONTS, SIZES, COLORS, icons, dummyData } from "../constants"
+import HeaderInside from '../components/HeaderInside';
+
 const Cart = ({ navigation }) => {
 
     const [myCartList, setMyCartList] = React.useState(dummyData.myCart)
@@ -34,6 +40,45 @@ const Cart = ({ navigation }) => {
     }
 
     // Render
+
+    function renderHeader() {
+        return (
+            <Header
+                title="MY CART"
+                containerStyle={{
+                    height: 50,
+                    marginHorizontal: SIZES.padding,
+                    marginTop: 40
+                }}
+                leftComponent={
+                    <IconButton
+                        icon={icons.back}
+                        containerStyle={{
+                            width: 40,
+                            height: 40,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderWidth: 1,
+                            borderRadius: SIZES.radius,
+                            borderColor: COLORS.gray2,
+                        }}
+                        iconStyle={{
+                            width: 20,
+                            height: 20,
+                            tintColor: COLORS.gray2
+                        }}
+                        onPress={() => navigation.goBack()}
+                    />
+                }
+                rightComponent={
+                    <CartQuantityButton
+                        quantity={3}
+                    />
+                }
+            />
+        )
+    }
+
     function renderCartList() {
         return (
             <SwipeListView
@@ -50,7 +95,7 @@ const Cart = ({ navigation }) => {
                     <View
                         style={{
                             height: 100,
-                            backgroundColor: COLORS.lightGray2,
+                            backgroundColor: COLORS.primary,
                             ...styles.cartItemContainer
                         }}
                     >
@@ -77,7 +122,7 @@ const Cart = ({ navigation }) => {
                         {/* Food Info */}
                         <View
                             style={{
-                                flex: 1,
+                                flex: 1
                             }}
                         >
                             <Text style={{ ...FONTS.body3 }}>{data.item.name}</Text>
@@ -88,18 +133,33 @@ const Cart = ({ navigation }) => {
                         <StepperInput
                             containerStyle={{
                                 height: 50,
-                                width: 150,
+                                width: 125,
                                 backgroundColor: COLORS.white
                             }}
                             value={data.item.qty}
+                            onAdd={() => updateQuantityHandler(data.item.qty + 1, data.item.id)}
+                            onMinus={() => {
+                                if (data.item.qty > 1) {
+                                    updateQuantityHandler(data.item.qty - 1, data.item.id)
+                                }
+                            }}
                         />
                     </View>
                 )}
             />
-            
         )
     }
 
+    function renderFooter() {
+        return (
+            <FooterTotal
+                subTotal={37.97}
+                shippingFee={0.00}
+                total={37.97}
+                onPress={() => navigation.navigate("Home")}
+            />
+        )
+    }
 
     return (
         <View
@@ -108,9 +168,17 @@ const Cart = ({ navigation }) => {
                 backgroundColor: COLORS.white
             }}
         >
-            <Header></Header>
+            {/* Header */}
+            <HeaderInside navigation={navigation}></HeaderInside>
+            {/* {renderHeader()} */}
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={{  ...FONTS.h2}}>My Cart</Text>
+            </View>
             {/* Cart */}
             {renderCartList()}
+
+            {/* Footer */}
+            {renderFooter()}
         </View>
     )
 }

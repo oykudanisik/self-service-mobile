@@ -2,10 +2,10 @@ import React from 'react';
 import {
     View,
     Text,
-    Image
 } from 'react-native';
 
-import { FONTS, COLORS, icons, SIZES } from "../constants"
+import IconButton from './IconButton';
+import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 const StepperInput = ({
     containerStyle,
@@ -24,14 +24,21 @@ const StepperInput = ({
                 ...containerStyle
             }}
         >
-            <Image
-                source={icons.minus}
-                style={{
+            <IconButton
+                containerStyle={{
+                    width: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+                icon={icons.minus}
+                iconStyle={{
                     height: 25,
                     width: 25,
-                    tintColor: COLORS.primary,
+                    tintColor: value > 1 ? COLORS.primary : COLORS.gray,
                 }}
+                onPress={onMinus}
             />
+
             <View
                 style={{
                     flex: 1,
@@ -41,13 +48,21 @@ const StepperInput = ({
             >
                 <Text style={{ ...FONTS.h2 }}>{value}</Text>
             </View>
-            <Image
-                source={icons.plus}
-                style={{
+
+
+            <IconButton
+                containerStyle={{
+                    width: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+                icon={icons.plus}
+                iconStyle={{
                     height: 25,
                     width: 25,
                     tintColor: COLORS.primary,
                 }}
+                onPress={onAdd}
             />
         </View>
     )
