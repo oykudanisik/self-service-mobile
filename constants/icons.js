@@ -26,6 +26,9 @@ export const user = require("../assets/icons/user.png");
 export const scan = require("../assets/icons/tabler-icon-scan.png");
 export const plus = require("../assets/icons/plus.png");
 export const minus = require("../assets/icons/minus.png");
+export const home = require("../assets/icons/home.png");
+export const notification = require("../assets/icons/notification.png");
+export const payment = require("../assets/icons/payment.png");
 
 export default {
     back,
@@ -55,5 +58,8 @@ export default {
     user,
     scan,
     plus,
-    minus
+    minus,
+    home,
+    notification,
+    payment
 }
