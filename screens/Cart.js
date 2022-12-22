@@ -5,8 +5,9 @@ import {
     Image,
     StyleSheet
 } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { SwipeListView } from 'react-native-swipe-list-view';
 import Header from '../components/Header';
 import IconButton from '../components/IconButton';
 import StepperInput from '../components/StepperInput';
@@ -14,20 +15,37 @@ import CartQuantityButton from '../components/CartQuantityButton';
 import FooterTotal from '../components/FooterTotal';
 import { FONTS, SIZES, COLORS, icons, dummyData } from "../constants"
 import HeaderInside from '../components/HeaderInside';
-
+import { LogBox } from 'react-native';
 const Cart = ({ navigation }) => {
 
-    const [myCartList, setMyCartList] = React.useState(dummyData.myCart)
+    const [myCartList, setMyCartList] = React.useState([])
+    const [storage, setStorage] = React.useState("");
+    const [totalPrice, setToralPrice] = React.useState(0);
 
-    // Handler
+    let price = 0
+    let cartList = [];
 
-    function updateQuantityHandler(newQty, id) {
-        let newMyCartList = myCartList.map(cl => (
-            cl.id === id ? { ...cl, qty: newQty } : cl
-        ))
+    React.useEffect(() => {
+        async function deneme(){
+            cartList = await AsyncStorage.getItem("item")
+            cartList = JSON.parse(cartList);
+            console.log("cartList", cartList, typeof(cartList))
+            cartList.forEach(item => 
+                price += item.price
+            );
+            setToralPrice(price)
+            setMyCartList(cartList);
+        }
+        deneme();
+    },[])
 
-        setMyCartList(newMyCartList)
-    }
+    // function updateQuantityHandler(newQty, id) {
+    //     let newMyCartList = myCartList.map(cl => (
+    //         cl.id === id ? { ...cl, qty: newQty } : cl
+    //     ))
+
+    //     setMyCartList(newMyCartList)
+    // }
 
     function removeMyCartHandler(id) {
         let newMyCartList = [...myCartList]
@@ -37,46 +55,6 @@ const Cart = ({ navigation }) => {
         newMyCartList.splice(index, 1)
 
         setMyCartList(newMyCartList)
-    }
-
-    // Render
-
-    function renderHeader() {
-        return (
-            <Header
-                title="MY CART"
-                containerStyle={{
-                    height: 50,
-                    marginHorizontal: SIZES.padding,
-                    marginTop: 40
-                }}
-                leftComponent={
-                    <IconButton
-                        icon={icons.back}
-                        containerStyle={{
-                            width: 40,
-                            height: 40,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderWidth: 1,
-                            borderRadius: SIZES.radius,
-                            borderColor: COLORS.gray2,
-                        }}
-                        iconStyle={{
-                            width: 20,
-                            height: 20,
-                            tintColor: COLORS.gray2
-                        }}
-                        onPress={() => navigation.goBack()}
-                    />
-                }
-                rightComponent={
-                    <CartQuantityButton
-                        quantity={3}
-                    />
-                }
-            />
-        )
     }
 
     function renderCartList() {
@@ -108,11 +86,11 @@ const Cart = ({ navigation }) => {
                             }}
                         >
                             <Image
-                                source={data.item.image}
+                                source={{uri:data.item.image}}
                                 resizeMode="contain"
                                 style={{
-                                    width: "100%",
-                                    height: "100%",
+                                    width: "75%",
+                                    height: "75%",
                                     position: 'absolute',
                                     top: 10,
                                 }}
@@ -132,18 +110,35 @@ const Cart = ({ navigation }) => {
                         {/* Quantity */}
                         <StepperInput
                             containerStyle={{
-                                height: 50,
-                                width: 125,
+                                height: 40,
+                                width: 100,
                                 backgroundColor: COLORS.white
                             }}
                             value={data.item.qty}
-                            onAdd={() => updateQuantityHandler(data.item.qty + 1, data.item.id)}
-                            onMinus={() => {
-                                if (data.item.qty > 1) {
-                                    updateQuantityHandler(data.item.qty - 1, data.item.id)
-                                }
-                            }}
+                            // onAdd={() => updateQuantityHandler(data.item.qty + 1, data.item.id)}
+                            // onMinus={() => {
+                            //     if (data.item.qty > 1) {
+                            //         updateQuantityHandler(data.item.qty - 1, data.item.id)
+                            //     }
+                            // }}
                         />
+                        <View
+                            style={{
+                                width: 30,
+                                height:30,
+                                marginLeft: 10
+                            }}
+                        >
+                            <Image
+                                source={icons.bin}
+                                resizeMode="contain"
+                                style={{
+                                    width: "70%",
+                                    height: "70%",
+                                    position: 'absolute',
+                                }}
+                            />
+                        </View>
                     </View>
                 )}
             />
@@ -155,7 +150,7 @@ const Cart = ({ navigation }) => {
             <FooterTotal
                 subTotal={37.97}
                 shippingFee={0.00}
-                total={37.97}
+                total={totalPrice}
                 onPress={() => navigation.navigate("Home")}
             />
         )
@@ -170,7 +165,6 @@ const Cart = ({ navigation }) => {
         >
             {/* Header */}
             <HeaderInside navigation={navigation}></HeaderInside>
-            {/* {renderHeader()} */}
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <Text style={{  ...FONTS.h2}}>My Cart</Text>
             </View>
