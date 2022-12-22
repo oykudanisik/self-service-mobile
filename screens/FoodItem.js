@@ -8,28 +8,14 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    Animated
+    Animated,
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import HeaderInside from '../components/HeaderInside';
 import { icons, COLORS, SIZES, FONTS } from '../constants'
 
-const FoodItem = ({ route, navigation }) => {
-
-    // axios.get('/GeeksforGeeks', {
-    //     params: {
-    //         articleID: articleID
-    //     }
-    // })
-    // .then(function (response) {
-    //     console.log(response);
-    // })
-    // .catch(function (error) {
-    //     console.log(error);
-    // })
-    // .then(function () {
-    //     // always executed
-    // });  
+const FoodItem = ({ route, navigation }) => { 
 
     const scrollX = new Animated.Value(0);
     const [currentLocation, setCurrentLocation] = React.useState(null);
@@ -37,13 +23,13 @@ const FoodItem = ({ route, navigation }) => {
     const [scanned, setScanned] = React.useState(route.params.scanned);
 
     React.useEffect(() => {
-        let item = route.params.item;
-    })
+        // console.log(orderItems);
+    },[orderItems])
 
     function editOrder(action, menuId, price) {
         let orderList = orderItems.slice()
         let item = orderList.filter(a => a.menuId == menuId)
-
+        console.log(item);
         if (action == "+") {
             if (item.length > 0) {
                 let newQty = item[0].qty + 1
@@ -54,7 +40,7 @@ const FoodItem = ({ route, navigation }) => {
                     menuId: menuId,
                     qty: 1,
                     price: price,
-                    total: price
+                    total: price,
                 }
                 orderList.push(newItem)
             }
@@ -83,19 +69,18 @@ const FoodItem = ({ route, navigation }) => {
         return 0
     }
 
-    function getBasketItemCount() {
-        let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0)
+    // function getBasketItemCount() {
+    //     let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0)
 
-        return itemCount
-    }
+    //     return itemCount
+    // }
 
-    function sumOrder() {
-        let total = orderItems.reduce((a, b) => a + (b.total || 0), 0)
+    // function sumOrder() {
+    //     let total = orderItems.reduce((a, b) => a + (b.total || 0), 0)
 
-        return total.toFixed(2)
-    }
+    //     return total.toFixed(2)
+    // }
 
-    //LOKALE ATMA BUNUN İÇİNDEKİ DATALARI ÇEKMEYLE OLCAK
     function renderFoodInfo() {
         return (
             <Animated.ScrollView
@@ -114,7 +99,7 @@ const FoodItem = ({ route, navigation }) => {
                             <View style={{ height: SIZES.height * 0.35 }}>
                                 {/* Food Image */}
                                 <Image
-                                    source={route.params.item.photo}
+                                    source={{uri:route.params.item.image}}
                                     resizeMode="cover"
                                     style={{
                                         width: SIZES.width,
@@ -134,8 +119,8 @@ const FoodItem = ({ route, navigation }) => {
                             >
                                 <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{route.params.item.name}</Text>
                                 <Text style={{ ...FONTS.body3 }}>{route.params.item.description}</Text>
-                                <Text style={{ ...FONTS.h2 }}>{route.params.item.price} $</Text>
-
+                                <Text style={{ ...FONTS.h2 }}>{route.params.item.price} {route.params.item.currency}</Text>
+                                <Text style={{ ...FONTS.body3 }}>Ready in {route.params.item.prepDurationMinutes} minutes</Text>
                             </View>
                         </View>
             </Animated.ScrollView>
@@ -144,56 +129,6 @@ const FoodItem = ({ route, navigation }) => {
     function renderOrder() {
         return (
             <View>
-                 {/* Quantity */}
-                 <View
-                                    style={{
-                                        position: 'absolute',
-                                        bottom: 30,
-                                        width: SIZES.width,
-                                        height: 50,
-                                        justifyContent: 'center',
-                                        flexDirection: 'row'
-                                    }}
-                                >
-                                    <TouchableOpacity
-                                        style={{
-                                            width: 50,
-                                            backgroundColor: COLORS.white,
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            borderTopLeftRadius: 25,
-                                            borderBottomLeftRadius: 25
-                                        }}
-                                        onPress={() => editOrder("-", route.params.item.menuId, route.params.item.price)}
-                                    >
-                                        <Text style={{ ...FONTS.body1 }}>-</Text>
-                                    </TouchableOpacity>
-
-                                    <View
-                                        style={{
-                                            width: 50,
-                                            backgroundColor: COLORS.white,
-                                            alignItems: 'center',
-                                            justifyContent: 'center'
-                                        }}
-                                    >
-                                        <Text style={{ ...FONTS.h2 }}>{getOrderQty(route.params.item.menuId)}</Text>
-                                    </View>
-
-                                    <TouchableOpacity
-                                        style={{
-                                            width: 50,
-                                            backgroundColor: COLORS.white,
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            borderTopRightRadius: 25,
-                                            borderBottomRightRadius: 25
-                                        }}
-                                        onPress={() => editOrder("+", route.params.item.menuId, route.params.item.price)}
-                                    >
-                                        <Text style={{ ...FONTS.body1 }}>+</Text>
-                                    </TouchableOpacity>
-                                </View>
                 <View
                     style={{
                         backgroundColor: COLORS.white,
@@ -211,8 +146,8 @@ const FoodItem = ({ route, navigation }) => {
                             borderBottomWidth: 1
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 }}>{getBasketItemCount()} items in Cart</Text>
-                        <Text style={{ ...FONTS.h3 }}>${sumOrder()}</Text>
+                        {/* <Text style={{ ...FONTS.h3 }}>{getBasketItemCount()} items in Cart</Text> */}
+                        {/* <Text style={{ ...FONTS.h3 }}>${sumOrder()}</Text> */}
                     </View>
 
 
@@ -232,7 +167,26 @@ const FoodItem = ({ route, navigation }) => {
                                 alignItems: 'center',
                                 borderRadius: SIZES.radius
                             }}
-                            onPress={() => navigation.navigate("Home")}
+                            onPress={
+                                async () => {
+                                let x = await AsyncStorage.getItem("item");
+                                if(x == null){
+                                    let array = [];
+                                    array.push(route.params.item);
+                                    await AsyncStorage.setItem(
+                                        "item", 
+                                        JSON.stringify(array),
+                                    );
+                                } else{
+                                    x = JSON.parse(x);
+                                    x.push(route.params.item);
+                                    await AsyncStorage.setItem(
+                                        "item", 
+                                        JSON.stringify(x),
+                                    );
+                                }
+                                await navigation.goBack();
+                            }}
                         >
                             <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Add</Text>
                         </TouchableOpacity>
@@ -260,7 +214,8 @@ const FoodItem = ({ route, navigation }) => {
         <SafeAreaView style={styles.container}>
             <HeaderInside navigation={navigation}/>
             {renderFoodInfo()}
-            {scanned ? renderOrder() : ""}
+            {renderOrder()}
+            {/* {scanned ? renderOrder() : ""} */}
         </SafeAreaView>
     )
 }
@@ -268,7 +223,7 @@ const FoodItem = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray2
+        backgroundColor: COLORS.lightGray
     }
 })
 

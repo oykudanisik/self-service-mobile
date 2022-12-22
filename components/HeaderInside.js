@@ -38,7 +38,7 @@ const HeaderInside = ({ navigation }) => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("Home")}
+        onPress={() => navigation.navigate("Cart")}
         style={{
           width: 50,
           paddingRight: SIZES.padding * 2,
@@ -46,7 +46,7 @@ const HeaderInside = ({ navigation }) => {
         }}
       >
         <Image
-          source={icons.home}
+          source={icons.basket}
           resizeMode="contain"
           style={{
             width: 25,

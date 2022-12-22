@@ -8,7 +8,7 @@ import { createBottomTabNavigator, BottomTabBar } from "@react-navigation/bottom
 import Svg, { Path } from 'react-native-svg';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 
-import { Home, Scan, Cart, Favorites, Menu } from "../screens"
+import { Home, Scan, Cart, Menu } from "../screens"
 
 import { COLORS, icons } from "../constants"
 
@@ -193,7 +193,7 @@ const Tabs = () => {
 
             <Tab.Screen
                 name="Like"
-                component={Favorites}
+                component={Scan}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (

@@ -9,7 +9,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FONTS, SIZES, COLORS, icons, images, dummyData } from "../constants"
 import { PrimaryButton } from './Button';
 
-const FooterTotal = ({ subTotal, shippingFee, total, onPress,navigation }) => {
+const FooterTotal = ({ subTotal, shippingFee, total, onPress, navigation }) => {
     return (
         <View>
             {/* Shadow */}
@@ -40,34 +40,12 @@ const FooterTotal = ({ subTotal, shippingFee, total, onPress,navigation }) => {
                 {/* Subtotal */}
                 <View
                     style={{
-                        flexDirection: 'row'
-                    }}
-                >
-                    <Text style={{ flex: 1, ...FONTS.body3 }}>Subtotal</Text>
-                    <Text style={{ ...FONTS.h3 }}>${subTotal.toFixed(2)}</Text>
-                </View>
-
-                {/* Shipping Fee */}
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        marginTop: SIZES.base,
-                        marginBottom: SIZES.padding
-                    }}
-                >
-                    <Text style={{ flex: 1, ...FONTS.body3 }}>Shipping fee</Text>
-                    <Text style={{ ...FONTS.h3 }}>${shippingFee.toFixed(2)}</Text>
-                </View>
-
-                {/* Subtotal */}
-                <View
-                    style={{
                         flexDirection: 'row',
                         marginTop: SIZES.padding
                     }}
                 >
                     <Text style={{ flex: 1, ...FONTS.h2 }}>Total:</Text>
-                    <Text style={{ ...FONTS.h2 }}>${total.toFixed(2)}</Text>
+                    <Text style={{ ...FONTS.h2 }}>{total.toFixed(2)}</Text>
                 </View>
                 <PrimaryButton
                     onPress={() => navigation.navigate('Home')}

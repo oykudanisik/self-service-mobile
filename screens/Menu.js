@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import axios from'axios';
+import axios from 'axios';
 import {
     SafeAreaView,
     View,
@@ -11,41 +11,46 @@ import {
     FlatList,
     TextInput
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 import Header from '../components/Header';
 import HeaderInside from "../components/HeaderInside";
 import Tabs from '../navigation/tabs';
 
-const Home = ({ navigation, route }) => {
+const Menu = ({ navigation, route }) => {
 
-    React.useEffect(() => {
-        console.log(route.params);
-    })
+    const [categories, setCategories] = React.useState([]);
+    const [selectedCategory, setSelectedCategory] = React.useState(null);
+    const [products, setProducts] = React.useState(restaurantData);
+    const [scanned, setScanned] = React.useState(route.params.scanned);
+    const [restaurantId, setRestaurantId] = React.useState("");
 
-    // route.params.restaurantId AL AXIOSLA ISTEĞİ GÖNDER DÖNENİ 
-    // 1) GETSUBMENU İLE SUBMENULERİ ÇEK
-    // 2) GET MENUITEMS DIYE MENU ITEMLERINI ÇEKIP VARIABLEA EŞİTLE İTEM YERİNE 
-    // FULL O GELICEK
-    // İSTER SCAN.JS DEN GELSİN İSTER MENU.JSDEN TIKLANIP GELSİN İKİSİ İÇİN DE restaurantId 
-    // ŞEKLİNDE GELİCEK
     
-    // // Dummy Datas
-    // axios.get('/GeeksforGeeks', {
-    //     params: {
-    //         articleID: articleID
-    //     }
-    // })
-    // .then(function (response) {
-    //     console.log(response);
-    // })
-    // .catch(function (error) {
-    //     console.log(error);
-    // })
-    // .then(function () {
-    //     // always executed
-    // });  
+    useEffect(() => {
+        let restId = "";
+        if (scanned) {
+            restId = route.params.restaurantId;
+        } else {
+            restId = route.params.item.id;
+        }
+        const productsUrl = "http://localhost:42778/Restaurants/" + restId  + "/products"
+        const categoriesUrl = "http://localhost:42778/Categories";
 
+        const productRequest = axios.get(productsUrl);
+        const categoriesRequest = axios.get(categoriesUrl);
+
+        axios.all([productRequest, categoriesRequest])
+        .then(axios.spread((...responses) => {
+
+            const responseOne = responses[0]
+            const responseTwo = responses[1]
+
+            setProducts(responseOne.data.items);
+            setCategories(responseTwo.data.items);
+        }))
+
+    }, []);
 
     const categoryData = [
         {
@@ -487,16 +492,6 @@ const Home = ({ navigation, route }) => {
         }
     ]
 
-    const [categories, setCategories] = React.useState(categoryData);
-    const [selectedCategory, setSelectedCategory] = React.useState(null);
-    const [restaurants, setRestaurants] = React.useState(restaurantData);
-    const [scanned, setScanned] = React.useState(route.params.scanned);
-
-    React.useEffect(() => {
-        let item = route.params.item;
-        console.log(item)
-    })
-
     function onSelectCategory(category) {
         //filter restaurant
         let restaurantList = restaurantData.filter(a => a.categories.includes(category.id))
@@ -515,16 +510,16 @@ const Home = ({ navigation, route }) => {
         return ""
     }
 
-    function RenderRestaurantName(){
-        return(
-            <View style={{ 
+    function RenderRestaurantName() {
+        return (
+            <View style={{
                 padding: SIZES.padding * 2,
                 textAlign: "center"
             }}>
                 <Text style={{ ...FONTS.h1 }}>{route.params.restaurantName}</Text>
             </View>
         )
-    } 
+    }
     function renderMainCategories() {
         const renderItem = ({ item }) => {
             return (
@@ -552,7 +547,7 @@ const Home = ({ navigation, route }) => {
                         }}
                     >
                         <Image
-                            source={item.icon}
+                            source={{uri:item.image}}
                             resizeMode="contain"
                             style={{
                                 width: 30,
@@ -592,7 +587,11 @@ const Home = ({ navigation, route }) => {
     function renderRestaurantList() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
-                style={{ marginBottom: SIZES.padding * 2 }}
+                style={{ 
+                    marginBottom: SIZES.padding * 2 ,
+                    width:"45%",
+                    margin:10
+                }}
                 onPress={() => navigation.navigate("FoodItem", {
                     item, scanned
                 })}
@@ -604,7 +603,7 @@ const Home = ({ navigation, route }) => {
                     }}
                 >
                     <Image
-                        source={item.photo}
+                        source={{uri:item.image}}
                         resizeMode="cover"
                         style={{
                             width: "100%",
@@ -617,9 +616,9 @@ const Home = ({ navigation, route }) => {
                         style={{
                             position: 'absolute',
                             bottom: 0,
-                            height: 50,
+                            height: 40,
                             width: SIZES.width * 0.15,
-                            backgroundColor: COLORS.primary,
+                            backgroundColor: COLORS.lightGray2,
                             borderTopRightRadius: SIZES.radius,
                             borderBottomLeftRadius: SIZES.radius,
                             alignItems: 'center',
@@ -627,7 +626,7 @@ const Home = ({ navigation, route }) => {
                             ...styles.shadow
                         }}
                     >
-                        <Text style={{ ...FONTS.body2 }}>{item.price}$</Text>
+                        <Text style={{ ...FONTS.body4 }}>{item.price} {item.currency}</Text>
                     </View>
                 </View>
 
@@ -638,13 +637,14 @@ const Home = ({ navigation, route }) => {
 
         return (
             <FlatList
-                data={menuItems}
+                data={products}
                 keyExtractor={item => `${item.id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingHorizontal: SIZES.padding * 2,
-                    paddingBottom: 30
+                    paddingBottom: 30,
                 }}
+                numColumns={2}
             />
         )
     }
@@ -685,4 +685,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Home
+export default Menu

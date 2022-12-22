@@ -37,7 +37,6 @@ export default function Scan({navigation}) {
     setScanned(true);
     setText(data)
     setRestaurantId(JSON.parse(data).restaurantId);
-    setRestaurantName(JSON.parse(data).restaurantName);
     setTableId(JSON.parse(data).tableId);
 
     console.log('Type: ' + type + '\nData: ' + JSON.parse(data).restaurantId)
@@ -82,7 +81,7 @@ export default function Scan({navigation}) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
   container: {
     flex: 1,
     backgroundColor: '#fff',
