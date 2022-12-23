@@ -19,6 +19,7 @@ import { LogBox } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 const Cart = ({ navigation }) => {
 
+    // AsyncStorage.clear();
     const [myCartList, setMyCartList] = React.useState([])
     const [storage, setStorage] = React.useState("");
     const [totalPrice, setToralPrice] = React.useState(0);
