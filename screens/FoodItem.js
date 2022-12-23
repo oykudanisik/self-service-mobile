@@ -16,7 +16,6 @@ import HeaderInside from '../components/HeaderInside';
 import { icons, COLORS, SIZES, FONTS } from '../constants'
 
 const FoodItem = ({ route, navigation }) => { 
-    // AsyncStorage.clear()
     const scrollX = new Animated.Value(0);
     const [currentLocation, setCurrentLocation] = React.useState(null);
     const [orderItems, setOrderItems] = React.useState([]);
@@ -150,7 +149,6 @@ const FoodItem = ({ route, navigation }) => {
                         {/* <Text style={{ ...FONTS.h3 }}>${sumOrder()}</Text> */}
                     </View>
 
-
                     {/* Order Button */}
                     <View
                         style={{
@@ -180,14 +178,16 @@ const FoodItem = ({ route, navigation }) => {
                                     );
                                 } else{
                                     x = await JSON.parse(x);
-                                    if (x.filter(e => e.id === route.params.item.id).length > 0) {
-                                        route.params.item.count = route.params.item.count+1;
-                                        console.log(route.params.item.count)
-                                    } else{
-                                        route.params.item['count'] = 1;
-                                        x.push(route.params.item);
-                                    }
                                     console.log("x",x);
+                                    x.filter(e => {
+                                        if(e.id === route.params.item.id){
+                                            e['count'] ++;
+                                        } else{
+                                            route.params.item.count += 1;
+                                            x.push(route.params.item);
+                                        }
+                                    })
+                                    console.log("x1111",x);
                                     await AsyncStorage.setItem(
                                         "item", 
                                         JSON.stringify(x),

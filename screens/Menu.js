@@ -494,11 +494,15 @@ const Menu = ({ navigation, route }) => {
 
     function onSelectCategory(category) {
         //filter restaurant
-        let restaurantList = restaurantData.filter(a => a.categories.includes(category.id))
-
-        setRestaurants(restaurantList)
-
-        setSelectedCategory(category)
+        console.log(category.id);
+        console.log(route.params.item.id);
+        axios({
+            method: "get",
+            url: "http://localhost:42778/Restaurants/"+route.params.item.id+"/categories/"+category.id+"/products",
+        }).then(function (response) {
+            console.log(response.data.items);
+            setProducts(response.data.items)
+        });
     }
 
     function getCategoryNameById(id) {
