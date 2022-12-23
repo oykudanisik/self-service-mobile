@@ -73,7 +73,7 @@ const Cart = ({ navigation }) => {
                     <View
                         style={{
                             height: 100,
-                            backgroundColor: COLORS.primary,
+                            backgroundColor: COLORS.lightGray4,
                             ...styles.cartItemContainer
                         }}
                     >
@@ -92,6 +92,7 @@ const Cart = ({ navigation }) => {
                                     width: "75%",
                                     height: "75%",
                                     position: 'absolute',
+                                    borderRadius: 10,
                                     top: 10,
                                 }}
                             />
@@ -104,7 +105,7 @@ const Cart = ({ navigation }) => {
                             }}
                         >
                             <Text style={{ ...FONTS.body3 }}>{data.item.name}</Text>
-                            <Text style={{ color: COLORS.primary, ...FONTS.h3 }}>${data.item.price}</Text>
+                            <Text style={{ color: COLORS.black, ...FONTS.h4 }}>{data.item.price} {data.item.currency}</Text>
                         </View>
 
                         {/* Quantity */}
@@ -133,8 +134,8 @@ const Cart = ({ navigation }) => {
                                 source={icons.bin}
                                 resizeMode="contain"
                                 style={{
-                                    width: "70%",
-                                    height: "70%",
+                                    width: "65%",
+                                    height: "65%",
                                     position: 'absolute',
                                 }}
                             />
