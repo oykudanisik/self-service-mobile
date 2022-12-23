@@ -35,19 +35,30 @@ const Menu = ({ navigation, route }) => {
             restId = route.params.item.id;
         }
         const productsUrl = "http://localhost:42778/Restaurants/" + restId  + "/products"
-        const categoriesUrl = "http://localhost:42778/Categories";
+        const categoriesUrl = "http://localhost:42778/Restaurants/" + restId  + "/Categories";
+        const allCategoriesUrl = "http://localhost:42778/Categories";
 
         const productRequest = axios.get(productsUrl);
         const categoriesRequest = axios.get(categoriesUrl);
+        const allCategoriesRequest = axios.get(allCategoriesUrl);
 
-        axios.all([productRequest, categoriesRequest])
+        axios.all([productRequest, categoriesRequest, allCategoriesRequest])
         .then(axios.spread((...responses) => {
 
             const responseOne = responses[0]
             const responseTwo = responses[1]
+            const responseThree = responses[2];
+            let categoriesArray = [];
 
+            responseTwo.data.items.filter(res2 => {
+                responseThree.data.items.filter(res3 => {
+                    if(res2.id == res3.id){
+                        categoriesArray.push(res3);
+                    }
+                })
+            })
+            setCategories(categoriesArray);
             setProducts(responseOne.data.items);
-            setCategories(responseTwo.data.items);
         }))
 
     }, []);
