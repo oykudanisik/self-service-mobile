@@ -527,7 +527,7 @@ const Menu = ({ navigation, route }) => {
                     style={{
                         padding: SIZES.padding,
                         paddingBottom: SIZES.padding * 2,
-                        backgroundColor: (selectedCategory?.id == item.id) ? COLORS.primary : COLORS.white,
+                        backgroundColor: (selectedCategory?.id == item.id) ? COLORS.primary : COLORS.lightGray,
                         borderRadius: SIZES.radius,
                         alignItems: "center",
                         justifyContent: "center",
@@ -539,7 +539,7 @@ const Menu = ({ navigation, route }) => {
                     <View
                         style={{
                             width: 50,
-                            height: 50,
+                            height: 30,
                             borderRadius: 25,
                             alignItems: "center",
                             justifyContent: "center",

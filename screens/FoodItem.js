@@ -16,7 +16,7 @@ import HeaderInside from '../components/HeaderInside';
 import { icons, COLORS, SIZES, FONTS } from '../constants'
 
 const FoodItem = ({ route, navigation }) => { 
-
+    // AsyncStorage.clear()
     const scrollX = new Animated.Value(0);
     const [currentLocation, setCurrentLocation] = React.useState(null);
     const [orderItems, setOrderItems] = React.useState([]);
@@ -172,14 +172,22 @@ const FoodItem = ({ route, navigation }) => {
                                 let x = await AsyncStorage.getItem("item");
                                 if(x == null){
                                     let array = [];
+                                    route.params.item['count'] = 1;
                                     array.push(route.params.item);
                                     await AsyncStorage.setItem(
                                         "item", 
                                         JSON.stringify(array),
                                     );
                                 } else{
-                                    x = JSON.parse(x);
-                                    x.push(route.params.item);
+                                    x = await JSON.parse(x);
+                                    if (x.filter(e => e.id === route.params.item.id).length > 0) {
+                                        route.params.item.count = route.params.item.count+1;
+                                        console.log(route.params.item.count)
+                                    } else{
+                                        route.params.item['count'] = 1;
+                                        x.push(route.params.item);
+                                    }
+                                    console.log("x",x);
                                     await AsyncStorage.setItem(
                                         "item", 
                                         JSON.stringify(x),

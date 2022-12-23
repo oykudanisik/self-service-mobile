@@ -41,7 +41,8 @@ const FooterTotal = ({ subTotal, shippingFee, total, onPress, navigation }) => {
                 <View
                     style={{
                         flexDirection: 'row',
-                        marginTop: SIZES.padding
+                        marginTop: SIZES.padding,
+                        paddingBottom:SIZES.padding
                     }}
                 >
                     <Text style={{ flex: 1, ...FONTS.h2 }}>Total:</Text>
