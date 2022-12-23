@@ -33,7 +33,7 @@ const HeaderInside = ({ navigation }) => {
             paddingRight: SIZES.padding * 2,
             justifyContent: "center",
           }}
-          source={images.logoInside}
+          source={images.logo}
         ></Image>
       </View>
 
