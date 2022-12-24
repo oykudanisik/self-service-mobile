@@ -8,21 +8,16 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { SwipeListView } from 'react-native-swipe-list-view';
-import Header from '../components/Header';
-import IconButton from '../components/IconButton';
 import StepperInput from '../components/StepperInput';
-import CartQuantityButton from '../components/CartQuantityButton';
 import FooterTotal from '../components/FooterTotal';
-import { FONTS, SIZES, COLORS, icons, dummyData } from "../constants"
+import { FONTS, SIZES, COLORS, icons } from "../constants"
 import HeaderInside from '../components/HeaderInside';
-import { LogBox } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 const Cart = ({ navigation }) => {
 
     // AsyncStorage.clear();
     const [myCartList, setMyCartList] = React.useState([])
-    const [storage, setStorage] = React.useState("");
     const [totalPrice, setToralPrice] = React.useState(0);
 
     let price = 0
@@ -40,13 +35,43 @@ const Cart = ({ navigation }) => {
             setMyCartList(cartList);
         }
         deneme();
-    },[])
+    },[myCartList])
 
-    function updateQuantityHandler(newQty, id) {
+    async function updateQuantityHandler(newQty, id) {
+        if(newQty < 1){
+            await deleteItem(id);
+            return;
+        }
         let newMyCartList = myCartList.map(cl => (
             cl.id === id ? { ...cl, count: newQty } : cl
         ))
         setMyCartList(newMyCartList)
+        let cartList =  await AsyncStorage.getItem("item");
+        let cartItems =  await JSON.parse(cartList);
+        for(var i = 0; i<cartItems.length; i++) {
+            if(cartItems[i].id === id){
+                console.log("dasdad", cartItems[i]);
+                cartItems[i].count = newQty
+            } 
+        }
+        await AsyncStorage.setItem(
+            "item", 
+            JSON.stringify(cartItems),
+        );
+    }
+
+    async function deleteItem(id) {
+        cartList = await AsyncStorage.getItem("item");
+        let cartItems = await JSON.parse(cartList);
+        cartItems = cartItems.filter(function (ci) {
+            return ci.id !== id;
+        });
+        console.log("cartItems",cartItems)
+        await AsyncStorage.setItem(
+            "item", 
+            JSON.stringify(cartItems),
+        );
+        setMyCartList(cartItems);
     }
     // removeCartItem = async (id) =>  {
     //     let cartList = await AsyncStorage.getItem("item");
@@ -137,19 +162,7 @@ const Cart = ({ navigation }) => {
                             onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.id)}}
                         />
                         <TouchableHighlight 
-                             onPress={ async () => {
-                                let cartList = await AsyncStorage.getItem("item");
-                                let cartItems = await JSON.parse(cartList);
-                                cartItems = cartItems.filter(function (ci) {
-                                    return ci.id !== data.item.id;
-                                });
-                                console.log("cartItems",cartItems)
-                                await AsyncStorage.setItem(
-                                    "item", 
-                                    JSON.stringify(cartItems),
-                                );
-                                setMyCartList(cartItems);
-                            }}>
+                            onPress={ () => {deleteItem(data.item.id)}}>
                         <View
                             style={{
                                 width: 30,
