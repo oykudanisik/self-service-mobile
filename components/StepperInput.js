@@ -34,7 +34,7 @@ const StepperInput = ({
                 iconStyle={{
                     height: 20,
                     width: 20,
-                    tintColor: value > 1 ? COLORS.primary : COLORS.gray,
+                    tintColor: COLORS.primary,
                 }}
                 onPress={onMinus}
             />
