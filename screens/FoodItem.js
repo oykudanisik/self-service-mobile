@@ -17,13 +17,8 @@ import { icons, COLORS, SIZES, FONTS } from '../constants'
 
 const FoodItem = ({ route, navigation }) => { 
     const scrollX = new Animated.Value(0);
-    const [currentLocation, setCurrentLocation] = React.useState(null);
     const [orderItems, setOrderItems] = React.useState([]);
     const [scanned, setScanned] = React.useState(route.params.scanned);
-
-    React.useEffect(() => {
-        // console.log(orderItems);
-    },[orderItems])
 
     function editOrder(action, menuId, price) {
         let orderList = orderItems.slice()
@@ -57,28 +52,6 @@ const FoodItem = ({ route, navigation }) => {
             setOrderItems(orderList)
         }
     }
-
-    function getOrderQty(menuId) {
-        let orderItem = orderItems.filter(a => a.menuId == menuId)
-
-        if (orderItem.length > 0) {
-            return orderItem[0].qty
-        }
-
-        return 0
-    }
-
-    // function getBasketItemCount() {
-    //     let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0)
-
-    //     return itemCount
-    // }
-
-    // function sumOrder() {
-    //     let total = orderItems.reduce((a, b) => a + (b.total || 0), 0)
-
-    //     return total.toFixed(2)
-    // }
 
     function renderFoodInfo() {
         return (
@@ -145,10 +118,7 @@ const FoodItem = ({ route, navigation }) => {
                             borderBottomWidth: 1
                         }}
                     >
-                        {/* <Text style={{ ...FONTS.h3 }}>{getBasketItemCount()} items in Cart</Text> */}
-                        {/* <Text style={{ ...FONTS.h3 }}>${sumOrder()}</Text> */}
                     </View>
-
                     {/* Order Button */}
                     <View
                         style={{
@@ -184,7 +154,6 @@ const FoodItem = ({ route, navigation }) => {
                                             cartItems[i].count ++;
                                             found = true;
                                         } 
-
                                     }
                                     if(!found){
                                         route.params.item['count'] = 1;

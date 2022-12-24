@@ -17,6 +17,7 @@ import { FONTS, SIZES, COLORS, icons, dummyData } from "../constants"
 import HeaderInside from '../components/HeaderInside';
 import { LogBox } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 const Cart = ({ navigation }) => {
 
     // AsyncStorage.clear();
@@ -47,6 +48,21 @@ const Cart = ({ navigation }) => {
         ))
         setMyCartList(newMyCartList)
     }
+    // removeCartItem = async (id) =>  {
+    //     let cartList = await AsyncStorage.getItem("item");
+    //     let cartItems = await JSON.parse(cartList);
+    //     console.log(cartItems);
+
+    //     cartItems = cartItems.forEach(ci => {
+    //         console.log("dasdsd",ci);
+    //         console.log("asdd",id);
+    //         return ci.id !== id;
+    //     })
+    //     await AsyncStorage.setItem(
+    //         "item", 
+    //         JSON.stringify(cartItems),
+    //     );
+    // }
 
     function removeMyCartHandler(id) {
         let newMyCartList = [...myCartList]
@@ -120,6 +136,20 @@ const Cart = ({ navigation }) => {
                             onAdd={() => updateQuantityHandler(data.item.count + 1, data.item.id)}
                             onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.id)}}
                         />
+                        <TouchableHighlight 
+                             onPress={ async () => {
+                                let cartList = await AsyncStorage.getItem("item");
+                                let cartItems = await JSON.parse(cartList);
+                                cartItems = cartItems.filter(function (ci) {
+                                    return ci.id !== data.item.id;
+                                });
+                                console.log("cartItems",cartItems)
+                                await AsyncStorage.setItem(
+                                    "item", 
+                                    JSON.stringify(cartItems),
+                                );
+                                setMyCartList(cartItems);
+                            }}>
                         <View
                             style={{
                                 width: 30,
@@ -127,6 +157,7 @@ const Cart = ({ navigation }) => {
                                 marginLeft: 10
                             }}
                         >
+                            
                             <Image
                                 source={icons.bin}
                                 resizeMode="contain"
@@ -137,6 +168,9 @@ const Cart = ({ navigation }) => {
                                 }}
                             />
                         </View>
+
+                            </TouchableHighlight>
+            
                     </View>
                 )}
             />
