@@ -33,7 +33,7 @@ const Cart = ({ navigation }) => {
             cartList = JSON.parse(cartList);
             console.log("cartList", cartList, typeof(cartList))
             cartList.forEach(item => 
-                price += item.price
+                price += item.price * item.count
             );
             setToralPrice(price)
             setMyCartList(cartList);
@@ -41,13 +41,12 @@ const Cart = ({ navigation }) => {
         deneme();
     },[])
 
-    // function updateQuantityHandler(newQty, id) {
-    //     let newMyCartList = myCartList.map(cl => (
-    //         cl.id === id ? { ...cl, qty: newQty } : cl
-    //     ))
-
-    //     setMyCartList(newMyCartList)
-    // }
+    function updateQuantityHandler(newQty, id) {
+        let newMyCartList = myCartList.map(cl => (
+            cl.id === id ? { ...cl, count: newQty } : cl
+        ))
+        setMyCartList(newMyCartList)
+    }
 
     function removeMyCartHandler(id) {
         let newMyCartList = [...myCartList]
@@ -117,13 +116,9 @@ const Cart = ({ navigation }) => {
                                 width: 100,
                                 backgroundColor: COLORS.white
                             }}
-                            value={data.item.qty}
-                            // onAdd={() => updateQuantityHandler(data.item.qty + 1, data.item.id)}
-                            // onMinus={() => {
-                            //     if (data.item.qty > 1) {
-                            //         updateQuantityHandler(data.item.qty - 1, data.item.id)
-                            //     }
-                            // }}
+                            value={data.item.count}
+                            onAdd={() => updateQuantityHandler(data.item.count + 1, data.item.id)}
+                            onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.id)}}
                         />
                         <View
                             style={{

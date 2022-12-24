@@ -167,8 +167,8 @@ const FoodItem = ({ route, navigation }) => {
                             }}
                             onPress={
                                 async () => {
-                                let x = await AsyncStorage.getItem("item");
-                                if(x == null){
+                                let items = await AsyncStorage.getItem("item");
+                                if(items == null){
                                     let array = [];
                                     route.params.item['count'] = 1;
                                     array.push(route.params.item);
@@ -177,20 +177,23 @@ const FoodItem = ({ route, navigation }) => {
                                         JSON.stringify(array),
                                     );
                                 } else{
-                                    x = await JSON.parse(x);
-                                    console.log("x",x);
-                                    x.filter(e => {
-                                        if(e.id === route.params.item.id){
-                                            e['count'] ++;
-                                        } else{
-                                            route.params.item.count += 1;
-                                            x.push(route.params.item);
-                                        }
-                                    })
-                                    console.log("x1111",x);
+                                    let cartItems = await JSON.parse(items);
+                                    var found = false;
+                                    for(var i = 0; i<cartItems.length && !found;i++) {
+                                        if(cartItems[i].id === route.params.item.id){
+                                            cartItems[i].count ++;
+                                            found = true;
+                                        } 
+
+                                    }
+                                    if(!found){
+                                        route.params.item['count'] = 1;
+                                        cartItems.push(route.params.item);
+                                    }
+
                                     await AsyncStorage.setItem(
                                         "item", 
-                                        JSON.stringify(x),
+                                        JSON.stringify(cartItems),
                                     );
                                 }
                                 await navigation.goBack();
