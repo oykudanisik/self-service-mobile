@@ -35,19 +35,30 @@ const Menu = ({ navigation, route }) => {
             restId = route.params.item.id;
         }
         const productsUrl = "http://localhost:42778/Restaurants/" + restId  + "/products"
-        const categoriesUrl = "http://localhost:42778/Categories";
+        const categoriesUrl = "http://localhost:42778/Restaurants/" + restId  + "/Categories";
+        const allCategoriesUrl = "http://localhost:42778/Categories";
 
         const productRequest = axios.get(productsUrl);
         const categoriesRequest = axios.get(categoriesUrl);
+        const allCategoriesRequest = axios.get(allCategoriesUrl);
 
-        axios.all([productRequest, categoriesRequest])
+        axios.all([productRequest, categoriesRequest, allCategoriesRequest])
         .then(axios.spread((...responses) => {
 
             const responseOne = responses[0]
             const responseTwo = responses[1]
+            const responseThree = responses[2];
+            let categoriesArray = [];
 
+            responseTwo.data.items.filter(res2 => {
+                responseThree.data.items.filter(res3 => {
+                    if(res2.id == res3.id){
+                        categoriesArray.push(res3);
+                    }
+                })
+            })
+            setCategories(categoriesArray);
             setProducts(responseOne.data.items);
-            setCategories(responseTwo.data.items);
         }))
 
     }, []);
@@ -494,11 +505,15 @@ const Menu = ({ navigation, route }) => {
 
     function onSelectCategory(category) {
         //filter restaurant
-        let restaurantList = restaurantData.filter(a => a.categories.includes(category.id))
-
-        setRestaurants(restaurantList)
-
-        setSelectedCategory(category)
+        console.log(category.id);
+        console.log(route.params.item.id);
+        axios({
+            method: "get",
+            url: "http://localhost:42778/Restaurants/"+route.params.item.id+"/categories/"+category.id+"/products",
+        }).then(function (response) {
+            console.log(response.data.items);
+            setProducts(response.data.items)
+        });
     }
 
     function getCategoryNameById(id) {
@@ -662,7 +677,7 @@ const Menu = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray4
+        backgroundColor: COLORS.lightGray5
     },
     inputContainer: {
         flex: 1,

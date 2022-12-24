@@ -207,7 +207,7 @@ const Home = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray4
+        backgroundColor: COLORS.lightGray5
     },
     inputContainer: {
         flex: 1,

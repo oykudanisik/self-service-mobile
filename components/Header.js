@@ -32,9 +32,9 @@ export default function Header({navigation}){
                 
                          <Image 
                             style={{
-                                marginTop:10,
+                                marginTop:25,
                                 width: 180,
-                                height: 100,
+                                height: 90,
                                 paddingRight: SIZES.padding * 2,
                                 justifyContent: 'center'
                             }}

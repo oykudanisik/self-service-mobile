@@ -16,8 +16,10 @@ import FooterTotal from '../components/FooterTotal';
 import { FONTS, SIZES, COLORS, icons, dummyData } from "../constants"
 import HeaderInside from '../components/HeaderInside';
 import { LogBox } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const Cart = ({ navigation }) => {
 
+    // AsyncStorage.clear();
     const [myCartList, setMyCartList] = React.useState([])
     const [storage, setStorage] = React.useState("");
     const [totalPrice, setToralPrice] = React.useState(0);
@@ -153,34 +155,35 @@ const Cart = ({ navigation }) => {
     }
 
     return (
+      <SafeAreaView style={styles.container}>
+        {/* Header */}
+        <HeaderInside navigation={navigation}></HeaderInside>
         <View
-            style={{
-                flex: 1,
-                backgroundColor: COLORS.white
-            }}
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >
-            {/* Header */}
-            <HeaderInside navigation={navigation}></HeaderInside>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{  ...FONTS.h2}}>My Cart</Text>
-            </View>
-            {/* Cart */}
-            {renderCartList()}
-
-            {/* Footer */}
-            {renderFooter()}
+          <Text style={{ ...FONTS.h2 }}>My Cart</Text>
         </View>
-    )
+        {/* Cart */}
+        {renderCartList()}
+
+        {/* Footer */}
+        {renderFooter()}
+      </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-    cartItemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: SIZES.radius,
-        paddingHorizontal: SIZES.radius,
-        borderRadius: SIZES.radius,
-    },
+  cartItemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: SIZES.radius,
+    paddingHorizontal: SIZES.radius,
+    borderRadius: SIZES.radius,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.lightGray5,
+  },
 });
 
 export default Cart;

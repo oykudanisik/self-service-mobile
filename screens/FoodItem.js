@@ -16,7 +16,6 @@ import HeaderInside from '../components/HeaderInside';
 import { icons, COLORS, SIZES, FONTS } from '../constants'
 
 const FoodItem = ({ route, navigation }) => { 
-    // AsyncStorage.clear()
     const scrollX = new Animated.Value(0);
     const [currentLocation, setCurrentLocation] = React.useState(null);
     const [orderItems, setOrderItems] = React.useState([]);
@@ -150,7 +149,6 @@ const FoodItem = ({ route, navigation }) => {
                         {/* <Text style={{ ...FONTS.h3 }}>${sumOrder()}</Text> */}
                     </View>
 
-
                     {/* Order Button */}
                     <View
                         style={{
@@ -192,6 +190,7 @@ const FoodItem = ({ route, navigation }) => {
                                         route.params.item['count'] = 1;
                                         cartItems.push(route.params.item);
                                     }
+
                                     await AsyncStorage.setItem(
                                         "item", 
                                         JSON.stringify(cartItems),

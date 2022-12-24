@@ -28,8 +28,7 @@ const sarawak_laksa = require("../assets/images/sarawak-laksa.jpg");
 const sushi = require("../assets/images/sushi.jpg");
 const teh_c_peng = require("../assets/images/teh-c-peng.jpg");
 const tomato_pasta = require("../assets/images/tomato-pasta.jpg");
-const logo = require("../assets/images/logo.png");
-const logoInside = require("../assets/images/logo1.png");
+const logo = require("../assets/images/logo1.png");
 const waiter = require("../assets/images/waiter.png");
 const pp = require("../assets/images/pp.jpg");
 const bground = require("../assets/images/bground.jpg");
@@ -81,5 +80,4 @@ export default {
   niyokki,
   mezzaluna,
   starbucks,
-  logoInside,
 };

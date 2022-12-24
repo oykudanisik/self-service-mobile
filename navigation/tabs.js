@@ -144,29 +144,6 @@ const Tabs = () => {
             />
 
             <Tab.Screen
-                name="Search"
-                component={Menu}
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({ focused }) => (
-                        <Image
-                            source={icons.search}
-                            resizeMode="contain"
-                            style={{
-                                width: 25,
-                                height: 25,
-                                tintColor: focused ? COLORS.primary : COLORS.secondary
-                            }}
-                        />
-                    ),
-                    tabBarButton: (props) => (
-                        <TouchableOpacity
-                            {...props}
-                        />
-                    )
-                }}
-            />
-            <Tab.Screen
                 name="Scan"
                 component={Scan}
                 options={{
@@ -190,31 +167,6 @@ const Tabs = () => {
                     )
                 }}
             />
-
-            <Tab.Screen
-                name="Like"
-                component={Scan}
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({ focused }) => (
-                        <Image
-                            source={icons.like}
-                            resizeMode="contain"
-                            style={{
-                                width: 25,
-                                height: 25,
-                                tintColor: focused ? COLORS.primary : COLORS.secondary,
-                            }}
-                        />
-                    ),
-                    tabBarButton: (props) => (
-                        <TouchableOpacity
-                            {...props}
-                        />
-                    )
-                }}
-            />
-
             <Tab.Screen
                 name="Cart"
                 component={Cart}
