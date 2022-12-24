@@ -48,31 +48,6 @@ const Cart = ({ navigation }) => {
         ))
         setMyCartList(newMyCartList)
     }
-    // removeCartItem = async (id) =>  {
-    //     let cartList = await AsyncStorage.getItem("item");
-    //     let cartItems = await JSON.parse(cartList);
-    //     console.log(cartItems);
-
-    //     cartItems = cartItems.forEach(ci => {
-    //         console.log("dasdsd",ci);
-    //         console.log("asdd",id);
-    //         return ci.id !== id;
-    //     })
-    //     await AsyncStorage.setItem(
-    //         "item", 
-    //         JSON.stringify(cartItems),
-    //     );
-    // }
-
-    function removeMyCartHandler(id) {
-        let newMyCartList = [...myCartList]
-
-        let index = newMyCartList.findIndex(cart => cart.id == id)
-
-        newMyCartList.splice(index, 1)
-
-        setMyCartList(newMyCartList)
-    }
 
     function renderCartList() {
         return (
