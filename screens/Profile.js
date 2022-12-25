@@ -96,7 +96,7 @@ const Profile = ({ navigation }) => {
 const styles = StyleSheet.create({
   header: {
     marginTop: 20,
-    width: 400,
+    width: "100%",
     height: 100,
     backgroundColor: COLORS.primary,
     height: 200,
