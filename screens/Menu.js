@@ -35,7 +35,7 @@ const Menu = ({ navigation, route }) => {
             restId = route.params.item.id;
         }
         const productsUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId  + "/products"
-        const categoriesUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/0/categories";
+        const categoriesUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId  + "/categories";
         const allCategoriesUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/categories";
 
         const productRequest = axios.get(productsUrl);
@@ -47,17 +47,18 @@ const Menu = ({ navigation, route }) => {
 
             const responseOne = responses[0]
             const responseTwo = responses[1]            
-            const responseThree = responses[2];
-            let categoriesArray = [];
+            // const responseThree = responses[2];
 
-            responseTwo.data.items.filter(res2 => {
-                responseThree.data.items.filter(res3 => {
-                    if(res2.id == res3.id){
-                        categoriesArray.push(res3);
-                    }
-                })
-            })
-            setCategories(categoriesArray);
+            // let categoriesArray = [];
+
+            // responseTwo.data.items.filter(res2 => {
+            //     responseThree.data.items.filter(res3 => {
+            //         if(res2.id == res3.id){
+            //             categoriesArray.push(res3);
+            //         }
+            //     })
+            // })
+            setCategories(responseTwo.data.items);
             setProducts(responseOne.data.items);
         }))
 

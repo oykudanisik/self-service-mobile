@@ -1,8 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import useAxios from 'axios-hooks';
 
 import {
     SafeAreaView,
@@ -11,8 +9,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    FlatList,
-    TextInput
+    FlatList
 } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
@@ -23,7 +20,7 @@ const Home = ({ navigation, route }) => {
     const [restaurants, setRestaurants] = useState([]);
     axios({
         method: "get",
-        url: "https://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/",
+        url: "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants",
     }).then(function (response) {
         const rest = response.data.items;
         setRestaurants(rest);
