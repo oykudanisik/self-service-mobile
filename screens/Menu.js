@@ -28,7 +28,7 @@ const Menu = ({ navigation, route }) => {
 
     
     useEffect(() => {
-        let restId = "";
+        var restId = "";
         if (scanned) {
             restId = route.params.restaurantId;
         } else {
@@ -66,15 +66,25 @@ const Menu = ({ navigation, route }) => {
 
 
     function onSelectCategory(category) {
-        //filter restaurant
+        //filter restaurantü
+        var restId = "";
+
+        if (scanned) {
+          restId = route.params.restaurantId;
+        } else {
+          restId = route.params.item.id;
+        }
         console.log(category.id);
-        console.log(route.params.item.id);
+        console.log(restId);
         axios({
-            method: "get",
-            url: "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/"+route.params.item.id+"/categories/"+category.id+"/products",
+          method: "get",
+          url:
+            "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId + "/categories/" +
+            category.id +
+            "/products",
         }).then(function (response) {
-            console.log(response.data.items);
-            setProducts(response.data.items)
+          console.log(response.data.items);
+          setProducts(response.data.items);
         });
     }
     function RenderRestaurantName() {

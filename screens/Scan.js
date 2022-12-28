@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import { COLORS } from '../constants';
 
 export default function Scan({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -25,12 +26,15 @@ export default function Scan({navigation}) {
     askForCameraPermission();
   }, []);
 
-  // useEffect(() => {
-  //   navigation.navigate("Menu",{
-  //     restaurantId, scanned
-  //   });
-
-  // }, [restaurantId,tableId]);
+  useEffect(() => {
+    if(scanned){
+          navigation.navigate("Menu", {
+            restaurantId,
+            tableId,
+            scanned,
+          });
+    }
+  }, [restaurantId]);
 
   // What happens when we scan the bar code
   const handleBarCodeScanned = ({ type, data }) => {
@@ -38,9 +42,6 @@ export default function Scan({navigation}) {
     setText(data)
     setRestaurantId(JSON.parse(data).restaurantId);
     setTableId(JSON.parse(data).tableId);
-
-    console.log('Type: ' + type + '\nData: ' + JSON.parse(data).restaurantId)
-
   };
 
   // Check permissions and return the screens
@@ -61,22 +62,24 @@ export default function Scan({navigation}) {
   // Return the View
   return (
     <View style={styles.container}>
+      <Text style={styles.maintext}>Please scan the QR code</Text>
       <View style={styles.barcodebox}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={{ height: 400, width: 400 }} />
+          style={{ height: 400, width: 400 }}
+        />
       </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Menu",{
-          restaurantId, tableId, scanned
-        })}
-      >
-        <Text>
-          yes
-        </Text>
-      </TouchableOpacity>
-      <Text style={styles.maintext}>{text}</Text>
-      {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
+      {scanned && (
+        <Button
+          title={"Scan again?"}
+          onPress={() => {
+            setScanned(false);
+            setRestaurantId(null);
+            setTableId(null);
+          }}
+          color={COLORS.primary}
+        />
+      )}
     </View>
   );
 }
@@ -89,8 +92,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   maintext: {
-    fontSize: 16,
+    fontSize: 30,
     margin: 20,
+    color:COLORS.primary
   },
   barcodebox: {
     alignItems: 'center',
