@@ -161,8 +161,8 @@ const FoodItem = ({ route, navigation }) => {
         <SafeAreaView style={styles.container}>
             <HeaderInside navigation={navigation}/>
             {renderFoodInfo()}
-            {renderOrder()}
-            {/* {scanned ? renderOrder() : ""} */}
+            {/* {renderOrder()} */}
+            {scanned ? renderOrder() : ""}
         </SafeAreaView>
     )
 }
