@@ -40,24 +40,12 @@ const Menu = ({ navigation, route }) => {
 
         const productRequest = axios.get(productsUrl);
         const categoriesRequest = axios.get(categoriesUrl);
-        const allCategoriesRequest = axios.get(allCategoriesUrl);
 
-        axios.all([productRequest, categoriesRequest, allCategoriesRequest])
+        axios.all([productRequest, categoriesRequest])
         .then(axios.spread((...responses) => {
 
             const responseOne = responses[0]
             const responseTwo = responses[1]            
-            // const responseThree = responses[2];
-
-            // let categoriesArray = [];
-
-            // responseTwo.data.items.filter(res2 => {
-            //     responseThree.data.items.filter(res3 => {
-            //         if(res2.id == res3.id){
-            //             categoriesArray.push(res3);
-            //         }
-            //     })
-            // })
             setCategories(responseTwo.data.items);
             setProducts(responseOne.data.items);
         }))

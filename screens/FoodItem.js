@@ -59,7 +59,7 @@ const FoodItem = ({ route, navigation }) => {
                                 <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{route.params.item.name}</Text>
                                 <Text style={{ ...FONTS.body3 }}>{route.params.item.description}</Text>
                                 <Text style={{ ...FONTS.h2 }}>{route.params.item.price} {route.params.item.currency}</Text>
-                                <Text style={{ ...FONTS.body3 }}>Ready in {route.params.item.prepDurationMinutes} minutes</Text>
+                                <Text style={{ ...FONTS.body3 }}>Ready in {route.params.item.prepDurationMinute} minutes</Text>
                             </View>
                         </View>
             </Animated.ScrollView>

@@ -19,7 +19,7 @@ export default function Header({navigation}){
                     }}
                 >
                     <Image
-                        source={icons.list}
+                        source={icons.back}
                         resizeMode="contain"
                         style={{
                             width: 25,
