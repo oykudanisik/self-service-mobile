@@ -30,6 +30,7 @@ export default function Scan({navigation}) {
     if(scanned){
           navigation.navigate("Menu", {
             restaurantId,
+            restaurantName,
             tableId,
             scanned,
           });
@@ -37,10 +38,11 @@ export default function Scan({navigation}) {
   }, [restaurantId]);
 
   // What happens when we scan the bar code
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
     setText(data)
     setRestaurantId(JSON.parse(data).restaurantId);
+    setRestaurantName(JSON.parse(data).restaurantName)
     setTableId(JSON.parse(data).tableId);
   };
 

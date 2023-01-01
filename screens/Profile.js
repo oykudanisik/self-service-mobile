@@ -14,12 +14,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { icons, COLORS, SIZES, FONTS, images } from "../constants";
 
-import HeaderInside from "../components/HeaderInside";
+import Header from "../components/Header";
 
 const Profile = ({ navigation }) => {
   return (
     <SafeAreaView>
-      <HeaderInside navigation={navigation}></HeaderInside>
+      <Header navigation={navigation}></Header>
       <View style={styles.container}>
         <Image style={styles.header} source={images.bground} />
         <Image style={styles.avatar} source={images.pp} />

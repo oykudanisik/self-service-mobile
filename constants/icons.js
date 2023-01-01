@@ -30,6 +30,7 @@ export const home = require("../assets/icons/home.png");
 export const notification = require("../assets/icons/notification.png");
 export const payment = require("../assets/icons/payment.png");
 export const bin = require("../assets/icons/delete.png");
+export const qr = require("../assets/icons/qr.png");
 
 export default {
     back,
@@ -63,5 +64,6 @@ export default {
     home,
     notification,
     payment,
-    bin
+    bin,
+    qr
 }

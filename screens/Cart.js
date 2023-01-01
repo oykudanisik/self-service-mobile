@@ -27,7 +27,6 @@ const Cart = ({ navigation }) => {
         async function deneme(){
             cartList = await AsyncStorage.getItem("item")
             cartList = JSON.parse(cartList);
-            console.log("cartList", cartList, typeof(cartList))
             cartList.forEach(item => 
                 price += item.price * item.count
             );
@@ -50,7 +49,6 @@ const Cart = ({ navigation }) => {
         let cartItems =  await JSON.parse(cartList);
         for(var i = 0; i<cartItems.length; i++) {
             if(cartItems[i].id === id){
-                console.log("dasdad", cartItems[i]);
                 cartItems[i].count = newQty
             } 
         }
@@ -66,37 +64,11 @@ const Cart = ({ navigation }) => {
         cartItems = cartItems.filter(function (ci) {
             return ci.id !== id;
         });
-        console.log("cartItems",cartItems)
         await AsyncStorage.setItem(
             "item", 
             JSON.stringify(cartItems),
         );
         setMyCartList(cartItems);
-    }
-    // removeCartItem = async (id) =>  {
-    //     let cartList = await AsyncStorage.getItem("item");
-    //     let cartItems = await JSON.parse(cartList);
-    //     console.log(cartItems);
-
-    //     cartItems = cartItems.forEach(ci => {
-    //         console.log("dasdsd",ci);
-    //         console.log("asdd",id);
-    //         return ci.id !== id;
-    //     })
-    //     await AsyncStorage.setItem(
-    //         "item", 
-    //         JSON.stringify(cartItems),
-    //     );
-    // }
-
-    function removeMyCartHandler(id) {
-        let newMyCartList = [...myCartList]
-
-        let index = newMyCartList.findIndex(cart => cart.id == id)
-
-        newMyCartList.splice(index, 1)
-
-        setMyCartList(newMyCartList)
     }
 
     function renderCartList() {
@@ -158,7 +130,7 @@ const Cart = ({ navigation }) => {
                                 backgroundColor: COLORS.white
                             }}
                             value={data.item.count}
-                            onAdd={() => updateQuantityHandler(data.item.count + 1, data.item.id)}
+                            onAdd={() => {updateQuantityHandler(data.item.count + 1, data.item.id)}}
                             onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.id)}}
                         />
                         <TouchableHighlight 

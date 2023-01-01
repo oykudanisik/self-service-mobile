@@ -24,8 +24,7 @@ const Menu = ({ navigation, route }) => {
     const [selectedCategory, setSelectedCategory] = React.useState(null);
     const [products, setProducts] = React.useState();
     const [scanned, setScanned] = React.useState(route.params.scanned);
-    const [restaurantId, setRestaurantId] = React.useState("");
-
+    const [restaurantName, setRestaurantName] = React.useState("");
     
     useEffect(() => {
         var restId = "";
@@ -36,7 +35,6 @@ const Menu = ({ navigation, route }) => {
         }
         const productsUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId  + "/products"
         const categoriesUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId  + "/categories";
-        const allCategoriesUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/categories";
 
         const productRequest = axios.get(productsUrl);
         const categoriesRequest = axios.get(categoriesUrl);
@@ -74,16 +72,6 @@ const Menu = ({ navigation, route }) => {
           console.log(response.data.items);
           setProducts(response.data.items);
         });
-    }
-    function RenderRestaurantName() {
-        return (
-            <View style={{
-                padding: SIZES.padding * 2,
-                textAlign: "center"
-            }}>
-                <Text style={{ ...FONTS.h1 }}>{route.params.restaurantName}</Text>
-            </View>
-        )
     }
     function renderMainCategories() {
         const renderItem = ({ item }) => {
@@ -136,7 +124,7 @@ const Menu = ({ navigation, route }) => {
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h2 }}>Main Categories</Text>
+                <Text style={{ ...FONTS.h2, textAlign:"center" }}>{scanned ? route.params.restaurantName : route.params.item.name}</Text>
                 <FlatList
                     data={categories}
                     horizontal
@@ -217,7 +205,6 @@ const Menu = ({ navigation, route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <HeaderInside navigation={navigation}></HeaderInside>
-            {RenderRestaurantName()}
             {renderMainCategories()}
             {renderRestaurantList()}
         </SafeAreaView>
