@@ -88,7 +88,7 @@ const Home = ({ navigation, route }) => {
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingHorizontal: SIZES.padding * 2,
-                    paddingBottom: 30
+                    paddingBottom: 30,
                 }}
             />
         )

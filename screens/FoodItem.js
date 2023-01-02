@@ -135,7 +135,7 @@ const FoodItem = ({ route, navigation }) => {
                                 await navigation.goBack();
                             }}
                         >
-                            <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Add</Text>
+                            <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Add to Cart</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
