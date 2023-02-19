@@ -48,7 +48,7 @@ const StepperInput = ({
             >
                 <Text style={{ ...FONTS.body3 }}>{value}</Text>
             </View>
-            
+
             <IconButton
                 containerStyle={{
                     width: 40,

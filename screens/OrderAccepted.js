@@ -12,10 +12,10 @@ import {
 
 // constants
 import { images, SIZES, COLORS, FONTS } from '../constants'
-import {PrimaryButton} from '../components/Button';
+import { PrimaryButton } from '../components/Button';
 const { waiter } = images;
 
-const OrderAccepted = ({navigation}) => {
+const OrderAccepted = ({ navigation }) => {
     function renderContent() {
         return (
             <Animated.ScrollView
@@ -27,7 +27,7 @@ const OrderAccepted = ({navigation}) => {
                 snapToAlignment="center"
             >
                 <View
-                   style={styles.imageAndTextContainer}
+                    style={styles.imageAndTextContainer}
                 >
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                         <Image
@@ -51,7 +51,7 @@ const OrderAccepted = ({navigation}) => {
                             ...FONTS.h1,
                             color: COLORS.gray,
                             textAlign: 'center',
-                            }}
+                        }}
                         >
                             Welcome to Self-Service
                         </Text>
@@ -60,11 +60,10 @@ const OrderAccepted = ({navigation}) => {
                         onPress={() => navigation.navigate('Home')}
                         title="Get Started"
                     />
-                    </View>
+                </View>
             </Animated.ScrollView>
         );
     }
-
 
     return (
         <SafeAreaView style={styles.container}>

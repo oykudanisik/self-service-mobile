@@ -25,7 +25,7 @@ const Menu = ({ navigation, route }) => {
     const [products, setProducts] = React.useState();
     const [scanned, setScanned] = React.useState(route.params.scanned);
     const [restaurantName, setRestaurantName] = React.useState("");
-    
+
     useEffect(() => {
         var restId = "";
         if (scanned) {
@@ -33,20 +33,20 @@ const Menu = ({ navigation, route }) => {
         } else {
             restId = route.params.item.id;
         }
-        const productsUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId  + "/products"
-        const categoriesUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId  + "/categories";
+        const productsUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId + "/products"
+        const categoriesUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId + "/categories";
 
         const productRequest = axios.get(productsUrl);
         const categoriesRequest = axios.get(categoriesUrl);
 
         axios.all([productRequest, categoriesRequest])
-        .then(axios.spread((...responses) => {
+            .then(axios.spread((...responses) => {
 
-            const responseOne = responses[0]
-            const responseTwo = responses[1]            
-            setCategories(responseTwo.data.items);
-            setProducts(responseOne.data.items);
-        }))
+                const responseOne = responses[0]
+                const responseTwo = responses[1]
+                setCategories(responseTwo.data.items);
+                setProducts(responseOne.data.items);
+            }))
 
     }, []);
 
@@ -56,21 +56,21 @@ const Menu = ({ navigation, route }) => {
         var restId = "";
 
         if (scanned) {
-          restId = route.params.restaurantId;
+            restId = route.params.restaurantId;
         } else {
-          restId = route.params.item.id;
+            restId = route.params.item.id;
         }
         console.log(category.id);
         console.log(restId);
         axios({
-          method: "get",
-          url:
-            "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId + "/categories/" +
-            category.id +
-            "/products",
+            method: "get",
+            url:
+                "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId + "/categories/" +
+                category.id +
+                "/products",
         }).then(function (response) {
-          console.log(response.data.items);
-          setProducts(response.data.items);
+            console.log(response.data.items);
+            setProducts(response.data.items);
         });
     }
     function renderMainCategories() {
@@ -100,7 +100,7 @@ const Menu = ({ navigation, route }) => {
                         }}
                     >
                         <Image
-                            source={{uri:item.image}}
+                            source={{ uri: item.image }}
                             resizeMode="contain"
                             style={{
                                 width: 30,
@@ -124,7 +124,7 @@ const Menu = ({ navigation, route }) => {
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h2, textAlign:"center" }}>{scanned ? route.params.restaurantName : route.params.item.name}</Text>
+                <Text style={{ ...FONTS.h2, textAlign: "center" }}>{scanned ? route.params.restaurantName : route.params.item.name}</Text>
                 <FlatList
                     data={categories}
                     horizontal
@@ -140,10 +140,10 @@ const Menu = ({ navigation, route }) => {
     function renderRestaurantList() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
-                style={{ 
-                    marginBottom: SIZES.padding * 2 ,
-                    width:"45%",
-                    margin:10
+                style={{
+                    marginBottom: SIZES.padding * 2,
+                    width: "45%",
+                    margin: 10
                 }}
                 onPress={() => navigation.navigate("FoodItem", {
                     item, scanned
@@ -156,7 +156,7 @@ const Menu = ({ navigation, route }) => {
                     }}
                 >
                     <Image
-                        source={{uri:item.image}}
+                        source={{ uri: item.image }}
                         resizeMode="cover"
                         style={{
                             width: "100%",

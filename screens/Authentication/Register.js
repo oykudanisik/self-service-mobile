@@ -5,51 +5,84 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
-import { FONTS, SIZES, COLORS, icons, images} from "../constants"
-import  AuthLayout  from "./AuthLayout"
-import  FormInput  from "../components/FormInput";
-import  TextButton  from "../components/TextButton";
-import { PrimaryButton } from "../components/Button";
+import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
+import AuthLayout from "./AuthenticationLayout"
+import FormInput from "../../components/FormInput";
+import TextButton from "../../components/TextButton";
+import { PrimaryButton } from "../../components/Button";
 
 const Register = ({ navigation }) => {
     const [email, setEmail] = React.useState("")
-    const [username, setUsername] = React.useState("")
+    const [phonenumber, setPhonenumber] = React.useState("")
     const [password, setPassword] = React.useState("")
+    const [fullname, setFullname] = React.useState("")
+
     const [showPass, setShowPass] = React.useState(false)
 
     const [emailError, setEmailError] = React.useState("")
-    const [usernameError, setUsernameError] = React.useState("")
+    const [phonenumberError, setPhonenumberError] = React.useState("")
     const [passwordError, setPasswordError] = React.useState("")
+    const [fullnameError, setFullnameError] = React.useState("")
 
     function isEnableSignUp() {
-        return email != "" && username != "" && password != "" && emailError == "" && passwordError == ""
+        return email != "" && fullname != "" && password != "" && phonenumber != "" && emailError == "" && passwordError == ""
     }
 
     return (
         <AuthLayout
-        title="Register Page"
-    >
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-            
-            <Image 
-               style={{
-                   width: 180,
-                   height: 90,
-               }}
-               source={images.logo}>
-           </Image>
-        </View>
-        <View
-            style={{
-                flex: 1,
-                marginTop: SIZES.height > 800 ? SIZES.padding * 2 : SIZES.radius,
-            }}
+            title="Register Page"
         >
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+
+                <Image
+                    style={{
+                        width: 180,
+                        height: 90,
+                    }}
+                    source={images.logo}>
+                </Image>
+            </View>
+            <View
+                style={{
+                    flex: 1,
+                    marginTop: SIZES.height > 800 ? SIZES.padding * 2 : SIZES.radius,
+                }}
+            >
+                <FormInput
+                    label="Full Name"
+                    containerStyle={{
+                        marginTop: SIZES.radius,
+                    }}
+                    value={fullname}
+                    onChange={(value) => {
+                        setFullname(value)
+                    }}
+                    errorMsg={fullnameError}
+                    appendComponent={
+                        <View
+                            style={{
+                                justifyContent: 'center'
+                            }}
+                        >
+                            <Image
+                                source={(fullname == "") || (fullname != "" && fullnameError == "") ? icons.correct : icons.cancel}
+                                style={{
+                                    height: 20,
+                                    width: 20,
+                                    tintColor: (fullname == "") ? COLORS.gray : (fullname != "" && fullnameError == "") ? COLORS.green : COLORS.red
+                                }}
+                            />
+                        </View>
+                    }
+                />
                 <FormInput
                     label="Email"
                     keyboardType="email-address"
                     autoCompleteType="email"
                     value={email}
+                    containerStyle={{
+                        marginTop: SIZES.radius,
+                    }}
                     onChange={(value) => {
                         utils.validateEmail(value, setEmailError)
                         setEmail(value)
@@ -76,13 +109,13 @@ const Register = ({ navigation }) => {
                 <FormInput
                     label="Phone Number"
                     containerStyle={{
-                        marginTop: SIZES.radius
+                        marginTop: SIZES.radius,
                     }}
-                    value={username}
+                    value={phonenumber}
                     onChange={(value) => {
-                        setUsername(value)
+                        setPhonenumber(value)
                     }}
-                    errorMsg={usernameError}
+                    errorMsg={phonenumberError}
                     appendComponent={
                         <View
                             style={{
@@ -90,24 +123,23 @@ const Register = ({ navigation }) => {
                             }}
                         >
                             <Image
-                                source={(username == "") || (username != "" && usernameError == "") ? icons.correct : icons.cancel}
+                                source={(phonenumber == "") || (phonenumber != "" && phonennumberError == "") ? icons.correct : icons.cancel}
                                 style={{
                                     height: 20,
                                     width: 20,
-                                    tintColor: (username == "") ? COLORS.gray : (username != "" && usernameError == "") ? COLORS.green : COLORS.red
+                                    tintColor: (phonenumber == "") ? COLORS.gray : (phonenumber != "" && phonennumberError == "") ? COLORS.green : COLORS.red
                                 }}
                             />
                         </View>
                     }
                 />
-                
+
                 <FormInput
                     label="Password"
                     secureTextEntry={!showPass}
                     autoCompleteType="password"
                     containerStyle={{
                         marginTop: SIZES.radius,
-                        marginBottom:30
                     }}
                     value={password}
                     onChange={(value) => {
@@ -136,23 +168,10 @@ const Register = ({ navigation }) => {
                     }
                 />
                 <PrimaryButton
-                        onPress={() => navigation.navigate('Home')}
-                        title="Sign Up"
-                    />
-                {/* Sign Up & Sign In */}
-                <TextButton
-                    label="Sign Up"
-                    disabled={isEnableSignUp() ? false : true}
-                    buttonContainerStyle={{
-                        height: 55,
-                        alignItems: 'center',
-                        marginTop: SIZES.padding,
-                        borderRadius: SIZES.radius,
-                        backgroundColor: isEnableSignUp() ? COLORS.primary : COLORS.transparentPrimary,
-                    }}
-                    onPress={() => navigation.navigate("Otp")}
+                    onPress={() => navigation.navigate('Home')}
+                    title="Sign Up"
                 />
-
+                {/* Sign Up & Sign In */}
                 <View
                     style={{
                         flexDirection: 'row',

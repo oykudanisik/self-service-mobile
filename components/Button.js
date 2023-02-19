@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Text} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { COLORS } from '../constants'
 
-const PrimaryButton = ({title, onPress = () => {}}) => {
+const PrimaryButton = ({ title, onPress = () => { } }) => {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
       <View style={style.btnContainer}>
@@ -11,18 +11,18 @@ const PrimaryButton = ({title, onPress = () => {}}) => {
     </TouchableOpacity>
   );
 };
-const SecondaryButton = ({title, onPress = () => {}}) => {
+const SecondaryButton = ({ title, onPress = () => { } }) => {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
-      <View style={{...style.btnContainer, backgroundColor: COLORS.white}}>
-        <Text style={{...style.title, color: COLORS.primary}}>{title}</Text>
+      <View style={{ ...style.btnContainer, backgroundColor: COLORS.white }}>
+        <Text style={{ ...style.title, color: COLORS.primary }}>{title}</Text>
       </View>
     </TouchableOpacity>
   );
 };
 
 const style = StyleSheet.create({
-  title: {color: COLORS.white, fontWeight: 'bold', fontSize: 18},
+  title: { color: COLORS.white, fontWeight: 'bold', fontSize: 18 },
   btnContainer: {
     backgroundColor: COLORS.primary,
     height: 60,
@@ -32,4 +32,4 @@ const style = StyleSheet.create({
   },
 });
 
-export {PrimaryButton, SecondaryButton};
+export { PrimaryButton, SecondaryButton };

@@ -28,7 +28,7 @@ const FormInput = ({
         <View style={{ ...containerStyle }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text style={{ color: COLORS.gray, ...FONTS.body4 }}>{label}</Text>
-                <Text style={{ color: COLORS.red, ...FONTS.body4 }}>{errorMsg}</Text>
+                <Text style={{ color: "red", ...FONTS.body4 }}>{errorMsg}</Text>
             </View>
 
             <View

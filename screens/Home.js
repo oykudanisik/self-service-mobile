@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from'axios';
+import axios from 'axios';
 
 import {
     SafeAreaView,
@@ -41,7 +41,7 @@ const Home = ({ navigation, route }) => {
                     }}
                 >
                     <Image
-                        source={{uri:item.logo}}
+                        source={{ uri: item.logo }}
                         resizeMode="contain"
                         style={{
                             width: "100%",
@@ -55,9 +55,9 @@ const Home = ({ navigation, route }) => {
                 <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
                 <Text style={{ ...FONTS.body4 }}>{item.summary}</Text>
                 <View
-                 style={{
-                    flexDirection: 'row',
-                }}>
+                    style={{
+                        flexDirection: 'row',
+                    }}>
                     <Image
                         source={icons.location}
                         style={{
@@ -65,16 +65,16 @@ const Home = ({ navigation, route }) => {
                             width: 20,
                             tintColor: COLORS.primary,
                             marginRight: 10,
-                            marginTop:10
+                            marginTop: 10
                         }}
                     />
-                    <Text style={{ 
-                            ...FONTS.body3,
-                            marginTop: SIZES.padding,
-                            flexDirection: 'row',
-                            alignItems:'center',
-                            justifyContent:'center'
-                        }}>
+                    <Text style={{
+                        ...FONTS.body3,
+                        marginTop: SIZES.padding,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
                         {item.address}
                     </Text>
                 </View>

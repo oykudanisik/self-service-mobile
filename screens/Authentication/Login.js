@@ -5,11 +5,13 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
-import { FONTS, SIZES, COLORS, icons, images} from "../constants"
-import  AuthLayout  from "./AuthLayout"
-import  FormInput  from "../components/FormInput";
-import  TextButton  from "../components/TextButton";
-import { PrimaryButton } from "../components/Button";
+import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
+import AuthLayout from "./AuthenticationLayout"
+import ForgotPassword from "./ForgotPassword";
+import FormInput from "../../components/FormInput";
+import TextButton from "../../components/TextButton";
+import Logo from "../../components/Logo";
+import { PrimaryButton } from "../../components/Button";
 
 // import { utils } from "../../utils";
 
@@ -21,25 +23,21 @@ const Login = ({ navigation }) => {
 
     const [showPass, setShowPass] = React.useState(false)
     const [saveMe, setSaveMe] = React.useState(false)
+    const [loginError, setLoginError] = React.useState(false)
 
     function isEnableSignIn() {
         return email != "" && password != "" && emailError == ""
     }
 
+    function authenticate() {
+        // send post request to api with email and password
+        // return the result of the request
+    }
     return (
         <AuthLayout
             title="Login Page"
         >
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                
-                <Image 
-                   style={{
-                       width: 180,
-                       height: 90,
-                   }}
-                   source={images.logo}>
-               </Image>
-            </View>
+            <Logo></Logo>
             <View
                 style={{
                     flex: 1,
@@ -52,11 +50,14 @@ const Login = ({ navigation }) => {
                     keyboardType="email-address"
                     autoCompleteType="email"
                     value={email}
+                    containerStyle={{
+                        marginTop: SIZES.radius,
+                    }}
                     // onChange={(value) => {
                     //     utils.validateEmail(value, setEmailError)
                     //     setEmail(value)
                     // }}
-                    errorMsg={emailError}
+                    errorMsg={loginError ? "Email Error" : ""}
                     appendComponent={
                         <View
                             style={{
@@ -75,15 +76,14 @@ const Login = ({ navigation }) => {
                         </View>
                     }
                 />
-
                 <FormInput
                     label="Password"
                     secureTextEntry={!showPass}
                     autoCompleteType="password"
                     containerStyle={{
                         marginTop: SIZES.radius,
-                        marginBottom:30
                     }}
+                    errorMsg={loginError ? "Password Error" : ""}
                     value={password}
                     onChange={(value) => setPassword(value)}
                     appendComponent={
@@ -106,15 +106,13 @@ const Login = ({ navigation }) => {
                         </TouchableOpacity>
                     }
                 />
-                  <PrimaryButton
-                        onPress={() => navigation.navigate('Home')}
-                        title="Log In"
-                    />
+
                 {/* Save me & Forgot pass */}
                 <View
                     style={{
                         flexDirection: 'row',
                         marginTop: SIZES.radius,
+                        marginBottom: SIZES.radius,
                         justifyContent: 'space-between'
                     }}
                 >
@@ -131,18 +129,11 @@ const Login = ({ navigation }) => {
                     />
                 </View>
 
-                {/* Sign In & Sign Up */}
-                <TextButton
-                    label="Sign In"
-                    disabled={isEnableSignIn() ? false : true}
-                    buttonContainerStyle={{
-                        height: 55,
-                        alignItems: 'center',
-                        marginTop: SIZES.padding,
-                        borderRadius: SIZES.radius,
-                        backgroundColor: isEnableSignIn() ? COLORS.primary : COLORS.transparentPrimary,
+                <PrimaryButton
+                    onPress={() => {
+                        { authenticate() ? navigation.navigate('Home') : setLoginError(true) }
                     }}
-                    onPress={() => navigation.replace("Home")}
+                    title="Log In"
                 />
 
                 {/* Sign Up */}

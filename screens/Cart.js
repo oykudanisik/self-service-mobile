@@ -24,20 +24,20 @@ const Cart = ({ navigation }) => {
     let cartList = [];
 
     React.useEffect(() => {
-        async function deneme(){
+        async function deneme() {
             cartList = await AsyncStorage.getItem("item")
             cartList = JSON.parse(cartList);
-            cartList.forEach(item => 
+            cartList.forEach(item =>
                 price += item.price * item.count
             );
             setToralPrice(price)
             setMyCartList(cartList);
         }
         deneme();
-    },[myCartList])
+    }, [myCartList])
 
     async function updateQuantityHandler(newQty, id) {
-        if(newQty < 1){
+        if (newQty < 1) {
             await deleteItem(id);
             return;
         }
@@ -45,15 +45,15 @@ const Cart = ({ navigation }) => {
             cl.id === id ? { ...cl, count: newQty } : cl
         ))
         setMyCartList(newMyCartList)
-        let cartList =  await AsyncStorage.getItem("item");
-        let cartItems =  await JSON.parse(cartList);
-        for(var i = 0; i<cartItems.length; i++) {
-            if(cartItems[i].id === id){
+        let cartList = await AsyncStorage.getItem("item");
+        let cartItems = await JSON.parse(cartList);
+        for (var i = 0; i < cartItems.length; i++) {
+            if (cartItems[i].id === id) {
                 cartItems[i].count = newQty
-            } 
+            }
         }
         await AsyncStorage.setItem(
-            "item", 
+            "item",
             JSON.stringify(cartItems),
         );
     }
@@ -65,7 +65,7 @@ const Cart = ({ navigation }) => {
             return ci.id !== id;
         });
         await AsyncStorage.setItem(
-            "item", 
+            "item",
             JSON.stringify(cartItems),
         );
         setMyCartList(cartItems);
@@ -100,7 +100,7 @@ const Cart = ({ navigation }) => {
                             }}
                         >
                             <Image
-                                source={{uri:data.item.image}}
+                                source={{ uri: data.item.image }}
                                 resizeMode="contain"
                                 style={{
                                     width: "75%",
@@ -130,32 +130,32 @@ const Cart = ({ navigation }) => {
                                 backgroundColor: COLORS.white
                             }}
                             value={data.item.count}
-                            onAdd={() => {updateQuantityHandler(data.item.count + 1, data.item.id)}}
-                            onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.id)}}
+                            onAdd={() => { updateQuantityHandler(data.item.count + 1, data.item.id) }}
+                            onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.id) }}
                         />
-                        <TouchableHighlight 
-                            onPress={ () => {deleteItem(data.item.id)}}>
-                        <View
-                            style={{
-                                width: 30,
-                                height:30,
-                                marginLeft: 10
-                            }}
-                        >
-                            
-                            <Image
-                                source={icons.bin}
-                                resizeMode="contain"
+                        <TouchableHighlight
+                            onPress={() => { deleteItem(data.item.id) }}>
+                            <View
                                 style={{
-                                    width: "65%",
-                                    height: "65%",
-                                    position: 'absolute',
+                                    width: 30,
+                                    height: 30,
+                                    marginLeft: 10
                                 }}
-                            />
-                        </View>
+                            >
 
-                            </TouchableHighlight>
-            
+                                <Image
+                                    source={icons.bin}
+                                    resizeMode="contain"
+                                    style={{
+                                        width: "65%",
+                                        height: "65%",
+                                        position: 'absolute',
+                                    }}
+                                />
+                            </View>
+
+                        </TouchableHighlight>
+
                     </View>
                 )}
             />
@@ -174,35 +174,35 @@ const Cart = ({ navigation }) => {
     }
 
     return (
-      <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <HeaderInside navigation={navigation}></HeaderInside>
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text style={{ ...FONTS.h2 }}>My Cart</Text>
-        </View>
-        {/* Cart */}
-        {renderCartList()}
+        <SafeAreaView style={styles.container}>
+            {/* Header */}
+            <HeaderInside navigation={navigation}></HeaderInside>
+            <View
+                style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            >
+                <Text style={{ ...FONTS.h2 }}>My Cart</Text>
+            </View>
+            {/* Cart */}
+            {renderCartList()}
 
-        {/* Footer */}
-        {renderFooter()}
-      </SafeAreaView>
+            {/* Footer */}
+            {renderFooter()}
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-  cartItemContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: SIZES.radius,
-    paddingHorizontal: SIZES.radius,
-    borderRadius: SIZES.radius,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.lightGray5,
-  },
+    cartItemContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: SIZES.radius,
+        paddingHorizontal: SIZES.radius,
+        borderRadius: SIZES.radius,
+    },
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.lightGray5,
+    },
 });
 
 export default Cart;

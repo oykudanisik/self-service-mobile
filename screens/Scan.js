@@ -4,7 +4,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { COLORS } from '../constants';
 
-export default function Scan({navigation}) {
+export default function Scan({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('Not yet scanned');
@@ -27,13 +27,13 @@ export default function Scan({navigation}) {
   }, []);
 
   useEffect(() => {
-    if(scanned){
-          navigation.navigate("Menu", {
-            restaurantId,
-            restaurantName,
-            tableId,
-            scanned,
-          });
+    if (scanned) {
+      navigation.navigate("Menu", {
+        restaurantId,
+        restaurantName,
+        tableId,
+        scanned,
+      });
     }
   }, [restaurantId]);
 
@@ -86,7 +86,7 @@ export default function Scan({navigation}) {
   );
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.lightGray5,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   maintext: {
     fontSize: 30,
     margin: 20,
-    color:COLORS.primary
+    color: COLORS.primary
   },
   barcodebox: {
     alignItems: 'center',
