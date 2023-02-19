@@ -6,7 +6,7 @@ import {
     Image,
 } from "react-native";
 import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
-import AuthLayout from "./AuthenticationLayout"
+import AuthenticationLayout from "./AuthenticationLayout"
 import ForgotPassword from "./ForgotPassword";
 import FormInput from "../../components/FormInput";
 import TextButton from "../../components/TextButton";
@@ -34,7 +34,7 @@ const Login = ({ navigation }) => {
         // return the result of the request
     }
     return (
-        <AuthLayout
+        <AuthenticationLayout
             title="Login Page"
         >
             <Logo></Logo>
@@ -158,7 +158,7 @@ const Login = ({ navigation }) => {
                     />
                 </View>
             </View>
-        </AuthLayout>
+        </AuthenticationLayout>
     )
 }
 export default Login;

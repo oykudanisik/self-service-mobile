@@ -6,7 +6,7 @@ import {
     Image,
 } from "react-native";
 import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
-import AuthLayout from "./AuthenticationLayout"
+import AuthenticationLayout from "./AuthenticationLayout"
 import FormInput from "../../components/FormInput";
 import TextButton from "../../components/TextButton";
 import { PrimaryButton } from "../../components/Button";
@@ -29,7 +29,7 @@ const Register = ({ navigation }) => {
     }
 
     return (
-        <AuthLayout
+        <AuthenticationLayout
             title="Register Page"
         >
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -193,50 +193,7 @@ const Register = ({ navigation }) => {
                     />
                 </View>
             </View>
-
-            {/* Footer */}
-            {/* <View>
-                <TextIconButton
-                    containerStyle={{
-                        height: 50,
-                        alignItems: 'center',
-                        borderRadius: SIZES.radius,
-                        backgroundColor: COLORS.blue,
-                    }}
-                    icon={icons.fb}
-                    iconPosition="LEFT"
-                    iconStyle={{
-                        tintColor: COLORS.white
-                    }}
-                    label="Continue With Facebook"
-                    labelStyle={{
-                        marginLeft: SIZES.radius,
-                        color: COLORS.white
-                    }}
-                    onPress={() => navigation.replace("Home")}
-                />
-
-                <TextIconButton
-                    containerStyle={{
-                        height: 50,
-                        alignItems: 'center',
-                        marginTop: SIZES.radius,
-                        borderRadius: SIZES.radius,
-                        backgroundColor: COLORS.lightGray2,
-                    }}
-                    icon={icons.google}
-                    iconPosition="LEFT"
-                    iconStyle={{
-                        tintColor: null
-                    }}
-                    label="Continue With Google"
-                    labelStyle={{
-                        marginLeft: SIZES.radius,
-                    }}
-                    onPress={() => navigation.replace("Home")}
-                />
-            </View> */}
-        </AuthLayout>
+        </AuthenticationLayout>
     )
 }
 

@@ -6,7 +6,7 @@ import {
     Image,
 } from "react-native";
 
-import AuthLayout from "./AuthenticationLayout"
+import AuthenticationLayout from "./AuthenticationLayout"
 import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
 import FormInput from "../../components/FormInput";
 import TextButton from "../../components/TextButton";
@@ -23,7 +23,7 @@ const ForgotPassword = ({ navigation }) => {
     }
 
     return (
-        <AuthLayout
+        <AuthenticationLayout
             title="Password Recovery"
             titleContainerStyle={{
                 marginTop: SIZES.padding * 2
@@ -94,7 +94,7 @@ const ForgotPassword = ({ navigation }) => {
                 }}
                 onPress={() => navigation.goBack()}
             />
-        </AuthLayout>
+        </AuthenticationLayout>
     )
 }
 
