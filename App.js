@@ -3,9 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from '@react-navigation/native'
 import { useFonts } from 'expo-font';
 
-import { FoodItem, OnBoarding, Menu, Cart, Home, OrderAccepted } from './screens'
+import { FoodItem, Menu, Cart, Home, OrderAccepted, Login, Register } from './screens'
 import Tabs from './navigation/tabs'
-import Header from "./components/Header";
 import Profile from "./screens/Profile";
 
 const Stack = createStackNavigator();
@@ -29,13 +28,14 @@ const App = () => {
                   screenOptions={{
                       headerShown: false
                   }}
-                  initialRouteName={'OnBoarding'}
+                  initialRouteName={'Login'}
               >
-                  <Stack.Screen name="OnBoarding" component={OnBoarding} />
+                  <Stack.Screen name="Login" component={Login} />
+                  <Stack.Screen name="Register" component={Register} />
+
                   <Stack.Screen name="Home" component={Tabs} />
                   <Stack.Screen name="FoodItem" component={FoodItem}/>
                   <Stack.Screen name="Menu" component={Menu}/>
-                  <Stack.Screen name="Header" component={Header}/>
                   <Stack.Screen name="Cart" component={Cart}/>
                   <Stack.Screen name="OrderAccepted" component={OrderAccepted} />
                   <Stack.Screen name="Profile" component={Profile} />

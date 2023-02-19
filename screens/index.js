@@ -6,6 +6,10 @@ import Header from '../components/Header';
 import Menu from './Menu'
 import Cart from './Cart'
 import OrderAccepted from './OrderAccepted'
+import Login from './Login'
+import Register from './Register'
+
+
 
 export {
     Home,
@@ -15,5 +19,7 @@ export {
     Header,
     Menu,
     Cart,
-    OrderAccepted
+    OrderAccepted,
+    Login,
+    Register
 }

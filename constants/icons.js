@@ -31,6 +31,10 @@ export const notification = require("../assets/icons/notification.png");
 export const payment = require("../assets/icons/payment.png");
 export const bin = require("../assets/icons/delete.png");
 export const qr = require("../assets/icons/qr.png");
+export const eye = require("../assets/icons/eye.png");
+export const eye_close = require("../assets/icons/eye_close.png");
+export const correct = require("../assets/icons/correct.png");
+export const cancel = require("../assets/icons/cancel.png");
 
 export default {
     back,
@@ -65,5 +69,9 @@ export default {
     notification,
     payment,
     bin,
-    qr
+    qr,
+    eye,
+    eye_close,
+    cancel,
+    correct
 }
