@@ -1,6 +1,4 @@
 import React from "react";
-import { useEffect } from "react";
-import axios from 'axios';
 import {
     StyleSheet,
     SafeAreaView,
@@ -12,8 +10,8 @@ import {
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { isIphoneX } from 'react-native-iphone-x-helper'
-import HeaderInside from '../components/HeaderInside';
-import { icons, COLORS, SIZES, FONTS } from '../constants'
+import { HeaderInside } from '../../components';
+import { icons, COLORS, SIZES, FONTS } from '../../constants'
 
 const FoodItem = ({ route, navigation }) => {
     const scrollX = new Animated.Value(0);

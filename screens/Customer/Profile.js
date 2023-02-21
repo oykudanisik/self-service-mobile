@@ -9,12 +9,9 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import { icons, COLORS, SIZES, FONTS, images } from "../constants";
-
-import Header from "../components/Header";
+import { icons, COLORS, SIZES, FONTS, images } from "../../constants";
+import { Header } from "../../components";
 
 const Profile = ({ navigation }) => {
   return (

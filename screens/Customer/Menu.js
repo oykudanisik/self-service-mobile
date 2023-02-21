@@ -13,10 +13,8 @@ import {
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { icons, images, SIZES, COLORS, FONTS } from '../constants'
-import Header from '../components/Header';
-import HeaderInside from "../components/HeaderInside";
-import Tabs from '../navigation/tabs';
+import { icons, images, SIZES, COLORS, FONTS } from '../../constants'
+import { HeaderInside } from '../../components';
 
 const Menu = ({ navigation, route }) => {
 

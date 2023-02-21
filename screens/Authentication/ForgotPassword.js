@@ -8,10 +8,8 @@ import {
 
 import AuthenticationLayout from "./AuthenticationLayout"
 import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
-import FormInput from "../../components/FormInput";
-import TextButton from "../../components/TextButton";
-import Logo from "../../components/Logo";
-// import { utils } from "../../utils";
+import { SecondaryButton, FormInput, TextButton, Logo } from '../../components';
+import Validation from "../../validation/Validation";
 
 const ForgotPassword = ({ navigation }) => {
 
@@ -42,10 +40,10 @@ const ForgotPassword = ({ navigation }) => {
                     keyboardType="email-address"
                     autoCompleteType="email"
                     value={email}
-                    // onChange={(value) => {
-                    //     utils.validateEmail(value, setEmailError)
-                    //     setEmail(value)
-                    // }}
+                    onChange={(value) => {
+                        Validation.validateEmail(value, setEmailError)
+                        setEmail(value)
+                    }}
                     errorMsg={emailError}
                     appendComponent={
                         <View
@@ -64,7 +62,12 @@ const ForgotPassword = ({ navigation }) => {
                         </View>
                     }
                 />
-
+                <SecondaryButton
+                    onPress={() => {
+                        { authenticate() ? navigation.navigate('Home') : setLoginError(true) }
+                    }}
+                    title="Send Password Reset Email"
+                />
                 <View
                     style={{
                         flexDirection: 'row',

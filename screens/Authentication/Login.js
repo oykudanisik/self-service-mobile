@@ -5,15 +5,11 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
+import { useRef } from "react";
 import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
-import AuthenticationLayout from "./AuthenticationLayout"
-import ForgotPassword from "./ForgotPassword";
-import FormInput from "../../components/FormInput";
-import TextButton from "../../components/TextButton";
-import Logo from "../../components/Logo";
-import { PrimaryButton } from "../../components/Button";
-
-// import { utils } from "../../utils";
+import { AuthenticationLayout, ForgotPassword } from "../../screens"
+import { PrimaryButton, Logo, TextButton, FormInput } from "../../components"
+import Validation from "../../validation/Validation";
 
 const Login = ({ navigation }) => {
 
@@ -30,8 +26,11 @@ const Login = ({ navigation }) => {
     }
 
     function authenticate() {
-        // send post request to api with email and password
-        // return the result of the request
+        if (email == "oyku.danisik@gmail.com" && password == "12345678") {
+            return true;
+        } else {
+            return false;
+        }
     }
     return (
         <AuthenticationLayout
@@ -53,10 +52,10 @@ const Login = ({ navigation }) => {
                     containerStyle={{
                         marginTop: SIZES.radius,
                     }}
-                    // onChange={(value) => {
-                    //     utils.validateEmail(value, setEmailError)
-                    //     setEmail(value)
-                    // }}
+                    onChange={(value) => {
+                        Validation.validateEmail(value, setEmailError)
+                        setEmail(value)
+                    }}
                     errorMsg={loginError ? "Email Error" : ""}
                     appendComponent={
                         <View
@@ -106,7 +105,6 @@ const Login = ({ navigation }) => {
                         </TouchableOpacity>
                     }
                 />
-
                 {/* Save me & Forgot pass */}
                 <View
                     style={{
@@ -131,7 +129,11 @@ const Login = ({ navigation }) => {
 
                 <PrimaryButton
                     onPress={() => {
-                        { authenticate() ? navigation.navigate('Home') : setLoginError(true) }
+                        if (authenticate()) {
+                            navigation.navigate("Home");
+                        } else {
+                            setLoginError(true);
+                        }
                     }}
                     title="Log In"
                 />

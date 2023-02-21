@@ -6,10 +6,9 @@ import {
     Image,
 } from "react-native";
 import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
-import AuthenticationLayout from "./AuthenticationLayout"
-import FormInput from "../../components/FormInput";
-import TextButton from "../../components/TextButton";
-import { PrimaryButton } from "../../components/Button";
+import { PrimaryButton, FormInput, TextButton, PhoneNumberInput } from "../../components";
+import { AuthenticationLayout } from "../../screens"
+import Validation from "../../validation/Validation";
 
 const Register = ({ navigation }) => {
     const [email, setEmail] = React.useState("")
@@ -84,7 +83,7 @@ const Register = ({ navigation }) => {
                         marginTop: SIZES.radius,
                     }}
                     onChange={(value) => {
-                        utils.validateEmail(value, setEmailError)
+                        Validation.validateEmail(value, setEmailError)
                         setEmail(value)
                     }}
                     errorMsg={emailError}
@@ -106,7 +105,7 @@ const Register = ({ navigation }) => {
                     }
                 />
 
-                <FormInput
+                <PhoneNumberInput
                     label="Phone Number"
                     containerStyle={{
                         marginTop: SIZES.radius,
@@ -123,11 +122,11 @@ const Register = ({ navigation }) => {
                             }}
                         >
                             <Image
-                                source={(phonenumber == "") || (phonenumber != "" && phonennumberError == "") ? icons.correct : icons.cancel}
+                                source={(phonenumber == "") || (phonenumber != "" && phonenumberError == "") ? icons.correct : icons.cancel}
                                 style={{
                                     height: 20,
                                     width: 20,
-                                    tintColor: (phonenumber == "") ? COLORS.gray : (phonenumber != "" && phonennumberError == "") ? COLORS.green : COLORS.red
+                                    tintColor: (phonenumber == "") ? COLORS.gray : (phonenumber != "" && phonenumberError == "") ? COLORS.green : COLORS.red
                                 }}
                             />
                         </View>
@@ -140,10 +139,11 @@ const Register = ({ navigation }) => {
                     autoCompleteType="password"
                     containerStyle={{
                         marginTop: SIZES.radius,
+                        marginBottom: SIZES.radius,
                     }}
                     value={password}
                     onChange={(value) => {
-                        utils.validatePassword(value, setPasswordError)
+                        Validation.validatePassword(value, setPasswordError)
                         setPassword(value)
                     }}
                     errorMsg={passwordError}

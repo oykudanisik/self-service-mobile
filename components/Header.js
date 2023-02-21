@@ -11,7 +11,7 @@ export default function Header({ navigation }) {
     return (
         <View style={{ flexDirection: 'row', height: "13%", marginBottom: 10 }}>
             <TouchableOpacity
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => navigation.goBack()}
                 style={{
                     width: 50,
                     paddingLeft: SIZES.padding * 2,

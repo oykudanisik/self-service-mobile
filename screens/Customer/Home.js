@@ -12,8 +12,8 @@ import {
     FlatList
 } from "react-native";
 
-import { icons, images, SIZES, COLORS, FONTS } from '../constants'
-import Header from '../components/Header';
+import { icons, images, SIZES, COLORS, FONTS } from '../../constants'
+import { Header } from '../../components';
 
 const Home = ({ navigation, route }) => {
     const [scanned, setScananed] = useState(false);

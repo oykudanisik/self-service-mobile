@@ -6,14 +6,13 @@ import {
     StyleSheet
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { SwipeListView } from 'react-native-swipe-list-view';
-import StepperInput from '../components/StepperInput';
-import FooterTotal from '../components/FooterTotal';
-import { FONTS, SIZES, COLORS, icons } from "../constants"
-import HeaderInside from '../components/HeaderInside';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import { SwipeListView } from 'react-native-swipe-list-view';
+
+import { StepperInput, FooterTotal, HeaderInside } from '../../components';
+import { FONTS, SIZES, COLORS, icons } from "../../constants"
+
 const Cart = ({ navigation }) => {
 
     // AsyncStorage.clear();
