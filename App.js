@@ -5,7 +5,7 @@ import { useFonts } from 'expo-font';
 
 import { FoodItem, Menu, Cart, Home, OrderAccepted, Login, Register, ForgotPassword } from './screens'
 import Tabs from './navigation/tabs'
-import Profile from "./screens/Profile";
+import Profile from "./screens/Customer/Profile";
 
 const Stack = createStackNavigator();
 

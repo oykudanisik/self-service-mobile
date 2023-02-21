@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { COLORS } from '../constants';
+import { COLORS } from '../../constants';
 
 export default function Scan({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);

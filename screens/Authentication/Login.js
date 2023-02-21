@@ -5,14 +5,12 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
-import { useRef } from "react";
-import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
-import { AuthenticationLayout, ForgotPassword } from "../../screens"
-import { PrimaryButton, Logo, TextButton, FormInput } from "../../components"
+import { FONTS, SIZES, COLORS, icons } from "../../constants"
+import AuthenticationLayout from "./AuthenticationLayout"
+import { Logo, TextButton, FormInput, PrimaryButton } from "../../components"
 import Validation from "../../validation/Validation";
 
 const Login = ({ navigation }) => {
-
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [emailError, setEmailError] = React.useState("")

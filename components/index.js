@@ -1,4 +1,5 @@
-import Button from "./Button"
+import PrimaryButton from "./PrimaryButton"
+import SecondaryButton from "./SecondaryButton"
 import CardItem from "./CardItem"
 import CartQuantityButton from "./CartQuantityButton"
 import FooterTotal from "./FooterTotal"
@@ -12,7 +13,6 @@ import StepperInput from "./StepperInput"
 import TextButton from "./TextButton"
 
 export {
-    Button,
     CardItem,
     CartQuantityButton,
     FooterTotal,
@@ -23,5 +23,7 @@ export {
     Logo,
     PhoneNumberInput,
     StepperInput,
-    TextButton
+    TextButton,
+    PrimaryButton,
+    SecondaryButton
 }

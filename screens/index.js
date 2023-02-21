@@ -7,7 +7,7 @@ import OrderAccepted from './Customer/OrderAccepted'
 import Login from './Authentication/Login'
 import Register from './Authentication/Register'
 import ForgotPassword from './Authentication/ForgotPassword'
-
+import Profile from './Customer/Profile'
 export {
     Home,
     FoodItem,
@@ -17,5 +17,6 @@ export {
     OrderAccepted,
     Login,
     Register,
-    ForgotPassword
+    ForgotPassword,
+    Profile
 }

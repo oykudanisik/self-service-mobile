@@ -11,9 +11,8 @@ import {
 } from 'react-native';
 
 // constants
-import { images, SIZES, COLORS, FONTS } from '../constants'
-import { PrimaryButton } from '../components/Button';
-const { waiter } = images;
+import { images, SIZES, COLORS, FONTS } from '../../constants'
+import { PrimaryButton } from '../../components'
 
 const OrderAccepted = ({ navigation }) => {
     function renderContent() {

@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
 import { PrimaryButton, FormInput, TextButton, PhoneNumberInput } from "../../components";
-import { AuthenticationLayout } from "../../screens"
+import AuthenticationLayout from "./AuthenticationLayout"
 import Validation from "../../validation/Validation";
 
 const Register = ({ navigation }) => {
