@@ -6,7 +6,7 @@ import {
     Image,
 } from "react-native";
 import { FONTS, SIZES, COLORS, icons } from "../../constants"
-import AuthenticationLayout from "./AuthenticationLayout"
+import { AuthenticationLayout } from "../../screens"
 import { Logo, TextButton, FormInput, PrimaryButton } from "../../components"
 import Validation from "../../validation/Validation";
 

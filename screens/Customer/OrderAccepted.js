@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
     Animated,
@@ -30,35 +29,22 @@ const OrderAccepted = ({ navigation }) => {
                 >
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                         <Image
-                            source={waiter}
+                            source={images.waiter}
                             resizeMode="cover"
                             style={{
-                                width: "80%",
-                                height: "80%",
+                                width: "60%",
+                                height: "60%",
                             }}
                         />
-                    </View>
-                    <View
-                        style={{
-                            position: 'absolute',
-                            top: '5%',
-                            left: 40,
-                            right: 40
-                        }}
-                    >
-                        <Text style={{
-                            ...FONTS.h1,
-                            color: COLORS.gray,
-                            textAlign: 'center',
-                        }}
+                        <Text 
+                            style={{
+                                fontSize:FONTS.h2
+                            }}
                         >
-                            Welcome to Self-Service
+                            ORDER STATUS
                         </Text>
                     </View>
-                    <PrimaryButton
-                        onPress={() => navigation.navigate('Home')}
-                        title="Get Started"
-                    />
+                        
                 </View>
             </Animated.ScrollView>
         );

@@ -4,5 +4,6 @@ const waiter = require("../assets/images/waiter.png");
 
 export default {
   logo,
-  pp
+  pp,
+  waiter
 };

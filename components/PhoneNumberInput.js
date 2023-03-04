@@ -49,6 +49,7 @@ const PhoneNumberInput = ({
                     prependComponent
                 }
                 <PhoneInput
+                    countryCode= "90"
                     style={{ flex: 1, ...inputStyle }}
                     value={value}
                     placeholder={placeholder}
