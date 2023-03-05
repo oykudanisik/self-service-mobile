@@ -9,6 +9,7 @@ import { FONTS, SIZES, COLORS, icons } from "../../constants"
 import { AuthenticationLayout } from "../../screens"
 import { Logo, TextButton, FormInput, PrimaryButton } from "../../components"
 import Validation from "../../validation/Validation";
+import Route from "../../routes/Route";
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = React.useState("")
@@ -24,11 +25,19 @@ const Login = ({ navigation }) => {
     }
 
     function authenticate() {
-        if (email == "oyku.danisik@gmail.com" && password == "12345678") {
-            return true;
-        } else {
-            return false;
-        }
+        console.log(Route.host);
+        axios({
+          method: 'post',
+          url: Route.host + '/login',
+          data: {
+            email: email,
+            password: password
+          }
+        }).then((response) => {
+          console.log(response);
+        }, (error) => {
+          console.log(error);
+        });
     }
     return (
         <AuthenticationLayout

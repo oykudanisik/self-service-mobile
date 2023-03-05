@@ -9,6 +9,7 @@ import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
 import { PrimaryButton, FormInput, TextButton, PhoneNumberInput } from "../../components";
 import AuthenticationLayout from "./AuthenticationLayout"
 import Validation from "../../validation/Validation";
+import Route from "../../routes/Route";
 
 const Register = ({ navigation }) => {
     const [email, setEmail] = React.useState("")
