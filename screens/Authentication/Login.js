@@ -26,6 +26,8 @@ const Login = ({ navigation }) => {
 
     function authenticate() {
         console.log(Route.host);
+        console.log(email);
+        console.log(password);
         axios({
           method: 'post',
           url: Route.host + '/login',

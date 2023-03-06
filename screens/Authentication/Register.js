@@ -28,6 +28,32 @@ const Register = ({ navigation }) => {
         return email != "" && fullname != "" && password != "" && phonenumber != "" && emailError == "" && passwordError == ""
     }
 
+    function register() {
+        console.log(Route.host);
+        console.log(email);
+        console.log(password);
+        console.log(fullname);
+        console.log(phonenumber);
+        axios({
+          method: 'post',
+          url: Route.host + '/register',
+          data: {
+            email: email,
+            password: password,
+            name: fullname,
+            phone: phonenumber,
+          }
+        }).then((response) => {
+          console.log(response);
+          if(response){
+            return true;
+          } else{
+            return false;
+          }
+        }, (error) => {
+          console.log(error);
+        });
+    }
     return (
         <AuthenticationLayout
             title="Register Page"
@@ -169,7 +195,11 @@ const Register = ({ navigation }) => {
                     }
                 />
                 <PrimaryButton
-                    onPress={() => navigation.navigate('Home')}
+                    onPress={() => {
+                        if(register()){
+                            navigation.navigate('Home');
+                        } 
+                    }}
                     title="Sign Up"
                 />
                 {/* Sign Up & Sign In */}
