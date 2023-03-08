@@ -63,9 +63,10 @@ const Cart = ({ navigation }) => {
     }
 
     async function getOrderStatus() {
+        let restId = await AsyncStorage.getItem("restaurantId");
         axios({
             method: 'get',
-            url: Route.host + '/restaurants/' + accessToken.restId + '/orders/' + orderId
+            url: Route.host + '/restaurants/' + restId + '/orders/' + orderId
         }).then((response) => {
             //set the returned order status to orderStatus
             console.log(response);
