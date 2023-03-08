@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { PrimaryButton } from '../../components/Button';
 
 import { StepperInput, FooterTotal, HeaderInside } from '../../components';
 import { FONTS, SIZES, COLORS, icons } from "../../constants"
@@ -18,6 +19,9 @@ const Cart = ({ navigation }) => {
     // AsyncStorage.clear();
     const [myCartList, setMyCartList] = React.useState([])
     const [totalPrice, setToralPrice] = React.useState(0);
+    const [accessToken, setAccessToken] = React.useState({});
+    const [orderId, setOrderId] = React.useState("");
+    const [orderStatus, setOrderStatus] = React.useState("");
 
     let price = 0
     let cartList = [];
@@ -34,6 +38,45 @@ const Cart = ({ navigation }) => {
         }
         deneme();
     }, [myCartList])
+
+    async function placeOrder() {
+        let token = await AsyncStorage.getItem("accessToken");
+        setAccessToken(token);
+        console.log(accessToken);
+        axios({
+            method: 'post',
+            url: Route.host + '/orders',
+            data: {
+                user_id: accessToken.userId,
+                content: "orders",
+                status: "todo",
+                RID: accessToken.restId
+            }
+
+        }).then((response) => {
+            //set the returned orderId to orderId
+            console.log(response);
+            setOrderId(response);
+        }, (error) => {
+            console.log(error);
+        });
+    }
+
+    async function getOrderStatus() {
+        axios({
+            method: 'get',
+            url: Route.host + '/restaurants/' + accessToken.restId + '/orders/' + orderId
+        }).then((response) => {
+            //set the returned order status to orderStatus
+            console.log(response);
+            setOrderStatus(response);
+        }, (error) => {
+            console.log(error);
+        });
+    }
+    React.useEffect(() => {
+        placeOrder()
+    }, [])
 
     async function updateQuantityHandler(newQty, id) {
         if (newQty < 1) {
@@ -152,9 +195,7 @@ const Cart = ({ navigation }) => {
                                     }}
                                 />
                             </View>
-
                         </TouchableHighlight>
-
                     </View>
                 )}
             />
@@ -186,6 +227,10 @@ const Cart = ({ navigation }) => {
 
             {/* Footer */}
             {renderFooter()}
+            <PrimaryButton
+                onPress={() => navigation.navigate('Home')}
+                title="ORDER"
+            />
         </SafeAreaView>
     );
 }

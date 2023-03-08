@@ -7,7 +7,6 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 
 import { FONTS, SIZES, COLORS, icons, images, dummyData } from "../constants"
-import { PrimaryButton } from './Button';
 
 const FooterTotal = ({ subTotal, shippingFee, total, onPress, navigation }) => {
     return (
@@ -48,10 +47,7 @@ const FooterTotal = ({ subTotal, shippingFee, total, onPress, navigation }) => {
                     <Text style={{ flex: 1, ...FONTS.h2 }}>Total:</Text>
                     <Text style={{ ...FONTS.h2 }}>{total.toFixed(2)}</Text>
                 </View>
-                <PrimaryButton
-                    onPress={() => navigation.navigate('Home')}
-                    title="ORDER"
-                />
+
             </View>
         </View>
     )
