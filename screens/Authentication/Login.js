@@ -1,4 +1,6 @@
 import React from "react";
+import jwt from 'jwt-decode';
+import axios from 'axios';
 import {
     View,
     Text,
@@ -10,6 +12,8 @@ import { AuthenticationLayout } from "../../screens"
 import { Logo, TextButton, FormInput, PrimaryButton } from "../../components"
 import Validation from "../../validation/Validation";
 import Route from "../../routes/Route";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = React.useState("")
@@ -23,7 +27,13 @@ const Login = ({ navigation }) => {
     function isEnableSignIn() {
         return email != "" && password != "" && emailError == ""
     }
-
+    async function setAccessToken(id) {
+        let accessToken = jwt("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteXNlbHNlcnZpY2UiLCJpYXQiOjE2NzgyNzM0NzAsImV4cCI6MTcwOTgwOTQ3MCwiYXVkIjoidXNlcklkIiwic3ViIjoib3lrdWRhbmlzaWtAZ21haWwuY29tIiwicmVzdElkIjoiMSIsInJvbGUiOiJtYW5hZ2VyIn0.fC72gRlrUnpMvys5hvL2dTL2J3XyEoDGTSUMz-4ZZ2w");
+        await AsyncStorage.setItem('accessToken', JSON.stringify(accessToken));
+        let res = await AsyncStorage.getItem("accessToken")
+        console.log(res)
+    }
+    
     function authenticate() {
         console.log(Route.host);
         console.log(email);
@@ -41,6 +51,9 @@ const Login = ({ navigation }) => {
           console.log(error);
         });
     }
+    React.useEffect(() => {
+        setAccessToken()
+    },[])
     return (
         <AuthenticationLayout
             title="Login Page"
