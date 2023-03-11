@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { COLORS } from '../../constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Scan({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -27,6 +28,7 @@ export default function Scan({ navigation }) {
   }, []);
 
   useEffect(() => {
+    AsyncStorage.setItem("tableId",tableId);
     if (scanned) {
       navigation.navigate("Menu", {
         restaurantId,

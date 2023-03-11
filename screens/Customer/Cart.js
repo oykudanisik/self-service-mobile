@@ -13,6 +13,8 @@ import { PrimaryButton } from '../../components/Button';
 
 import { StepperInput, FooterTotal, HeaderInside } from '../../components';
 import { FONTS, SIZES, COLORS, icons } from "../../constants"
+import uuid from 'react-uuid';
+
 
 const Cart = ({ navigation }) => {
 
@@ -41,22 +43,26 @@ const Cart = ({ navigation }) => {
 
     async function placeOrder() {
         let token = await AsyncStorage.getItem("accessToken");
+        let restId = await AsyncStorage.getItem("restaurantId");
+        let tableId = await AsyncStorage.getItem("tableId");
+        let orders = await AsyncStorage.getItem("item");
+
         setAccessToken(token);
         console.log(accessToken);
         axios({
             method: 'post',
             url: Route.host + '/orders',
             data: {
-                user_id: accessToken.userId,
-                content: "orders",
+                orderId: uuid(),
+                userId: accessToken.userId,
+                restId: restId,
+                tableId: tableId,
+                details: orders,
                 status: "todo",
-                RID: accessToken.restId
             }
-
         }).then((response) => {
             //set the returned orderId to orderId
             console.log(response);
-            setOrderId(response);
         }, (error) => {
             console.log(error);
         });

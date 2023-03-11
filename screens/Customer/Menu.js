@@ -32,10 +32,7 @@ const Menu = ({ navigation, route }) => {
         } else {
             restId = route.params.item.id;
         }
-        AsyncStorage.setItem(
-            "restaurantId",
-            restId
-        );
+        AsyncStorage.setItem("restaurantId",restId);
         const productsUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId + "/products"
         const categoriesUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId + "/categories";
 
