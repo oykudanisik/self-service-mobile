@@ -1,4 +1,6 @@
 import React from "react";
+import axios from 'axios';
+
 import {
     View,
     Text,
@@ -36,7 +38,7 @@ const Register = ({ navigation }) => {
         console.log(phonenumber);
         axios({
           method: 'post',
-          url: Route.host + '/register',
+          url: Route.host + '/users/register',
           data: {
             email: email,
             password: password,
@@ -197,7 +199,7 @@ const Register = ({ navigation }) => {
                 <PrimaryButton
                     onPress={() => {
                         if(register()){
-                            navigation.navigate('Home');
+                            navigation.navigate('Login');
                         } 
                     }}
                     title="Sign Up"

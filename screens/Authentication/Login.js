@@ -33,27 +33,30 @@ const Login = ({ navigation }) => {
         let res = await AsyncStorage.getItem("accessToken")
         console.log(res)
     }
-    
+
     function authenticate() {
-        console.log(Route.host);
-        console.log(email);
-        console.log(password);
         axios({
-          method: 'post',
-          url: Route.host + '/login',
-          data: {
-            email: email,
-            password: password
-          }
+            method: 'post',
+            url: Route.host + '/login',
+            data: {
+                email: email,
+                password: password
+            }
         }).then((response) => {
-          console.log(response);
+            console.log(response.status);
+            if (response.status === 200) {
+                setLoginError(true);
+            } else {
+                setLoginError(false);
+            }
         }, (error) => {
-          console.log(error);
+            console.log(error);
         });
     }
+
     React.useEffect(() => {
         setAccessToken()
-    },[])
+    }, [])
     return (
         <AuthenticationLayout
             title="Login Page"
@@ -151,10 +154,13 @@ const Login = ({ navigation }) => {
 
                 <PrimaryButton
                     onPress={() => {
-                        if (authenticate()) {
+                        authenticate()
+                        console.log(loginError);
+                        if (!loginError) {
                             navigation.navigate("Home");
                         } else {
-                            setLoginError(true);
+                            setLoginError(false);
+
                         }
                     }}
                     title="Log In"

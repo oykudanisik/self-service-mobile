@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants'
 import { HeaderInside } from '../../components';
+import Route from "../../routes/Route";
 
 const Menu = ({ navigation, route }) => {
 
@@ -32,9 +33,9 @@ const Menu = ({ navigation, route }) => {
         } else {
             restId = route.params.item.id;
         }
-        AsyncStorage.setItem("restaurantId",restId);
-        const productsUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId + "/products"
-        const categoriesUrl = "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId + "/categories";
+        AsyncStorage.setItem("restaurantId", restId);
+        const productsUrl = Route.host + "/restaurants/" + restId + "/products"
+        const categoriesUrl = Route.host + "/restaurants/" + restId + "/categories";
 
         const productRequest = axios.get(productsUrl);
         const categoriesRequest = axios.get(categoriesUrl);

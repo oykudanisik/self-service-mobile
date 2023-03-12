@@ -14,13 +14,14 @@ import {
 
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants'
 import { Header } from '../../components';
+import Route from "../../routes/Route";
 
 const Home = ({ navigation, route }) => {
     const [scanned, setScananed] = useState(false);
     const [restaurants, setRestaurants] = useState([]);
     axios({
         method: "get",
-        url: "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants",
+        url: Route.host + '/restaurants',
     }).then(function (response) {
         const rest = response.data.items;
         setRestaurants(rest);

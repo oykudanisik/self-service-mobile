@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {
     View,
     Text,
@@ -14,6 +15,7 @@ import { PrimaryButton } from '../../components/Button';
 import { StepperInput, FooterTotal, HeaderInside } from '../../components';
 import { FONTS, SIZES, COLORS, icons } from "../../constants"
 import uuid from 'react-uuid';
+import Route from "../../routes/Route";
 
 
 const Cart = ({ navigation }) => {
