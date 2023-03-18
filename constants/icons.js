@@ -35,6 +35,9 @@ export const eye = require("../assets/icons/eye.png");
 export const eye_close = require("../assets/icons/eye_close.png");
 export const correct = require("../assets/icons/correct.png");
 export const cancel = require("../assets/icons/cancel.png");
+export const order = require("../assets/icons/order.png");
+export const refresh = require("../assets/icons/refresh.png");
+
 
 export default {
     back,
@@ -73,5 +76,7 @@ export default {
     eye,
     eye_close,
     cancel,
-    correct
+    correct,
+    order,
+    refresh
 }

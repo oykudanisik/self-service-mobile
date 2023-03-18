@@ -6,6 +6,8 @@ import FooterTotal from "./FooterTotal"
 import FormInput from "./FormInput"
 import Header from "./Header"
 import HeaderInside from "./HeaderInside"
+import HeaderOrder from "./HeaderOrder"
+
 import IconButton from "./IconButton"
 import Logo from "./Logo"
 import PhoneNumberInput from "./PhoneNumberInput"
@@ -19,6 +21,7 @@ export {
     FormInput,
     Header,
     HeaderInside,
+    HeaderOrder,
     IconButton,
     Logo,
     PhoneNumberInput,

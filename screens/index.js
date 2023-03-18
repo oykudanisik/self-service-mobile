@@ -3,7 +3,7 @@ import FoodItem from "./Customer/FoodItem"
 import Scan from "./Customer/Scan"
 import Menu from './Customer/Menu'
 import Cart from './Customer/Cart'
-import OrderAccepted from './Customer/OrderAccepted'
+import OrderStatus from './Customer/OrderStatus'
 import Login from './Authentication/Login'
 import Register from './Authentication/Register'
 import ForgotPassword from './Authentication/ForgotPassword'
@@ -15,7 +15,7 @@ export {
     Scan,
     Menu,
     Cart,
-    OrderAccepted,
+    OrderStatus,
     Login,
     Register,
     ForgotPassword,

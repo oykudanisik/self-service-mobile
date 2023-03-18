@@ -22,16 +22,16 @@ const Menu = ({ navigation, route }) => {
     const [categories, setCategories] = React.useState([]);
     const [selectedCategory, setSelectedCategory] = React.useState(null);
     const [products, setProducts] = React.useState();
-    const [scanned, setScanned] = React.useState(route.params.scanned);
+    const [scanned, setScanned] = React.useState(true);
     const [restaurantName, setRestaurantName] = React.useState("");
 
     useEffect(() => {
         var restId = "";
         if (scanned) {
-            restId = route.params.restaurantId;
+            restId = "1";
 
         } else {
-            restId = route.params.item.id;
+            restId = "1";
         }
         AsyncStorage.setItem("restaurantId", restId);
         const productsUrl = Route.host + "/restaurants/" + restId + "/products"
@@ -42,13 +42,11 @@ const Menu = ({ navigation, route }) => {
 
         axios.all([productRequest, categoriesRequest])
             .then(axios.spread((...responses) => {
-
                 const responseOne = responses[0]
                 const responseTwo = responses[1]
                 setCategories(responseTwo.data.items);
                 setProducts(responseOne.data.items);
             }))
-
     }, []);
 
 
@@ -57,18 +55,17 @@ const Menu = ({ navigation, route }) => {
         var restId = "";
 
         if (scanned) {
-            restId = route.params.restaurantId;
+            restId = "1";
         } else {
-            restId = route.params.item.id;
+            restId = "1";
         }
         console.log(category.id);
         console.log(restId);
         axios({
             method: "get",
             url:
-                "http://utkuapi-env.eba-37pxsisp.eu-central-1.elasticbeanstalk.com/restaurants/" + restId + "/categories/" +
-                category.id +
-                "/products",
+                Route.host + "/restaurants/" + restId + "/categories/" +
+                category.id + "/products",
         }).then(function (response) {
             console.log(response.data.items);
             setProducts(response.data.items);
@@ -125,7 +122,7 @@ const Menu = ({ navigation, route }) => {
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h2, textAlign: "center" }}>{scanned ? route.params.restaurantName : route.params.item.name}</Text>
+                <Text style={{ ...FONTS.h2, textAlign: "center" }}>{scanned ? "route.params.restaurantName" : "route.params.item.name"}</Text>
                 <FlatList
                     data={categories}
                     horizontal

@@ -12,7 +12,7 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { PrimaryButton } from '../../components/Button';
 
-import { StepperInput, FooterTotal, HeaderInside } from '../../components';
+import { StepperInput, FooterTotal, HeaderInside, HeaderOrder } from '../../components';
 import { FONTS, SIZES, COLORS, icons } from "../../constants"
 import uuid from 'react-uuid';
 import Route from "../../routes/Route";
@@ -48,23 +48,30 @@ const Cart = ({ navigation }) => {
         let restId = await AsyncStorage.getItem("restaurantId");
         let tableId = await AsyncStorage.getItem("tableId");
         let orders = await AsyncStorage.getItem("item");
+        console.log(orders);
+        console.log(token);
+        console.log(restId);
+        console.log("5");
+        console.log(uuid())
+        console.log(token.aud);
 
-        setAccessToken(token);
-        console.log(accessToken);
+        // setAccessToken(token);
         axios({
             method: 'post',
             url: Route.host + '/orders',
             data: {
-                orderId: uuid(),
-                userId: accessToken.userId,
-                restId: restId,
-                tableId: tableId,
+                ID: uuid(),
+                //userId: accessToken.userId,
+                userId: 1111,
+                restId: 1,
+                tableId: 5,
                 details: orders,
-                status: "todo",
+                orderStatus: "To Do",
             }
         }).then((response) => {
             //set the returned orderId to orderId
             console.log(response);
+
         }, (error) => {
             console.log(error);
         });
@@ -83,9 +90,6 @@ const Cart = ({ navigation }) => {
             console.log(error);
         });
     }
-    React.useEffect(() => {
-        placeOrder()
-    }, [])
 
     async function updateQuantityHandler(newQty, id) {
         if (newQty < 1) {
@@ -225,11 +229,12 @@ const Cart = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {/* Header */}
-            <HeaderInside navigation={navigation}></HeaderInside>
+            <HeaderOrder navigation={navigation}></HeaderOrder>
             <View
                 style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
             >
                 <Text style={{ ...FONTS.h2 }}>My Cart</Text>
+                <Text style={{ ...FONTS.h4 }}>Order Status</Text>
             </View>
             {/* Cart */}
             {renderCartList()}
@@ -237,7 +242,7 @@ const Cart = ({ navigation }) => {
             {/* Footer */}
             {renderFooter()}
             <PrimaryButton
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => placeOrder()}
                 title="ORDER"
             />
         </SafeAreaView>
