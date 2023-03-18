@@ -27,8 +27,8 @@ const Login = ({ navigation }) => {
     function isEnableSignIn() {
         return email != "" && password != "" && emailError == ""
     }
-    async function setAccessToken(id) {
-        let accessToken = jwt("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteXNlbHNlcnZpY2UiLCJpYXQiOjE2NzgyNzM0NzAsImV4cCI6MTcwOTgwOTQ3MCwiYXVkIjoidXNlcklkIiwic3ViIjoib3lrdWRhbmlzaWtAZ21haWwuY29tIiwicmVzdElkIjoiMSIsInJvbGUiOiJtYW5hZ2VyIn0.fC72gRlrUnpMvys5hvL2dTL2J3XyEoDGTSUMz-4ZZ2w");
+    async function setAccessToken(token) {
+        let accessToken = jwt(token);
         await AsyncStorage.setItem('accessToken', JSON.stringify(accessToken));
         let res = await AsyncStorage.getItem("accessToken")
         console.log(res)
@@ -43,8 +43,9 @@ const Login = ({ navigation }) => {
                 password: password
             }
         }).then((response) => {
-            console.log(response.status);
+            console.log(response.data.items);
             if (response.status === 200) {
+                setAccessToken(response.data.items);
                 setLoginError(true);
             } else {
                 setLoginError(false);
@@ -54,9 +55,6 @@ const Login = ({ navigation }) => {
         });
     }
 
-    React.useEffect(() => {
-        setAccessToken()
-    }, [])
     return (
         <AuthenticationLayout
             title="Login Page"

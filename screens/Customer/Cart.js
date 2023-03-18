@@ -43,35 +43,34 @@ const Cart = ({ navigation }) => {
         deneme();
     }, [myCartList])
 
+    React.useEffect(() => {
+        
+    }, [])
+
     async function placeOrder() {
         let token = await AsyncStorage.getItem("accessToken");
+        token = JSON.parse(token);
         let restId = await AsyncStorage.getItem("restaurantId");
         let tableId = await AsyncStorage.getItem("tableId");
         let orders = await AsyncStorage.getItem("item");
         console.log(orders);
-        console.log(token);
-        console.log(restId);
+        console.log(parseInt(token.uid));
+        console.log(parseInt(restId));
         console.log("5");
-        console.log(uuid())
-        console.log(token.aud);
-
-        // setAccessToken(token);
         axios({
             method: 'post',
             url: Route.host + '/orders',
             data: {
                 ID: uuid(),
-                //userId: accessToken.userId,
-                userId: 1111,
-                restId: 1,
+                userId: parseInt(token.uid),
+                restId: parseInt(restId),
                 tableId: 5,
                 details: orders,
-                orderStatus: "To Do",
+                orderStatus: "To do",
             }
         }).then((response) => {
             //set the returned orderId to orderId
             console.log(response);
-
         }, (error) => {
             console.log(error);
         });

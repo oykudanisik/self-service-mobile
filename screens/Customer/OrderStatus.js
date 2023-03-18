@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect,useCallback } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import {
     Animated,
     Image,
@@ -19,22 +19,22 @@ const OrderStatus = ({ navigation }) => {
 
     const [orderStatus, setOrderStatus] = React.useState("");
     async function getOrderStatus() {
-        let orderId = await AsyncStorage.getItem("orderId");
         let token = await AsyncStorage.getItem("accessToken");
-        let userId = 1
+        token = JSON.parse(token);
+        console.log((token.uid));
         axios({
             method: "get",
-            url: Route.host + '/users/' + userId + '/orders',
+            url: Route.host + '/users/' + parseInt(token.uid) + '/orders',
         }).then(function (response) {
-            console.log(response.data.items.orderStatus);
-            const rest = response;
+            console.log(response.data.items[0].orderStatus);
             setOrderStatus(response.data.items[0].orderStatus);
         });
     }
+
     useEffect(() => {
         getOrderStatus();
         console.log("orderStatus", orderStatus)
-    },[])
+    }, [])
 
     function renderContent() {
         return (

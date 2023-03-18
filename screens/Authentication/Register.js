@@ -44,6 +44,7 @@ const Register = ({ navigation }) => {
             password: password,
             name: fullname,
             phone: phonenumber,
+            role: "customer"
           }
         }).then((response) => {
           console.log(response);
