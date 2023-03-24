@@ -36,7 +36,7 @@ const FoodItem = ({ route, navigation }) => {
                     <View style={{ height: SIZES.height * 0.35 }}>
                         {/* Food Image */}
                         <Image
-                            source={{ uri: route.params.item.image }}
+                            source={{ uri: route.params.item.prod_image }}
                             resizeMode="cover"
                             style={{
                                 width: SIZES.width,
@@ -54,10 +54,10 @@ const FoodItem = ({ route, navigation }) => {
                             paddingHorizontal: SIZES.padding * 2
                         }}
                     >
-                        <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{route.params.item.name}</Text>
-                        <Text style={{ ...FONTS.body3 }}>{route.params.item.description}</Text>
+                        <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{route.params.item.prod_name}</Text>
+                        <Text style={{ ...FONTS.body3 }}>{route.params.item.prod_description}</Text>
                         <Text style={{ ...FONTS.h2 }}>{route.params.item.price} {route.params.item.currency}</Text>
-                        <Text style={{ ...FONTS.body3 }}>Ready in {route.params.item.prepDurationMinute} minutes</Text>
+                        <Text style={{ ...FONTS.body3 }}>Ready in {route.params.item.prep_dur_minute} minutes</Text>
                     </View>
                 </View>
             </Animated.ScrollView>
@@ -115,7 +115,7 @@ const FoodItem = ({ route, navigation }) => {
                                         let cartItems = await JSON.parse(items);
                                         var found = false;
                                         for (var i = 0; i < cartItems.length && !found; i++) {
-                                            if (cartItems[i].id === route.params.item.id) {
+                                            if (cartItems[i].id === route.params.item.prod_id) {
                                                 cartItems[i].count++;
                                                 found = true;
                                             }

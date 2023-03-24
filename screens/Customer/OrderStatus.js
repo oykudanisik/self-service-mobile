@@ -26,14 +26,13 @@ const OrderStatus = ({ navigation }) => {
             method: "get",
             url: Route.host + '/users/' + parseInt(token.uid) + '/orders',
         }).then(function (response) {
-            console.log(response.data.items[0].orderStatus);
-            setOrderStatus(response.data.items[0].orderStatus);
+            console.log(response.data.items);
+            setOrderStatus(response.data.items[2].order_status);
         });
     }
 
     useEffect(() => {
         getOrderStatus();
-        console.log("orderStatus", orderStatus)
     }, [])
 
     function renderContent() {

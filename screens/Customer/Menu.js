@@ -18,7 +18,6 @@ import { HeaderInside } from '../../components';
 import Route from "../../routes/Route";
 
 const Menu = ({ navigation, route }) => {
-
     const [categories, setCategories] = React.useState([]);
     const [selectedCategory, setSelectedCategory] = React.useState(null);
     const [products, setProducts] = React.useState();
@@ -49,23 +48,21 @@ const Menu = ({ navigation, route }) => {
             }))
     }, []);
 
-
     function onSelectCategory(category) {
         //filter restaurantü
         var restId = "";
-
         if (scanned) {
             restId = "1";
         } else {
             restId = "1";
         }
-        console.log(category.id);
+        console.log(category.cat_id);
         console.log(restId);
         axios({
             method: "get",
             url:
                 Route.host + "/restaurants/" + restId + "/categories/" +
-                category.id + "/products",
+                category.cat_id + "/products",
         }).then(function (response) {
             console.log(response.data.items);
             setProducts(response.data.items);
@@ -78,7 +75,7 @@ const Menu = ({ navigation, route }) => {
                     style={{
                         padding: SIZES.padding,
                         paddingBottom: SIZES.padding * 2,
-                        backgroundColor: (selectedCategory?.id == item.id) ? COLORS.primary : COLORS.lightGray,
+                        backgroundColor: (selectedCategory?.id == item.cat_id) ? COLORS.primary : COLORS.lightGray,
                         borderRadius: SIZES.radius,
                         alignItems: "center",
                         justifyContent: "center",
@@ -94,11 +91,11 @@ const Menu = ({ navigation, route }) => {
                             borderRadius: 25,
                             alignItems: "center",
                             justifyContent: "center",
-                            backgroundColor: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.lightGray
+                            backgroundColor: (selectedCategory?.id == item.cat_id) ? COLORS.white : COLORS.lightGray
                         }}
                     >
                         <Image
-                            source={{ uri: item.image }}
+                            source={{ uri: item.cat_image }}
                             resizeMode="contain"
                             style={{
                                 width: 30,
@@ -110,11 +107,11 @@ const Menu = ({ navigation, route }) => {
                     <Text
                         style={{
                             marginTop: SIZES.padding,
-                            color: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.black,
+                            color: (selectedCategory?.id == item.cat_id) ? COLORS.white : COLORS.black,
                             ...FONTS.body5
                         }}
                     >
-                        {item.name}
+                        {item.cat_name}
                     </Text>
                 </TouchableOpacity>
             )
@@ -122,12 +119,12 @@ const Menu = ({ navigation, route }) => {
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h2, textAlign: "center" }}>{scanned ? "route.params.restaurantName" : "route.params.item.name"}</Text>
+                <Text style={{ ...FONTS.h2, textAlign: "center" }}>{scanned ? "route.params.restaurantName" : "route.params.item.prod_name"}</Text>
                 <FlatList
                     data={categories}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    keyExtractor={item => `${item.id}`}
+                    keyExtractor={item => `${item.prod_id}`}
                     renderItem={renderItem}
                     contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
                 />
@@ -154,7 +151,7 @@ const Menu = ({ navigation, route }) => {
                     }}
                 >
                     <Image
-                        source={{ uri: item.image }}
+                        source={{ uri: item.prod_image }}
                         resizeMode="cover"
                         style={{
                             width: "100%",
@@ -182,14 +179,14 @@ const Menu = ({ navigation, route }) => {
                 </View>
 
                 {/* Food Info */}
-                <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
+                <Text style={{ ...FONTS.body2 }}>{item.prod_name}</Text>
             </TouchableOpacity>
         )
 
         return (
             <FlatList
                 data={products}
-                keyExtractor={item => `${item.id}`}
+                keyExtractor={item => `${item.prod_id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingHorizontal: SIZES.padding * 2,

@@ -31,7 +31,6 @@ const Register = ({ navigation }) => {
     }
 
     function register() {
-        console.log(Route.host);
         console.log(email);
         console.log(password);
         console.log(fullname);
@@ -40,11 +39,11 @@ const Register = ({ navigation }) => {
           method: 'post',
           url: Route.host + '/users/register',
           data: {
-            email: email,
+            user_name: fullname,
             password: password,
-            name: fullname,
+            email: email,
             phone: phonenumber,
-            role: "customer"
+            type: "customer",
           }
         }).then((response) => {
           console.log(response);

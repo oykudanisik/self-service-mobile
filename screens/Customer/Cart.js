@@ -50,23 +50,26 @@ const Cart = ({ navigation }) => {
     async function placeOrder() {
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
+        let details=[];
         let restId = await AsyncStorage.getItem("restaurantId");
         let tableId = await AsyncStorage.getItem("tableId");
         let orders = await AsyncStorage.getItem("item");
-        console.log(orders);
-        console.log(parseInt(token.uid));
-        console.log(parseInt(restId));
-        console.log("5");
+        orders = JSON.parse(orders);
+        orders.forEach((element, index, array) => {
+            details.push({"id":element.id,"price":element.price,"count":element.count})
+        })
+        console.log(JSON.stringify(details));
+
         axios({
             method: 'post',
             url: Route.host + '/orders',
             data: {
-                ID: uuid(),
-                userId: parseInt(token.uid),
-                restId: parseInt(restId),
-                tableId: 5,
-                details: orders,
-                orderStatus: "To do",
+                details: JSON.stringify(details),
+                order_id: uuid(),
+                user_id: parseInt(token.uid),
+                rest_id: parseInt(restId),
+                table_id: 5,
+                order_status: "To do",
             }
         }).then((response) => {
             //set the returned orderId to orderId
@@ -129,7 +132,7 @@ const Cart = ({ navigation }) => {
         return (
             <SwipeListView
                 data={myCartList}
-                keyExtractor={item => `${item.id}`}
+                keyExtractor={item => `${item.prod_id}`}
                 contentContainerStyle={{
                     marginTop: SIZES.radius,
                     paddingHorizontal: SIZES.padding,
@@ -154,7 +157,7 @@ const Cart = ({ navigation }) => {
                             }}
                         >
                             <Image
-                                source={{ uri: data.item.image }}
+                                source={{ uri: data.item.prod_image }}
                                 resizeMode="contain"
                                 style={{
                                     width: "75%",
@@ -172,7 +175,7 @@ const Cart = ({ navigation }) => {
                                 flex: 1
                             }}
                         >
-                            <Text style={{ ...FONTS.body3 }}>{data.item.name}</Text>
+                            <Text style={{ ...FONTS.body3 }}>{data.item.prod_name}</Text>
                             <Text style={{ color: COLORS.black, ...FONTS.h4 }}>{data.item.price} {data.item.currency}</Text>
                         </View>
 
@@ -184,11 +187,11 @@ const Cart = ({ navigation }) => {
                                 backgroundColor: COLORS.white
                             }}
                             value={data.item.count}
-                            onAdd={() => { updateQuantityHandler(data.item.count + 1, data.item.id) }}
-                            onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.id) }}
+                            onAdd={() => { updateQuantityHandler(data.item.count + 1, data.item.prod_id) }}
+                            onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.prod_id) }}
                         />
                         <TouchableHighlight
-                            onPress={() => { deleteItem(data.item.id) }}>
+                            onPress={() => { deleteItem(data.item.prod_id) }}>
                             <View
                                 style={{
                                     width: 30,
