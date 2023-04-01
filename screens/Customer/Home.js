@@ -19,13 +19,16 @@ import Route from "../../routes/Route";
 const Home = ({ navigation, route }) => {
     const [scanned, setScananed] = useState(false);
     const [restaurants, setRestaurants] = useState([]);
-    axios({
-        method: "get",
-        url: Route.host + '/restaurants',
-    }).then(function (response) {
-        const rest = response.data.items;
-        setRestaurants(rest);
-    });
+    useEffect(() => {
+        axios({
+            method: "get",
+            url: Route.host + '/restaurants',
+        }).then(function (response) {
+            const rest = response.data.items;
+            setRestaurants(rest);
+        });
+    }, []);
+   
 
     function renderRestaurantList() {
         const renderItem = ({ item }) => (

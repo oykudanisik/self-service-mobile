@@ -44,11 +44,12 @@ const Cart = ({ navigation }) => {
     }, [myCartList])
 
     React.useEffect(() => {
-        
     }, [])
 
     async function placeOrder() {
         let token = await AsyncStorage.getItem("accessToken");
+        console.log(AsyncStorage.getItem("accessToken"));
+
         token = JSON.parse(token);
         let details=[];
         let restId = await AsyncStorage.getItem("restaurantId");
@@ -56,10 +57,11 @@ const Cart = ({ navigation }) => {
         let orders = await AsyncStorage.getItem("item");
         orders = JSON.parse(orders);
         orders.forEach((element, index, array) => {
-            details.push({"id":element.id,"price":element.price,"count":element.count})
+
+            details.push({"prod_id":element.prod_id,"price":element.price,"count":element.count})
         })
         console.log(JSON.stringify(details));
-
+        
         axios({
             method: 'post',
             url: Route.host + '/orders',
@@ -104,8 +106,12 @@ const Cart = ({ navigation }) => {
         setMyCartList(newMyCartList)
         let cartList = await AsyncStorage.getItem("item");
         let cartItems = await JSON.parse(cartList);
+        console.log(cartItems);
+        console.log(id);
+        console.log(newQty);
+
         for (var i = 0; i < cartItems.length; i++) {
-            if (cartItems[i].id === id) {
+            if (cartItems[i].prod_id === id) {
                 cartItems[i].count = newQty
             }
         }
@@ -119,7 +125,7 @@ const Cart = ({ navigation }) => {
         cartList = await AsyncStorage.getItem("item");
         let cartItems = await JSON.parse(cartList);
         cartItems = cartItems.filter(function (ci) {
-            return ci.id !== id;
+            return ci.prod_id !== id;
         });
         await AsyncStorage.setItem(
             "item",

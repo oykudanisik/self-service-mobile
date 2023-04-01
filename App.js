@@ -28,13 +28,14 @@ const App = () => {
                 screenOptions={{
                     headerShown: false
                 }}
-                initialRouteName={'Menu'}
+                initialRouteName={'Login'}
             >
-                <Stack.Screen name="Menu" component={Menu} />
+                
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
                 <Stack.Screen name="Home" component={Tabs} />
+                <Stack.Screen name="Menu" component={Menu} />
                 <Stack.Screen name="Cart" component={Cart} />
                 <Stack.Screen name="FoodItem" component={FoodItem} />
                 <Stack.Screen name="OrderStatus" component={OrderStatus} />
