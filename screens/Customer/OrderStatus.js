@@ -24,6 +24,7 @@ const OrderStatus = ({ navigation }) => {
 
     async function getOrderStatus() {
         let token = await AsyncStorage.getItem("accessToken");
+        console.log(token);
         token = JSON.parse(token);
         axios({
             method: "get",
@@ -36,6 +37,10 @@ const OrderStatus = ({ navigation }) => {
 
     useEffect(() => {
         getOrderStatus();
+        // const interval = setInterval(() => {
+        //     getOrderStatus();
+        //   }, 10000);
+        //   return () => clearInterval(interval);
     }, [])
 
     function renderContent() {
@@ -65,7 +70,7 @@ const OrderStatus = ({ navigation }) => {
                 </View>
 
                 {/* Status Info */}
-                <Text style={{ ...FONTS.body3 }}>{item.prod_name}</Text>
+                <Text style={{ ...FONTS.body3 }}>{item.prod_name} x{item.quantity}</Text>
                 <Text style={{ ...FONTS.body2 }}>{item.order_status}</Text>
             </TouchableOpacity>
         )

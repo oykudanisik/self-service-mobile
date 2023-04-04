@@ -26,6 +26,7 @@ const Menu = ({ navigation, route }) => {
 
     useEffect(() => {
         var restId = "";
+        console.log(AsyncStorage.getItem("accessToken"));
         if (scanned) {
             restId = "1";
 

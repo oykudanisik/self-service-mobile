@@ -48,7 +48,7 @@ const Cart = ({ navigation }) => {
 
     async function placeOrder() {
         let token = await AsyncStorage.getItem("accessToken");
-        console.log(AsyncStorage.getItem("accessToken"));
+        console.log(token);
 
         token = JSON.parse(token);
         let details=[];
@@ -58,10 +58,10 @@ const Cart = ({ navigation }) => {
         orders = JSON.parse(orders);
         orders.forEach((element, index, array) => {
 
-            details.push({"prod_id":element.prod_id,"price":element.price,"count":element.count})
+            details.push({"prod_id":element.prod_id,"price":element.price,"prod_count":element.count})
         })
         console.log(JSON.stringify(details));
-        
+
         axios({
             method: 'post',
             url: Route.host + '/orders',
@@ -74,7 +74,7 @@ const Cart = ({ navigation }) => {
                 order_status: "To do",
             }
         }).then((response) => {
-            //set the returned orderId to orderId
+            //set the returned orderId to orderI
             console.log(response);
         }, (error) => {
             console.log(error);

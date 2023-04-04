@@ -28,13 +28,13 @@ const Login = ({ navigation }) => {
         return email != "" && password != "" && emailError == ""
     }
     async function setAccessToken(token) {
-        let accessToken = jwt(token);
-        await AsyncStorage.setItem('accessToken', JSON.stringify(accessToken));
-        let res = await AsyncStorage.getItem("accessToken")
-        console.log(res)
+        await AsyncStorage.setItem('accessToken', JSON.stringify(jwt(token)));
     }
 
     function authenticate() {
+        console.log("loginError", loginError)
+        console.log(email);
+        console.log(password);
         axios({
             method: 'post',
             url: Route.host + '/login',
@@ -43,14 +43,15 @@ const Login = ({ navigation }) => {
                 password: password
             }
         }).then((response) => {
-            console.log(response.data.items);
-            if (response.status === 200) {
+            console.log(response.data.status);
+            console.log(response)
+            if (response.data.status == 200) {
                 setAccessToken(response.data.items);
-                setLoginError(true);
-            } else {
                 setLoginError(false);
-            }
+                navigation.navigate("Home");
+            } 
         }, (error) => {
+            setLoginError(true);
             console.log(error);
         });
     }
@@ -153,13 +154,6 @@ const Login = ({ navigation }) => {
                 <PrimaryButton
                     onPress={() => {
                         authenticate()
-                        console.log(loginError);
-                        if (!loginError) {
-                            navigation.navigate("Home");
-                        } else {
-                            setLoginError(false);
-
-                        }
                     }}
                     title="Log In"
                 />
