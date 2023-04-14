@@ -22,7 +22,6 @@ const ForgotPassword = ({ navigation }) => {
 
     return (
         <AuthenticationLayout
-            title="Password Recovery"
             titleContainerStyle={{
                 marginTop: SIZES.padding * 2
             }}

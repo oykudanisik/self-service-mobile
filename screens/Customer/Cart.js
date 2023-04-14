@@ -51,14 +51,14 @@ const Cart = ({ navigation }) => {
         console.log(token);
 
         token = JSON.parse(token);
-        let details=[];
+        let details = [];
         let restId = await AsyncStorage.getItem("restaurantId");
         let tableId = await AsyncStorage.getItem("tableId");
         let orders = await AsyncStorage.getItem("item");
         orders = JSON.parse(orders);
         orders.forEach((element, index, array) => {
 
-            details.push({"prod_id":element.prod_id,"price":element.price,"prod_count":element.count})
+            details.push({ "prod_id": element.prod_id, "price": element.price, "prod_count": element.count })
         })
         console.log(JSON.stringify(details));
 
@@ -76,6 +76,7 @@ const Cart = ({ navigation }) => {
         }).then((response) => {
             //set the returned orderId to orderI
             console.log(response);
+            AsyncStorage.removeItem("item");
         }, (error) => {
             console.log(error);
         });
@@ -241,8 +242,17 @@ const Cart = ({ navigation }) => {
             <View
                 style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
             >
-                <Text style={{ ...FONTS.h2 }}>My Cart</Text>
-                <Text style={{ ...FONTS.h4 }}>Order Status</Text>
+                <Text style={{ ...FONTS.h2 }}>
+                    <Image
+                        source={icons.basket}
+                        resizeMode="contain"
+                        style={{
+                            width: 25,
+                            height: 25,
+                        }}
+                    />
+                    <Text> My Cart</Text>
+                </Text>
             </View>
             {/* Cart */}
             {renderCartList()}

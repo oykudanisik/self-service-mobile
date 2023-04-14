@@ -58,7 +58,6 @@ const Register = ({ navigation }) => {
     }
     return (
         <AuthenticationLayout
-            title="Register Page"
         >
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 

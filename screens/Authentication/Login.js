@@ -58,7 +58,6 @@ const Login = ({ navigation }) => {
 
     return (
         <AuthenticationLayout
-            title="Login Page"
         >
             <Logo></Logo>
             <View

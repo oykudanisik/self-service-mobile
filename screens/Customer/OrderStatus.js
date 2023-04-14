@@ -7,9 +7,10 @@ import {
     View,
     Text,
     FlatList,
-    TouchableOpacity
-
+    TouchableOpacity,
+    TouchableHighlight
 } from 'react-native';
+import Slider from '@react-native-community/slider'
 import { HeaderOrder } from '../../components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -18,7 +19,6 @@ import Route from '../../routes/Route';
 import { images, SIZES, COLORS, FONTS, icons } from '../../constants'
 
 const OrderStatus = ({ navigation }) => {
-
     const [orderStatus, setOrderStatus] = React.useState();
     const [order, setOrder] = React.useState();
 
@@ -37,41 +37,59 @@ const OrderStatus = ({ navigation }) => {
 
     useEffect(() => {
         getOrderStatus();
+        // console.log(order);
         // const interval = setInterval(() => {
         //     getOrderStatus();
         //   }, 10000);
         //   return () => clearInterval(interval);
     }, [])
 
-    function renderContent() {
+    function renderTable() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
-                style={{
-                    marginBottom: SIZES.padding * 2,
-                    width: "50%",
-                    margin: 10
-                }}
+                style={{ marginBottom: SIZES.padding * 2 }}
+                onPress={() => navigation.navigate("Menu", {
+                    item, scanned
+                })}
             >
-                {/* Image */}
-                <View
-                    style={{
-                        marginBottom: SIZES.padding
-                    }}
-                >
-                    <Image
-                        source={images.waiter}
-                        resizeMode="cover"
+                 <View
                         style={{
-                            width: "75%",
-                            height: 300,
-                            borderRadius: SIZES.radius
+                            height: 100,
+                            backgroundColor: COLORS.lightGray4,
+                            ...styles.cartItemContainer
                         }}
-                    />
-                </View>
+                    >
+                          <View
+                            style={{
+                                width: 90,
+                                height: 100,
+                                marginLeft: -10
+                            }}
+                        >
+                            <Image
+                                source={images.waiter}
+                                resizeMode="contain"
+                                style={{
+                                    width: "75%",
+                                    height: "75%",
+                                    position: 'absolute',
+                                    borderRadius: 10,
+                                    top: 10,
+                                }}
+                            />
+                        </View>
+                        {/* Food Info */}
+                        <View
+                            style={{
+                                flex: 1
+                            }}
+                        >
+                            <Text style={{ ...FONTS.body3 }}>{item.prod_name} x{item.quantity}</Text>
+                            <Text style={{ ...FONTS.body3 }}>Order Status: {item.order_status}</Text>
+                        </View>
+                        
+                    </View>
 
-                {/* Status Info */}
-                <Text style={{ ...FONTS.body3 }}>{item.prod_name} x{item.quantity}</Text>
-                <Text style={{ ...FONTS.body2 }}>{item.order_status}</Text>
             </TouchableOpacity>
         )
 
@@ -84,41 +102,43 @@ const OrderStatus = ({ navigation }) => {
                     paddingHorizontal: SIZES.padding * 2,
                     paddingBottom: 30,
                 }}
-                numColumns={2}
             />
         )
     }
     return (
         <SafeAreaView style={styles.container}>
             <HeaderOrder navigation={navigation}></HeaderOrder>
-            {renderContent()}
+            <View
+                style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            >
+            </View>
+            <Text style={{ ...FONTS.h2 , alignItems: "center"}}>
+                    <Image
+                        source={icons.order}
+                        resizeMode="contain"
+                        style={{
+                            width: 25,
+                            height: 25,
+                        }}
+                    />
+                    <Text> My Orders</Text>
+                </Text>
+            {renderTable()}
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+    cartItemContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: SIZES.radius,
+        paddingHorizontal: SIZES.radius,
+        borderRadius: SIZES.radius,
+    },
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray5
-    },
-    inputContainer: {
-        flex: 1,
-        height: 50,
-        borderRadius: 10,
-        flexDirection: 'row',
-        backgroundColor: COLORS.light,
-        alignItems: 'center',
-        paddingHorizontal: 20,
-    },
-    shadow: {
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-        elevation: 1,
+        backgroundColor: COLORS.lightGray5,
     }
 })
 
