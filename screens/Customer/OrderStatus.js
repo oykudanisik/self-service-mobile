@@ -47,48 +47,66 @@ const OrderStatus = ({ navigation }) => {
     function renderTable() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
-                style={{ marginBottom: SIZES.padding * 2 }}
+                  style={{
+                    marginBottom: SIZES.padding * 2,
+                    width: "100%",
+                }}
                 onPress={() => navigation.navigate("Menu", {
                     item, scanned
                 })}
             >
-                 <View
+                <View
+                    style={{
+                        height: 100,
+                        backgroundColor: COLORS.lightGray4,
+                        ...styles.cartItemContainer
+                    }}
+                >
+                    <View
                         style={{
+                            width: 90,
                             height: 100,
-                            backgroundColor: COLORS.lightGray4,
-                            ...styles.cartItemContainer
+                            marginLeft: -10
                         }}
                     >
-                          <View
+                        <Image
+                            source={images.waiter}
+                            resizeMode="contain"
                             style={{
-                                width: 90,
-                                height: 100,
-                                marginLeft: -10
+                                width: "75%",
+                                height: "75%",
+                                position: 'absolute',
+                                borderRadius: 10,
+                                top: 10,
                             }}
-                        >
-                            <Image
-                                source={images.waiter}
-                                resizeMode="contain"
-                                style={{
-                                    width: "75%",
-                                    height: "75%",
-                                    position: 'absolute',
-                                    borderRadius: 10,
-                                    top: 10,
-                                }}
-                            />
-                        </View>
-                        {/* Food Info */}
+                        />
+                    </View>
+                    {/* Food Info */}
+                    <View
+                        style={{
+                            flex: 1
+                        }}
+                    >
+                        <Text style={{ ...FONTS.h4 }}>{item.prod_name}<Text style={{ ...FONTS.body3 }}> x{item.quantity}</Text> </Text>
                         <View
                             style={{
-                                flex: 1
+                                position: 'absolute',
+                                bottom: 0,
+                                height: 40,
+                                width: SIZES.width * 0.15,
+                                backgroundColor: COLORS.lightGray2,
+                                borderTopRightRadius: SIZES.radius,
+                                borderBottomLeftRadius: SIZES.radius,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                ...styles.shadow
                             }}
                         >
-                            <Text style={{ ...FONTS.body3 }}>{item.prod_name} x{item.quantity}</Text>
-                            <Text style={{ ...FONTS.body3 }}>Order Status: {item.order_status}</Text>
+                            <Text style={{ ...FONTS.body4 }}>{item.order_status}</Text>
                         </View>
-                        
                     </View>
+
+                </View>
 
             </TouchableOpacity>
         )
@@ -112,17 +130,17 @@ const OrderStatus = ({ navigation }) => {
                 style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
             >
             </View>
-            <Text style={{ ...FONTS.h2 , alignItems: "center"}}>
-                    <Image
-                        source={icons.order}
-                        resizeMode="contain"
-                        style={{
-                            width: 25,
-                            height: 25,
-                        }}
-                    />
-                    <Text> My Orders</Text>
-                </Text>
+            <Text style={{ ...FONTS.h2, alignItems: "center" }}>
+                <Image
+                    source={icons.order}
+                    resizeMode="contain"
+                    style={{
+                        width: 25,
+                        height: 25,
+                    }}
+                />
+                <Text> My Orders</Text>
+            </Text>
             {renderTable()}
         </SafeAreaView>
     );

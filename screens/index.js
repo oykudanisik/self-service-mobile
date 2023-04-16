@@ -9,6 +9,12 @@ import Register from './Authentication/Register'
 import ForgotPassword from './Authentication/ForgotPassword'
 import AuthenticationLayout from './Authentication/AuthenticationLayout'
 import Profile from './Customer/Profile'
+import MyCard from './Customer/MyCard'
+import AddCard from './Customer/AddCard'
+import Pay from './Customer/Pay'
+
+import Tables from './Waiter/Tables'
+
 export {
     Home,
     FoodItem,
@@ -20,5 +26,9 @@ export {
     Register,
     ForgotPassword,
     AuthenticationLayout,
-    Profile
+    Profile,
+    MyCard,
+    AddCard,
+    Pay,
+    Tables
 }

@@ -7,12 +7,16 @@ import FormInput from "./FormInput"
 import Header from "./Header"
 import HeaderInside from "./HeaderInside"
 import HeaderOrder from "./HeaderOrder"
+import HeaderWaiter from "./HeaderWaiter"
 
 import IconButton from "./IconButton"
 import Logo from "./Logo"
 import PhoneNumberInput from "./PhoneNumberInput"
 import StepperInput from "./StepperInput"
 import TextButton from "./TextButton"
+import RadioButton from "./RadioButton"
+import FormInputCheck from "./FormInputCheck"
+
 
 export {
     CardItem,
@@ -22,11 +26,14 @@ export {
     Header,
     HeaderInside,
     HeaderOrder,
+    HeaderWaiter,
     IconButton,
     Logo,
     PhoneNumberInput,
     StepperInput,
     TextButton,
     PrimaryButton,
-    SecondaryButton
+    SecondaryButton,
+    RadioButton,
+    FormInputCheck
 }

@@ -14,7 +14,6 @@ import Validation from "../../validation/Validation";
 import Route from "../../routes/Route";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 const Login = ({ navigation }) => {
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
@@ -32,9 +31,6 @@ const Login = ({ navigation }) => {
     }
 
     function authenticate() {
-        console.log("loginError", loginError)
-        console.log(email);
-        console.log(password);
         axios({
             method: 'post',
             url: Route.host + '/login',
@@ -43,13 +39,20 @@ const Login = ({ navigation }) => {
                 password: password
             }
         }).then((response) => {
-            console.log(response.data.status);
-            console.log(response)
             if (response.data.status == 200) {
+                let role = JSON.stringify(jwt(response.data.items));
+                role = JSON.parse(role).role;
                 setAccessToken(response.data.items);
                 setLoginError(false);
-                navigation.navigate("Home");
-            } 
+                console.log(role);
+                if (role == "waiter") {
+                    navigation.navigate("Tables");
+                } else if (role == "customer") {
+                    navigation.navigate("Home");
+                } else {
+                    setLoginError(true);
+                }
+            }
         }, (error) => {
             setLoginError(true);
             console.log(error);
