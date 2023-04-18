@@ -11,7 +11,7 @@ import {
     TouchableHighlight
 } from 'react-native';
 import Slider from '@react-native-community/slider'
-import { HeaderOrder } from '../../components';
+import { HeaderOrder, PrimaryButton } from '../../components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Route from '../../routes/Route';
@@ -21,6 +21,7 @@ import { images, SIZES, COLORS, FONTS, icons } from '../../constants'
 const OrderStatus = ({ navigation }) => {
     const [orderStatus, setOrderStatus] = React.useState();
     const [order, setOrder] = React.useState();
+    const [selectedCard, setSelectedCard] = React.useState(null)
 
     async function getOrderStatus() {
         let token = await AsyncStorage.getItem("accessToken");
@@ -28,7 +29,9 @@ const OrderStatus = ({ navigation }) => {
         token = JSON.parse(token);
         axios({
             method: "get",
-            url: Route.host + '/users/' + parseInt(token.uid) + '/orders',
+            // url: Route.host + '/users/' + parseInt(token.uid) + '/orders',
+            url: Route.host + '/users/' + 1 + '/orders',
+
         }).then(function (response) {
             setOrder(response.data.items)
             console.log(response.data.items)
@@ -47,13 +50,10 @@ const OrderStatus = ({ navigation }) => {
     function renderTable() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
-                  style={{
+                style={{
                     marginBottom: SIZES.padding * 2,
                     width: "100%",
                 }}
-                onPress={() => navigation.navigate("Menu", {
-                    item, scanned
-                })}
             >
                 <View
                     style={{
@@ -87,13 +87,14 @@ const OrderStatus = ({ navigation }) => {
                             flex: 1
                         }}
                     >
-                        <Text style={{ ...FONTS.h4 }}>{item.prod_name}<Text style={{ ...FONTS.body3 }}> x{item.quantity}</Text> </Text>
+                        <Text style={{ ...FONTS.h4 }}>{item.prod_name}<Text style={{ ...FONTS.body3 }}> x{item.count}</Text> </Text>
                         <View
                             style={{
                                 position: 'absolute',
-                                bottom: 0,
-                                height: 40,
-                                width: SIZES.width * 0.15,
+                                bottom: -30,
+                                right:5,
+                                height: 30,
+                                width: SIZES.width * 0.25,
                                 backgroundColor: COLORS.lightGray2,
                                 borderTopRightRadius: SIZES.radius,
                                 borderBottomLeftRadius: SIZES.radius,
@@ -102,7 +103,7 @@ const OrderStatus = ({ navigation }) => {
                                 ...styles.shadow
                             }}
                         >
-                            <Text style={{ ...FONTS.body4 }}>{item.order_status}</Text>
+                            <Text style={{ ...FONTS.body4 }}>Status: {item.order_status}</Text>
                         </View>
                     </View>
 
@@ -130,18 +131,12 @@ const OrderStatus = ({ navigation }) => {
                 style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
             >
             </View>
-            <Text style={{ ...FONTS.h2, alignItems: "center" }}>
-                <Image
-                    source={icons.order}
-                    resizeMode="contain"
-                    style={{
-                        width: 25,
-                        height: 25,
-                    }}
-                />
-                <Text> My Orders</Text>
-            </Text>
+            <Text style={{ ...FONTS.h2, textAlign:"center", alignItems: "center", justifyContent: "center", paddingTop:20  }}> My Orders</Text>
             {renderTable()}
+            <PrimaryButton
+                onPress={() => navigation.navigate("Pay", { selectedCard: selectedCard })}
+                title="PAY"
+            />
         </SafeAreaView>
     );
 };

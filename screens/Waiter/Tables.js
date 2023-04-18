@@ -25,17 +25,16 @@ const Tables = ({ navigation, route }) => {
     const toggleDialog2 = () => {
         setVisible2(!visible2);
     };
-    useEffect(() => {
-        var restId = "1";
-        let waiter_id = "17"
+    async function getWaiterTables() {
+        let token = await AsyncStorage.getItem("accessToken");
+        token = JSON.parse(token);
         axios({
             method: "get",
-            url: Route.host + '/restaurants/tables/' + restId + '/waiter/' + waiter_id,
+            url: Route.host + '/restaurants/tables/' + token.rest_id + '/waiter/' + token.uid,
         }).then(function (response) {
             setTables(response.data.items)
         });
-    }, []);
-
+    }
     function getTableOrderDetails(table_id) {
         toggleDialog2()
         console.log(table_id);
@@ -44,12 +43,12 @@ const Tables = ({ navigation, route }) => {
             method: "get",
             url: Route.host + '/restaurants/tables/' + restId + '/order/' + table_id,
         }).then(function (response) {
+            console.log(response.data.orders)
             setTableOrders(response.data.orders)
         }, (error) => {
             setTableOrders([{}])
         });
     }
-
     async function updateOrders(orderId) {
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
@@ -68,6 +67,12 @@ const Tables = ({ navigation, route }) => {
             console.log(error);
         });
     }
+
+    useEffect(() => {
+        getWaiterTables()
+    }, []);
+
+
     function renderRestaurantList() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
@@ -100,7 +105,7 @@ const Tables = ({ navigation, route }) => {
                         style={{
                             position: 'absolute',
                             bottom: "40%",
-                            right: "35%",
+                            right: "32%",
                             height: 40,
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -113,9 +118,9 @@ const Tables = ({ navigation, route }) => {
                     isVisible={visible2}
                     onBackdropPress={toggleDialog2}
                 >
-                    <Dialog.Title title="Order Details the Table" />
+                    <Dialog.Title title="Order Details of the Table" />
                     {
-                        tableOrders ?? tableOrders.map(({ order_status, prod_name, order_item_id }) => {
+                        tableOrders.map(({ order_status, prod_name, order_item_id }) => {
                             return (
                                 <View>
                                     <Text>{prod_name}</Text>
@@ -137,7 +142,7 @@ const Tables = ({ navigation, route }) => {
         return (
             <FlatList
                 data={tables}
-                keyExtractor={item => `${item.prod_id}`}
+                keyExtractor={item => `${item.table_no}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingHorizontal: SIZES.padding * 2,

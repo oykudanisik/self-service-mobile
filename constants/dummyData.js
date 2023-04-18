@@ -2,13 +2,13 @@
 const myCards = [
     {
         id: 1,
-        name: "Master Card",
+        name: "My Master Card",
         icon: require("../assets/icons/mastercard.png"),
         card_no: "1234"
     },
     {
         id: 2,
-        name: "Visa",
+        name: "My Visa",
         icon: require("../assets/icons/visa.png"),
         card_no: "12345"
     }

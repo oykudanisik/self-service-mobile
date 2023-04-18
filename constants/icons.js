@@ -37,6 +37,8 @@ export const correct = require("../assets/icons/correct.png");
 export const cancel = require("../assets/icons/cancel.png");
 export const order = require("../assets/icons/order.png");
 export const refresh = require("../assets/icons/refresh.png");
+export const check_on = require("../assets/icons/check_on.png");
+export const check_off = require("../assets/icons/check_off.png");
 
 
 export default {
@@ -78,5 +80,7 @@ export default {
     cancel,
     correct,
     order,
-    refresh
+    refresh,
+    check_on,
+    check_off
 }

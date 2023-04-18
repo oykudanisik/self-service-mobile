@@ -20,15 +20,27 @@ import {
     HeaderOrder,
     CardItem,
     FooterTotal,
-    PrimaryButton
+    PrimaryButton,
+    FormInput,
+    FormInputCheck,
+    RadioButton
 } from "../../components"
 import { order } from '../../constants/icons';
 
 const Pay = ({ navigation, route }) => {
-
+    const [cardNumber, setCardNumber] = React.useState("")
+    const [cardNumberError, setCardNumberError] = React.useState("")
+    const [cardName, setCardName] = React.useState("")
+    const [cardNameError, setCardNameError] = React.useState("")
+    const [expiryDate, setExpiryDate] = React.useState("")
+    const [expiryDateError, setExpiryDateError] = React.useState("")
+    const [cvv, setCvv] = React.useState("")
+    const [cvvError, setCvvError] = React.useState("")
     const [selectedCard, setSelectedCard] = React.useState(null)
     const [order, setOrder] = React.useState([{}]);
     const [totalPrice, setTotalPrice] = React.useState(0);
+    const [isRemember, setIsRemember] = React.useState(false)
+
 
     async function getOrderTotal() {
         let restId = await AsyncStorage.getItem("restaurantId");
@@ -42,7 +54,7 @@ const Pay = ({ navigation, route }) => {
             console.log(response.data.items)
             let price = 0;
             response.data.items.map(item =>
-                price += item.price
+                price += item.price * item.count
             )
             setTotalPrice(price)
         }, (error) => {
@@ -57,31 +69,7 @@ const Pay = ({ navigation, route }) => {
 
     }, [])
 
-    // Handler
 
-    function selectCardHandler(item) {
-        console.log(item)
-        setSelectedCard(item)
-    }
-
-    // Render
-
-    function renderMyCards() {
-        return (
-            <View>
-                {dummyData.myCards.map((item, index) => {
-                    return (
-                        <CardItem
-                            key={`MyCard-${item.id}`}
-                            item={item}
-                            isSelected={`${selectedCard?.key}-${selectedCard?.id}` == `MyCard-${item.id}`}
-                            onPress={() => selectCardHandler({ ...item, key: "MyCard" })}
-                        />
-                    )
-                })}
-            </View>
-        )
-    }
     function renderOrderDetails() {
         return (
             <View>
@@ -90,11 +78,11 @@ const Pay = ({ navigation, route }) => {
                         padding: SIZES.padding,
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
-                        backgroundColor: COLORS.white
+                        top:100
                     }}
                 >
                     {
-                        order.map(({ order_status, prod_name, order_item_id, price, quantity }) => {
+                        order.map(({ order_status, prod_name, order_item_id, price, count }) => {
                             return (
                                 <View
                                     style={{
@@ -103,8 +91,8 @@ const Pay = ({ navigation, route }) => {
                                         paddingBottom: SIZES.padding
                                     }}
                                 >
-                                    <Text style={{ flex: 1, ...FONTS.h2 }}>{prod_name}</Text>
-                                    <Text style={{ ...FONTS.h2 }}>{price}</Text>
+                                    <Text style={{ flex: 1, ...FONTS.h4 }}>{prod_name}</Text>
+                                    <Text style={{ ...FONTS.h4 }}>{price*count} TL</Text>
                                 </View>
                             )
                         })
@@ -123,13 +111,127 @@ const Pay = ({ navigation, route }) => {
             />
         )
     }
+    function renderForm() {
+        return (
+            <View
+                style={{
+                    marginTop: SIZES.padding * 2
+                }}
+            >
+                {/* Card Number */}
+                <FormInput
+                    label="Card Number"
+                    keyboardType="number-pad"
+                    maxLength={19}
+                    value={cardNumber}
+                    onChange={(value) => {
+                        setCardNumber(value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim())
+                        validation.validateInput(value, 19, setCardNumberError)
+                    }}
+                    errorMsg={cardNumberError}
+                    appendComponent={
+                        <FormInputCheck
+                            value={cardNumber}
+                            error={cardNumberError}
+                        />
+                    }
+                />
+
+                {/* Cardholder Name */}
+                <FormInput
+                    label="Cardholder Name"
+                    value={cardName}
+                    containerStyle={{
+                        marginTop: SIZES.radius,
+                        
+                    }}
+                    onChange={(value) => {
+                        validation.validateInput(value, 1, setCardNameError)
+                        setCardName(value)
+                    }}
+                    errorMsg={cardNameError}
+                    appendComponent={
+                        <FormInputCheck
+                            value={cardName}
+                            error={cardNameError}
+                            
+                        />
+                    }
+                />
+
+                {/* Expiry Date / CVV */}
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        marginTop: SIZES.radius
+                    }}
+                >
+                    <FormInput
+                        label="Expiry Date"
+                        value={expiryDate}
+                        placeholder="MM/YY"
+                        maxLength={5}
+                        containerStyle={{
+                            flex: 1
+                            
+                        }}
+                        onChange={(value) => {
+                            validation.validateInput(value, 5, setExpiryDateError)
+                            setExpiryDate(value)
+                        }}
+                        appendComponent={
+                            <FormInputCheck
+                                value={expiryDate}
+                                error={expiryDateError}
+                            />
+                        }
+                    />
+
+                    <FormInput
+                        label="CVV"
+                        value={cvv}
+                        maxLength={3}
+                        containerStyle={{
+                            flex: 1,
+                            marginLeft: SIZES.radius
+                        }}
+                        onChange={(value) => {
+                            validation.validateInput(value, 3, setCvvError)
+                            setCvv(value)
+                        }}
+                        appendComponent={
+                            <FormInputCheck
+                                value={cvv}
+                                error={cvvError}
+                            />
+                        }
+                    />
+                </View>
+
+                {/* Remember */}
+                <View
+                    style={{
+                        alignItems: 'flex-start',
+                        marginTop: SIZES.padding*2.5
+                    }}
+                >
+                    <RadioButton
+                        label="Remember this card details."
+                        isSelected={isRemember}
+                        onPress={() => setIsRemember(!isRemember)}
+                    />
+                </View>
+            </View>
+        )
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>
             {/* Header */}
             <HeaderOrder navigation={navigation}></HeaderOrder>
 
-            {/* Cards */}
+            {/* Card */}
             <KeyboardAwareScrollView
                 keyboardDismissMode="on-drag"
                 extraScrollHeight={-200}
@@ -139,15 +241,14 @@ const Pay = ({ navigation, route }) => {
                     paddingBottom: 20
                 }}
             >
-                {/* My Cards */}
-                {renderMyCards()}
+                {renderForm()}
                 {renderOrderDetails()}
             </KeyboardAwareScrollView>
 
             {/* Footer */}
             {renderFooter()}
             <PrimaryButton
-                onPress={() => placeOrder()}
+                onPress={() => navigation.navigate("Pay", { selectedCard: selectedCard })}
                 title="PAY"
             />
         </SafeAreaView>
