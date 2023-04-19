@@ -6,8 +6,9 @@ import {
 } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
+import { CartQuantityButton } from '../components'
 
-function HeaderOrder({ navigation }) {
+function HeaderOrder({ navigation, orderCount }) {
     return (
         <View style={{ flexDirection: 'row', height: "13%", marginBottom: 10 }}>
             <TouchableOpacity
@@ -42,21 +43,19 @@ function HeaderOrder({ navigation }) {
                 </Image>
             </View>
 
+
             <TouchableOpacity
                 onPress={() => navigation.navigate("OrderStatus")}
                 style={{
                     width: 50,
                     paddingRight: SIZES.padding * 2,
-                    justifyContent: 'center'
+                    justifyContent: "center",
                 }}
             >
-                <Image
-                    source={icons.order}
-                    resizeMode="contain"
-                    style={{
-                        width: 25,
-                        height: 25,
-                    }}
+                <CartQuantityButton
+                    quantity={3}
+                    onPress={() => navigation.navigate("OrderStatus")}
+                    icon={icons.order}
                 />
             </TouchableOpacity>
         </View>

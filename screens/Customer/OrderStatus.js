@@ -22,6 +22,9 @@ const OrderStatus = ({ navigation }) => {
     const [orderStatus, setOrderStatus] = React.useState();
     const [order, setOrder] = React.useState();
     const [selectedCard, setSelectedCard] = React.useState(null)
+    const [ordersCount, setOrdersCount] = React.useState()
+
+    let orderCount = 0;
 
     async function getOrderStatus() {
         let token = await AsyncStorage.getItem("accessToken");
@@ -29,12 +32,14 @@ const OrderStatus = ({ navigation }) => {
         token = JSON.parse(token);
         axios({
             method: "get",
-            // url: Route.host + '/users/' + parseInt(token.uid) + '/orders',
-            url: Route.host + '/users/' + 1 + '/orders',
-
+            url: Route.host + '/users/' + parseInt(token.uid) + '/orders',
         }).then(function (response) {
             setOrder(response.data.items)
-            console.log(response.data.items)
+            response.data.items.map(item=>{
+                orderCount++;
+            })
+            setOrdersCount(orderCount)
+            console.log(orderCount)
         });
     }
 
@@ -70,7 +75,7 @@ const OrderStatus = ({ navigation }) => {
                         }}
                     >
                         <Image
-                            source={images.waiter}
+                            source={icons.order}
                             resizeMode="contain"
                             style={{
                                 width: "75%",
@@ -92,9 +97,9 @@ const OrderStatus = ({ navigation }) => {
                             style={{
                                 position: 'absolute',
                                 bottom: -30,
-                                right:5,
+                                right:10,
                                 height: 30,
-                                width: SIZES.width * 0.25,
+                                width: SIZES.width * 0.35,
                                 backgroundColor: COLORS.lightGray2,
                                 borderTopRightRadius: SIZES.radius,
                                 borderBottomLeftRadius: SIZES.radius,
@@ -103,7 +108,7 @@ const OrderStatus = ({ navigation }) => {
                                 ...styles.shadow
                             }}
                         >
-                            <Text style={{ ...FONTS.body4 }}>Status: {item.order_status}</Text>
+                            <Text style={{ ...FONTS.body4 }}>Order Status: {item.order_status}</Text>
                         </View>
                     </View>
 
@@ -126,7 +131,7 @@ const OrderStatus = ({ navigation }) => {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <HeaderOrder navigation={navigation}></HeaderOrder>
+            <HeaderOrder navigation={navigation} orderCount={ordersCount}></HeaderOrder>
             <View
                 style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
             >

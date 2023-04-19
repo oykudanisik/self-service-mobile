@@ -78,11 +78,11 @@ const Pay = ({ navigation, route }) => {
                         padding: SIZES.padding,
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
-                        top:100
+                        top:40
                     }}
                 >
                     {
-                        order.map(({ order_status, prod_name, order_item_id, price, count }) => {
+                        order.map(({  prod_name, price, count }) => {
                             return (
                                 <View
                                     style={{
@@ -91,8 +91,8 @@ const Pay = ({ navigation, route }) => {
                                         paddingBottom: SIZES.padding
                                     }}
                                 >
-                                    <Text style={{ flex: 1, ...FONTS.h4 }}>{prod_name}</Text>
-                                    <Text style={{ ...FONTS.h4 }}>{price*count} TL</Text>
+                                    <Text style={{ flex: 1, ...FONTS.h5 }}>{prod_name}</Text>
+                                    <Text style={{ ...FONTS.h5 }}>{price*count} TL</Text>
                                 </View>
                             )
                         })
@@ -101,7 +101,7 @@ const Pay = ({ navigation, route }) => {
             </View>
         )
     }
-    function renderFooter() {
+    function renderFooter() { 
         return (
             <FooterTotal
                 subTotal={37.97}
@@ -248,7 +248,7 @@ const Pay = ({ navigation, route }) => {
             {/* Footer */}
             {renderFooter()}
             <PrimaryButton
-                onPress={() => navigation.navigate("Pay", { selectedCard: selectedCard })}
+                onPress={() => navigation.navigate("PaymentSuccess")}
                 title="PAY"
             />
         </SafeAreaView>

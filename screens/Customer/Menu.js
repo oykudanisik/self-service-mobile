@@ -17,7 +17,7 @@ import { icons, images, SIZES, COLORS, FONTS } from '../../constants'
 import { HeaderInside } from '../../components';
 import Route from "../../routes/Route";
 
-const Menu = ({ navigation, route }) => {
+const Menu = ({ navigation, count }) => {
     const [categories, setCategories] = React.useState([]);
     const [selectedCategory, setSelectedCategory] = React.useState(null);
     const [products, setProducts] = React.useState();

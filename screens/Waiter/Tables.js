@@ -104,15 +104,17 @@ const Tables = ({ navigation, route }) => {
                     <View
                         style={{
                             position: 'absolute',
-                            bottom: "40%",
+                            top: "100%",
                             right: "32%",
                             height: 40,
                             alignItems: 'center',
                             justifyContent: 'center',
                         }}
                     >
-                        <Text style={{ ...FONTS.body2 }}>Table {item.table_no}</Text>
+                    <Text style={{ ...FONTS.body2 }}>Table {item.table_no}</Text>
+
                     </View>
+
                 </View>
                 <Dialog
                     isVisible={visible2}
@@ -125,10 +127,13 @@ const Tables = ({ navigation, route }) => {
                                 <View>
                                     <Text>{prod_name}</Text>
                                     <Text>Order Status: {order_status}</Text>
+
                                     <Dialog.Actions>
-                                        <Dialog.Button title="DONE" onPress={() =>
-                                            updateOrders(order_item_id)
-                                        } />
+                                        {order_status == "Completed" ?
+                                            <Dialog.Button title="DONE" onPress={() =>
+                                                updateOrders(order_item_id)
+                                            } />
+                                        : ""}
                                     </Dialog.Actions>
                                 </View>
                             )

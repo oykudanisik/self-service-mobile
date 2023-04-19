@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   View,
   TouchableOpacity,
@@ -10,19 +10,43 @@ import {
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import Route from '../../routes/Route';
 import { icons, COLORS, SIZES, FONTS, images } from "../../constants";
 import { Header } from "../../components";
 
 const Profile = ({ navigation }) => {
+
+  const [userDetails, setUserDetails] = useState({});
+  const [userProfilePicture, setUserProfilePicture] = useState("");
+
+  async function getUserDetails() {
+    let token = await AsyncStorage.getItem("accessToken");
+    console.log(token);
+    token = JSON.parse(token);
+    axios({
+        method: "get",
+        url: Route.host + '/users/' + parseInt(token.uid)
+
+    }).then(function (response) {
+        setUserDetails(response.data.items[0]);
+        setUserProfilePicture(response.data.items[0].type+"pp");
+        console.log(userProfilePicture)
+    });
+}
+useEffect(() => {
+  getUserDetails();
+}, [])
   return (
     <SafeAreaView>
       <Header navigation={navigation}></Header>
       <View style={styles.container}>
         <Image style={styles.header} source={images.bground} />
-        <Image style={styles.avatar} source={images.pp} />
+        <Image style={styles.avatar} source={images.waiterpp} />
 
         <View style={styles.body}>
-          <Text style={styles.name}>Team 2</Text>
+          <Text style={styles.name}>{userDetails.user_name}</Text>
           <TouchableOpacity style={styles.buttonContainer}>
             <Text style={{ color: COLORS.white }}>Edit Profile</Text>
           </TouchableOpacity>

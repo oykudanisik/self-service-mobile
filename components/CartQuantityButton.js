@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, SIZES, icons } from '../constants';
 
-const CartQuantityButton = ({ containerStyle, iconStyle, quantity, onPress }) => {
+const CartQuantityButton = ({ containerStyle, iconStyle, quantity, onPress, icon }) => {
     return (
         <TouchableOpacity
             style={{
@@ -22,10 +22,10 @@ const CartQuantityButton = ({ containerStyle, iconStyle, quantity, onPress }) =>
             onPress={onPress}
         >
             <Image
-                source={icons.cart}
+                source={icon}
                 style={{
-                    width: 20,
-                    height: 20,
+                    width: 25,
+                    height: 25,
                     tintColor: COLORS.black,
                     ...iconStyle
                 }}

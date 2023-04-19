@@ -2,8 +2,8 @@ import React from "react";
 import { View, Button, TouchableOpacity, Image } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
-
-const HeaderInside = ({ navigation }) => {
+import { CartQuantityButton } from '../components'
+const HeaderInside = ({ navigation, count }) => {
   return (
     <View style={{ flexDirection: "row", height: "13%", marginBottom: 10 }}>
       <TouchableOpacity
@@ -22,6 +22,7 @@ const HeaderInside = ({ navigation }) => {
             height: 25,
           }}
         />
+
       </TouchableOpacity>
 
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -45,13 +46,10 @@ const HeaderInside = ({ navigation }) => {
           justifyContent: "center",
         }}
       >
-        <Image
-          source={icons.basket}
-          resizeMode="contain"
-          style={{
-            width: 25,
-            height: 25,
-          }}
+        <CartQuantityButton
+          quantity={3}
+          onPress={() => navigation.navigate("Cart")}
+          icon={icons.basket}
         />
       </TouchableOpacity>
     </View>
