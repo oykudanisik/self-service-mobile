@@ -3,7 +3,7 @@ import { View, Button, TouchableOpacity, Image } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import { CartQuantityButton } from '../components'
-const HeaderInside = ({ navigation, count }) => {
+const HeaderInside = ({ navigation, cartCount }) => {
   return (
     <View style={{ flexDirection: "row", height: "13%", marginBottom: 10 }}>
       <TouchableOpacity
@@ -47,7 +47,7 @@ const HeaderInside = ({ navigation, count }) => {
         }}
       >
         <CartQuantityButton
-          quantity={3}
+          quantity={cartCount}
           onPress={() => navigation.navigate("Cart")}
           icon={icons.basket}
         />

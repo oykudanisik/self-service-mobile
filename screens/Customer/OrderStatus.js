@@ -71,7 +71,7 @@ const OrderStatus = ({ navigation }) => {
                         style={{
                             width: 90,
                             height: 100,
-                            marginLeft: -10
+                            marginLeft: -10,
                         }}
                     >
                         <Image
@@ -113,7 +113,7 @@ const OrderStatus = ({ navigation }) => {
                     </View>
 
                 </View>
-
+              
             </TouchableOpacity>
         )
 

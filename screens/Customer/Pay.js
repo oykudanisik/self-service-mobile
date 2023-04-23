@@ -36,6 +36,7 @@ const Pay = ({ navigation, route }) => {
     const [expiryDateError, setExpiryDateError] = React.useState("")
     const [cvv, setCvv] = React.useState("")
     const [cvvError, setCvvError] = React.useState("")
+    const [tip, setTip] = React.useState("")
     const [selectedCard, setSelectedCard] = React.useState(null)
     const [order, setOrder] = React.useState([{}]);
     const [totalPrice, setTotalPrice] = React.useState(0);
@@ -62,13 +63,39 @@ const Pay = ({ navigation, route }) => {
             console.log(error);
         });
     }
+
+    async function tipWaiter(tip) {
+        let restId = await AsyncStorage.getItem("restaurantId");
+        let accessToken = await AsyncStorage.getItem("accessToken");
+        let userId = JSON.parse(accessToken);
+        console.log(restId);
+        console.log(userId.uid);
+
+        axios({
+          method: "post",
+          url: Route.host + "/restaurants/waiters/tip",
+          data: {
+            rest_id: parseInt(restId),
+            user_id: parseInt(userId.uid),
+            waiter_id: 5,
+            tip:tip
+          },
+        }).then(
+          (response) => {
+            console.log(response);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+        setOpenDelete(false);
+    }
     React.useEffect(() => {
         let { selectedCard } = route.params
         setSelectedCard(selectedCard)
         getOrderTotal()
 
     }, [])
-
 
     function renderOrderDetails() {
         return (
@@ -78,11 +105,11 @@ const Pay = ({ navigation, route }) => {
                         padding: SIZES.padding,
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
-                        top:40
+                        top: 40
                     }}
                 >
                     {
-                        order.map(({  prod_name, price, count }) => {
+                        order.map(({ prod_name, price, count }) => {
                             return (
                                 <View
                                     style={{
@@ -92,7 +119,7 @@ const Pay = ({ navigation, route }) => {
                                     }}
                                 >
                                     <Text style={{ flex: 1, ...FONTS.h5 }}>{prod_name}</Text>
-                                    <Text style={{ ...FONTS.h5 }}>{price*count} TL</Text>
+                                    <Text style={{ ...FONTS.h5 }}>{price * count} TL</Text>
                                 </View>
                             )
                         })
@@ -101,7 +128,7 @@ const Pay = ({ navigation, route }) => {
             </View>
         )
     }
-    function renderFooter() { 
+    function renderFooter() {
         return (
             <FooterTotal
                 subTotal={37.97}
@@ -143,7 +170,7 @@ const Pay = ({ navigation, route }) => {
                     value={cardName}
                     containerStyle={{
                         marginTop: SIZES.radius,
-                        
+
                     }}
                     onChange={(value) => {
                         validation.validateInput(value, 1, setCardNameError)
@@ -154,7 +181,7 @@ const Pay = ({ navigation, route }) => {
                         <FormInputCheck
                             value={cardName}
                             error={cardNameError}
-                            
+
                         />
                     }
                 />
@@ -173,7 +200,7 @@ const Pay = ({ navigation, route }) => {
                         maxLength={5}
                         containerStyle={{
                             flex: 1
-                            
+
                         }}
                         onChange={(value) => {
                             validation.validateInput(value, 5, setExpiryDateError)
@@ -212,7 +239,7 @@ const Pay = ({ navigation, route }) => {
                 <View
                     style={{
                         alignItems: 'flex-start',
-                        marginTop: SIZES.padding*2.5
+                        marginTop: SIZES.padding * 2.5
                     }}
                 >
                     <RadioButton
@@ -221,6 +248,17 @@ const Pay = ({ navigation, route }) => {
                         onPress={() => setIsRemember(!isRemember)}
                     />
                 </View>
+                <FormInput
+                    label="Tip to waiter"
+                    value={tip}
+                    containerStyle={{
+                        flex: 1,
+                        paddingTop: 20
+                    }}
+                    onChange={(value) => {
+                        setTip(value)
+                    }}
+                />
             </View>
         )
     }
@@ -248,7 +286,10 @@ const Pay = ({ navigation, route }) => {
             {/* Footer */}
             {renderFooter()}
             <PrimaryButton
-                onPress={() => navigation.navigate("PaymentSuccess")}
+                onPress={() => {
+                    navigation.navigate("PaymentSuccess")
+                    tipWaiter()
+                }}
                 title="PAY"
             />
         </SafeAreaView>

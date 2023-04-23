@@ -18,14 +18,15 @@ import { HeaderInside } from '../../components';
 import Route from "../../routes/Route";
 
 const Menu = ({ navigation, count }) => {
-    const [categories, setCategories] = React.useState([]);
+    const [categories, setCategories] = React.useState([{}]);
     const [selectedCategory, setSelectedCategory] = React.useState(null);
-    const [products, setProducts] = React.useState();
+    const [products, setProducts] = React.useState([{}]);
     const [scanned, setScanned] = React.useState(true);
     const [restaurantName, setRestaurantName] = React.useState("");
-
+    const [cartCount,setCartCount] = React.useState();
     useEffect(() => {
         var restId = "";
+        setCartCount(AsyncStorage.getItem("item").length);
         console.log(AsyncStorage.getItem("accessToken"));
         if (scanned) {
             restId = "1";
@@ -200,7 +201,7 @@ const Menu = ({ navigation, count }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <HeaderInside navigation={navigation}></HeaderInside>
+            <HeaderInside navigation={navigation} cartCount={cartCount}></HeaderInside>
             {renderMainCategories()}
             {renderRestaurantList()}
         </SafeAreaView>

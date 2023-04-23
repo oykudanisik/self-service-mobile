@@ -21,10 +21,7 @@ const Tables = ({ navigation, route }) => {
     const [tables, setTables] = React.useState([{}]);
     const [tableOrders, setTableOrders] = React.useState([{}]);
 
-    const [visible2, setVisible2] = useState(false);
-    const toggleDialog2 = () => {
-        setVisible2(!visible2);
-    };
+
     async function getWaiterTables() {
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
@@ -56,7 +53,7 @@ const Tables = ({ navigation, route }) => {
             console.log(orderId)
         axios({
             method: 'post',
-            url: Route.host + '/restaurants/alterOrder',
+            url: Route.host + '/restaurants/orders/alter',
             data: {
                 order_status: "done",
                 rest_id: 1,
@@ -111,35 +108,12 @@ const Tables = ({ navigation, route }) => {
                             justifyContent: 'center',
                         }}
                     >
-                    <Text style={{ ...FONTS.body2 }}>Table {item.table_no}</Text>
+                        <Text style={{ ...FONTS.body2 }}>Table {item.table_no}</Text>
 
                     </View>
 
                 </View>
-                <Dialog
-                    isVisible={visible2}
-                    onBackdropPress={toggleDialog2}
-                >
-                    <Dialog.Title title="Order Details of the Table" />
-                    {
-                        tableOrders.map(({ order_status, prod_name, order_item_id }) => {
-                            return (
-                                <View>
-                                    <Text>{prod_name}</Text>
-                                    <Text>Order Status: {order_status}</Text>
 
-                                    <Dialog.Actions>
-                                        {order_status == "Completed" ?
-                                            <Dialog.Button title="DONE" onPress={() =>
-                                                updateOrders(order_item_id)
-                                            } />
-                                        : ""}
-                                    </Dialog.Actions>
-                                </View>
-                            )
-                        })
-                    }
-                </Dialog>
             </TouchableOpacity>
 
         )
