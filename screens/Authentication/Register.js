@@ -135,6 +135,7 @@ const Register = ({ navigation }) => {
 
                 <PhoneNumberInput
                     label="Phone Number"
+                    country={'tr'}
                     containerStyle={{
                         marginTop: SIZES.radius,
                     }}

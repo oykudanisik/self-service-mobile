@@ -23,20 +23,32 @@ const Menu = ({ navigation, count }) => {
     const [products, setProducts] = React.useState([{}]);
     const [scanned, setScanned] = React.useState(true);
     const [restaurantName, setRestaurantName] = React.useState("");
-    const [cartCount,setCartCount] = React.useState();
+    let cartCount = 0;
+
+    async function getItemCount() {
+        cartList = await AsyncStorage.getItem("item")
+        console.log("cartList", cartList)
+        // cartList = JSON.parse(cartList);
+        // cartList.forEach(item =>
+        //     cartCount++
+        // );
+    }
     useEffect(() => {
+        getItemCount()
         var restId = "";
-        setCartCount(AsyncStorage.getItem("item").length);
-        console.log(AsyncStorage.getItem("accessToken"));
+        var tableId = "";
         if (scanned) {
             restId = "1";
-
+            tableId = "5"
         } else {
             restId = "1";
+            tableId = "5"
         }
         AsyncStorage.setItem("restaurantId", restId);
-        const productsUrl = Route.host + "/restaurants/" + restId + "/products"
-        const categoriesUrl = Route.host + "/restaurants/" + restId + "/categories";
+        AsyncStorage.setItem("tableId", tableId);
+
+        const productsUrl = Route.host + "/restaurants/products?resId=" + restId
+        const categoriesUrl = Route.host + "/restaurants/categories?resId=" + restId;
 
         const productRequest = axios.get(productsUrl);
         const categoriesRequest = axios.get(categoriesUrl);
@@ -63,8 +75,7 @@ const Menu = ({ navigation, count }) => {
         axios({
             method: "get",
             url:
-                Route.host + "/restaurants/" + restId + "/categories/" +
-                category.cat_id + "/products",
+                Route.host + '/restaurants/categories/products?resId=' + restId + '&catId=' + category.cat_id,
         }).then(function (response) {
             console.log(response.data.items);
             setProducts(response.data.items);

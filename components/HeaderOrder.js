@@ -8,7 +8,8 @@ import {
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 import { CartQuantityButton } from '../components'
 
-function HeaderOrder({ navigation, orderCount }) {
+function HeaderOrder({ navigation, ordersCount }) {
+    console.log(ordersCount);
     return (
         <View style={{ flexDirection: 'row', height: "13%", marginBottom: 10 }}>
             <TouchableOpacity
@@ -53,7 +54,7 @@ function HeaderOrder({ navigation, orderCount }) {
                 }}
             >
                 <CartQuantityButton
-                    quantity={3}
+                    quantity={ordersCount}
                     onPress={() => navigation.navigate("OrderStatus")}
                     icon={icons.order}
                 />

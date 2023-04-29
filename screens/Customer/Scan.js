@@ -13,8 +13,6 @@ export default function Scan({ navigation }) {
   const [restaurantName, setRestaurantName] = useState(null);
 
   const [tableId, setTableId] = useState(null);
-
-
   const askForCameraPermission = () => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -29,10 +27,13 @@ export default function Scan({ navigation }) {
 
   useEffect(() => {
     AsyncStorage.setItem("tableId",tableId);
+    AsyncStorage.setItem("restaurantId",restaurantId);
+
     if (scanned) {
+      console.log("hehehe",restaurantId);
+      console.log("xxx",tableId);
       navigation.navigate("Menu", {
         restaurantId,
-        restaurantName,
         tableId,
         scanned,
       });
@@ -43,9 +44,9 @@ export default function Scan({ navigation }) {
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
     setText(data)
-    setRestaurantId(JSON.parse(data).restaurantId);
-    setRestaurantName(JSON.parse(data).restaurantName)
-    setTableId(JSON.parse(data).tableId);
+    console.log(JSON.parse(data).rest_id);
+    setRestaurantId(JSON.parse(data).rest_id);
+    setTableId(JSON.parse(data).table_no);
   };
 
   // Check permissions and return the screens

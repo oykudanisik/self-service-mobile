@@ -20,25 +20,31 @@ import Route from "../../routes/Route";
 const Tables = ({ navigation, route }) => {
     const [tables, setTables] = React.useState([{}]);
     const [tableOrders, setTableOrders] = React.useState([{}]);
+    const [visible2, setVisible2] = useState(false);
 
-
+    const toggleDialog2 = () => {
+        setVisible2(!visible2);
+    };
     async function getWaiterTables() {
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
         axios({
             method: "get",
-            url: Route.host + '/restaurants/tables/' + token.rest_id + '/waiter/' + token.uid,
+            url: Route.host + '/restaurants/waiters/tables/?resId=' + token.rest_id +'&waiterId=' +token.uid
         }).then(function (response) {
             setTables(response.data.items)
         });
     }
-    function getTableOrderDetails(table_id) {
+   async function getTableOrderDetails(table_id) {
+        let token = await AsyncStorage.getItem("accessToken");
+        token = JSON.parse(token);
         toggleDialog2()
+        console.log(token.rest_id);
         console.log(table_id);
-        var restId = "1";
+
         axios({
             method: "get",
-            url: Route.host + '/restaurants/tables/' + restId + '/order/' + table_id,
+            url: Route.host + '/restaurants/tables/orders/?resId=' + token.rest_id +'&tableId=' + table_id
         }).then(function (response) {
             console.log(response.data.orders)
             setTableOrders(response.data.orders)
@@ -113,7 +119,29 @@ const Tables = ({ navigation, route }) => {
                     </View>
 
                 </View>
-
+                <Dialog
+                    isVisible={visible2}
+                    onBackdropPress={toggleDialog2}
+                >
+                    <Dialog.Title title="Order Details of the Table" />
+                    {
+                        tableOrders.map(({ order_status, prod_name, order_item_id }) => {
+                            return (
+                                <View>
+                                    <Text>{prod_name}</Text>
+                                    <Text>Order Status: {order_status}</Text>
+                                    <Dialog.Actions>
+                                        {order_status == "Completed" ?
+                                            <Dialog.Button title="DONE" onPress={() =>
+                                                updateOrders(order_item_id)
+                                            } />
+                                        : ""}
+                                    </Dialog.Actions>
+                                </View>
+                            )
+                        })
+                    }
+                </Dialog>
             </TouchableOpacity>
 
         )

@@ -12,6 +12,7 @@ import Profile from './Profile/Profile'
 import MyCard from './Customer/MyCard'
 import AddCard from './Customer/AddCard'
 import Pay from './Customer/Pay'
+import Loading from './Customer/Loading'
 import PaymentSuccess from './Customer/PaymentSuccess'
 
 import Tables from './Waiter/Tables'
@@ -33,6 +34,7 @@ export {
     AddCard,
     Pay,
     PaymentSuccess,
+    Loading,
     Tables,
     OnBoarding
 }

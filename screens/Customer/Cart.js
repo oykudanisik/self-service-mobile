@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import {
     View,
@@ -43,9 +43,6 @@ const Cart = ({ navigation }) => {
         deneme();
     }, [myCartList])
 
-    React.useEffect(() => {
-    }, [])
-
     async function placeOrder() {
         let token = await AsyncStorage.getItem("accessToken");
         console.log(token);
@@ -82,19 +79,6 @@ const Cart = ({ navigation }) => {
         });
     }
 
-    async function getOrderStatus() {
-        let restId = await AsyncStorage.getItem("restaurantId");
-        axios({
-            method: 'get',
-            url: Route.host + '/restaurants/' + restId + '/orders/' + orderId
-        }).then((response) => {
-            //set the returned order status to orderStatus
-            console.log(response);
-            setOrderStatus(response);
-        }, (error) => {
-            console.log(error);
-        });
-    }
 
     async function updateQuantityHandler(newQty, id) {
         if (newQty < 1) {
@@ -230,7 +214,6 @@ const Cart = ({ navigation }) => {
                 subTotal={37.97}
                 shippingFee={0.00}
                 total={totalPrice}
-                onPress={() => navigation.navigate("Home")}
             />
         )
     }
@@ -238,7 +221,7 @@ const Cart = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {/* Header */}
-            <HeaderOrder navigation={navigation}></HeaderOrder>
+            <HeaderOrder navigation={navigation} ></HeaderOrder>
             <View
                 style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
             >
@@ -260,7 +243,11 @@ const Cart = ({ navigation }) => {
             {/* Footer */}
             {renderFooter()}
             <PrimaryButton
-                onPress={() => placeOrder()}
+                onPress={() => {
+                    placeOrder();
+                    // toggleDialog2();
+                    navigation.navigate("OrderStatus")
+                }}
                 title="ORDER"
             />
         </SafeAreaView>

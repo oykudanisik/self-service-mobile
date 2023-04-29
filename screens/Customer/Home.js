@@ -22,7 +22,7 @@ const Home = ({ navigation, route }) => {
     useEffect(() => {
         axios({
             method: "get",
-            url: Route.host + '/restaurants',
+            url: Route.host + '/restaurants/top',
         }).then(function (response) {
             const rest = response.data.items;
             setRestaurants(rest);

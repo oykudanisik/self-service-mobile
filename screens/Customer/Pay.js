@@ -42,19 +42,69 @@ const Pay = ({ navigation, route }) => {
     const [totalPrice, setTotalPrice] = React.useState(0);
     const [isRemember, setIsRemember] = React.useState(false)
 
-
-    async function getOrderTotal() {
+    async function updateOrders() {
+        let token = await AsyncStorage.getItem("accessToken");
+        token = JSON.parse(token);
         let restId = await AsyncStorage.getItem("restaurantId");
         console.log(restId);
+        console.log(token.uid)
+        order.map(item =>
+            axios({
+                method: 'post',
+                url: Route.host + '/restaurants/orders/alter',
+                data: {
+                    order_status: "paid",
+                    rest_id: parseInt(restId),
+                    order_item_id: item.order_item_id
+                }
+            }).then((response) => {
+            }, (error) => {
+                console.log(error);
+            })
+        )
+
+    }
+    async function getOrderTotal() {
+        let accessToken = await AsyncStorage.getItem("accessToken");
+        let restId = await AsyncStorage.getItem("restaurantId");
+        let userId = JSON.parse(accessToken)
+        console.log(restId);
+        console.log(userId.uid);
+
         axios({
             method: 'get',
-            url: Route.host + '/users/' + restId + '/orders?status=done'
+            url: Route.host + '/users/orders?userId=' + userId.uid + '&resId=' + restId + '&status=done'
         }).then((response) => {
-            //set the returned order status to orderStatus
-            setOrder(response.data.items)
-            console.log(response.data.items)
+            // set the returned order status to orderStatus
+            setOrder(response.data.data)
+            console.log(response.data)
             let price = 0;
-            response.data.items.map(item =>
+            response.data.data.map(item =>
+                price += item.price * item.count
+            )
+            setTotalPrice(price)
+        }, (error) => {
+            setOrder([{}])
+            console.log(error);
+        });
+    }
+    async function getTableWaiter() {
+        let accessToken = await AsyncStorage.getItem("accessToken");
+        let restId = await AsyncStorage.getItem("restaurantId");
+        let tableId = await AsyncStorage.getItem("tabelId");
+        let userId = JSON.parse(accessToken)
+        console.log(tableId);
+        console.log(userId.uid);
+
+        axios({
+            method: 'get',
+            url: Route.host + '/restaurants/tables/waiters?resId=' + restId + '&tableId=' +tableId
+        }).then((response) => {
+            // set the returned order status to orderStatus
+            setOrder(response.data.data)
+            console.log(response.data)
+            let price = 0;
+            response.data.data.map(item =>
                 price += item.price * item.count
             )
             setTotalPrice(price)
@@ -66,30 +116,32 @@ const Pay = ({ navigation, route }) => {
 
     async function tipWaiter(tip) {
         let restId = await AsyncStorage.getItem("restaurantId");
-        let accessToken = await AsyncStorage.getItem("accessToken");
+        let tableId = await AsyncStorage.getItem("tableId");
+        let accessToken = await AsyncStorage.getItem("accessToken")
         let userId = JSON.parse(accessToken);
-        console.log(restId);
+        console.log("xx",tableId);
         console.log(userId.uid);
 
-        axios({
-          method: "post",
-          url: Route.host + "/restaurants/waiters/tip",
-          data: {
-            rest_id: parseInt(restId),
-            user_id: parseInt(userId.uid),
-            waiter_id: 5,
-            tip:tip
-          },
-        }).then(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-        setOpenDelete(false);
+        // axios({
+        //     method: "post",
+        //     url: Route.host + "/restaurants/waiters/tip",
+        //     data: {
+        //         rest_id: parseInt(restId),
+        //         user_id: parseInt(userId.uid),
+        //         waiter_id: 5,
+        //         tip: tip
+        //     },
+        // }).then(
+        //     (response) => {
+        //         console.log(response);
+        //     },
+        //     (error) => {
+        //         console.log(error);
+        //     }
+        // );
+        // setOpenDelete(false);
     }
+
     React.useEffect(() => {
         let { selectedCard } = route.params
         setSelectedCard(selectedCard)
@@ -287,8 +339,9 @@ const Pay = ({ navigation, route }) => {
             {renderFooter()}
             <PrimaryButton
                 onPress={() => {
-                    navigation.navigate("PaymentSuccess")
-                    tipWaiter()
+                    navigation.navigate("Loading")
+                    // tipWaiter()
+                    updateOrders();
                 }}
                 title="PAY"
             />

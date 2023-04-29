@@ -28,28 +28,26 @@ const OrderStatus = ({ navigation }) => {
 
     async function getOrderStatus() {
         let token = await AsyncStorage.getItem("accessToken");
+        let restId = await AsyncStorage.getItem("restaurantId");
+
         console.log(token);
         token = JSON.parse(token);
         axios({
             method: "get",
-            url: Route.host + '/users/' + parseInt(token.uid) + '/orders',
+            url: Route.host + '/users/orders?userId=' + token.uid + '&resId=' + restId,
         }).then(function (response) {
-            setOrder(response.data.items)
-            response.data.items.map(item=>{
-                orderCount++;
-            })
-            setOrdersCount(orderCount)
-            console.log(orderCount)
+            setOrder(response.data.data)
+            setOrdersCount(response.data.count)
+            console.log(response.data)
         });
     }
-
     useEffect(() => {
         getOrderStatus();
-        // console.log(order);
-        // const interval = setInterval(() => {
-        //     getOrderStatus();
-        //   }, 10000);
-        //   return () => clearInterval(interval);
+        console.log(order);
+        const interval = setInterval(() => {
+            getOrderStatus();
+        }, 10000);
+        return () => clearInterval(interval);
     }, [])
 
     function renderTable() {
@@ -97,7 +95,7 @@ const OrderStatus = ({ navigation }) => {
                             style={{
                                 position: 'absolute',
                                 bottom: -30,
-                                right:10,
+                                right: -20,
                                 height: 30,
                                 width: SIZES.width * 0.35,
                                 backgroundColor: COLORS.lightGray2,
@@ -108,12 +106,12 @@ const OrderStatus = ({ navigation }) => {
                                 ...styles.shadow
                             }}
                         >
-                            <Text style={{ ...FONTS.body4 }}>Order Status: {item.order_status}</Text>
+                            <Text style={{ ...FONTS.body4 }}>{item.order_status}</Text>
                         </View>
                     </View>
 
                 </View>
-              
+
             </TouchableOpacity>
         )
 
@@ -131,12 +129,12 @@ const OrderStatus = ({ navigation }) => {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <HeaderOrder navigation={navigation} orderCount={ordersCount}></HeaderOrder>
+            <HeaderOrder navigation={navigation} ordersCount={ordersCount}></HeaderOrder>
             <View
                 style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
             >
             </View>
-            <Text style={{ ...FONTS.h2, textAlign:"center", alignItems: "center", justifyContent: "center", paddingTop:20  }}> My Orders</Text>
+            <Text style={{ ...FONTS.h2, textAlign: "center", alignItems: "center", justifyContent: "center", paddingTop: 20 }}> My Orders</Text>
             {renderTable()}
             <PrimaryButton
                 onPress={() => navigation.navigate("Pay", { selectedCard: selectedCard })}
