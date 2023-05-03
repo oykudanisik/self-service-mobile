@@ -26,13 +26,17 @@ const OrderStatus = ({ navigation }) => {
 
     async function getOrderStatus() {
         let token = await AsyncStorage.getItem("accessToken");
+        token = JSON.parse(token);
         let restId = await AsyncStorage.getItem("restaurantId");
 
-        console.log(token);
+        console.log(token.uid);
+        console.log(restId);
+
         axios({
             method: "get",
             url: Route.host + '/users/orders?userId=' + token.uid + '&resId=' + restId,
         }).then(function (response) {
+            console.log(response.data)
             setOrder(response.data.data)
         });
     }
@@ -85,7 +89,7 @@ const OrderStatus = ({ navigation }) => {
                             flex: 1
                         }}
                     >
-                        <Text style={{ ...FONTS.h4 }}>{item.prod_name}<Text style={{ ...FONTS.body3 }}> x{item.count}</Text> </Text>
+                        <Text style={{ ...FONTS.h4 }}>{item.prod_name}<Text style={{ ...FONTS.body3 }}> x{item.prod_count}</Text> </Text>
                         <View
                             style={{
                                 position: 'absolute',
@@ -122,6 +126,7 @@ const OrderStatus = ({ navigation }) => {
             />
         )
     }
+
     return (
         <SafeAreaView style={styles.container}>
             <HeaderOrder navigation={navigation} ordersCount={ordersCount}></HeaderOrder>

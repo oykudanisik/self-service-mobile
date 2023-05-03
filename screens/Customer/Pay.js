@@ -67,8 +67,6 @@ const Pay = ({ navigation, route }) => {
         let accessToken = await AsyncStorage.getItem("accessToken");
         let restId = await AsyncStorage.getItem("restaurantId");
         let userId = JSON.parse(accessToken)
-        console.log(restId);
-        console.log(userId.uid);
 
         axios({
             method: 'get',
@@ -76,10 +74,10 @@ const Pay = ({ navigation, route }) => {
         }).then((response) => {
             // set the returned order status to orderStatus
             setOrder(response.data.data)
-            console.log(response.data)
             let price = 0;
+            console.log(response.data.data);
             response.data.data.map(item =>
-                price += item.price * item.count
+                price += item.price * item.prod_count
             )
             setTotalPrice(price)
         }, (error) => {
@@ -104,7 +102,7 @@ const Pay = ({ navigation, route }) => {
             console.log(response.data)
             let price = 0;
             response.data.data.map(item =>
-                price += item.price * item.count
+                price += item.price * item.prod_count
             )
             setTotalPrice(price)
         }, (error) => {
@@ -143,7 +141,6 @@ const Pay = ({ navigation, route }) => {
 
     React.useEffect(() => {
         getOrderTotal()
-
     }, [])
 
     function renderOrderDetails() {
@@ -158,7 +155,7 @@ const Pay = ({ navigation, route }) => {
                     }}
                 >
                     {
-                        order.map(({ prod_name, price, count }) => {
+                        order.map(({ prod_name, price, prod_count }) => {
                             return (
                                 <View
                                     style={{
@@ -168,7 +165,7 @@ const Pay = ({ navigation, route }) => {
                                     }}
                                 >
                                     <Text style={{ flex: 1, ...FONTS.h5 }}>{prod_name}</Text>
-                                    <Text style={{ ...FONTS.h5 }}>{price * count} TL</Text>
+                                    <Text style={{ ...FONTS.h5 }}>{price * prod_count} TL</Text>
                                 </View>
                             )
                         })

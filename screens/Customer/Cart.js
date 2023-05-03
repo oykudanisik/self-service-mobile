@@ -36,9 +36,8 @@ const Cart = ({ navigation }) => {
             price += item.price * item.count
         );
         setToralPrice(price)
-        setMyCartList(cartList);
+        setMyCartList(cartList ?? [{}]);
     }
-
 
     async function placeOrder() {
         let token = await AsyncStorage.getItem("accessToken");
@@ -75,7 +74,6 @@ const Cart = ({ navigation }) => {
             console.log("e", error);
         });
     }
-
 
     async function updateQuantityHandler(newQty, id) {
         if (newQty < 1) {
@@ -114,12 +112,12 @@ const Cart = ({ navigation }) => {
     }
     React.useEffect(() => {
         deneme();
-    }, [])
+    }, [myCartList])
 
     function renderCartList() {
         return (
             <SwipeListView
-                data={myCartList}
+                data={myCartList ?? ""}
                 keyExtractor={item => `${item.prod_id}`}
                 contentContainerStyle={{
                     marginTop: SIZES.radius,
@@ -243,7 +241,7 @@ const Cart = ({ navigation }) => {
                 onPress={() => {
                     placeOrder();
                     // toggleDialog2();
-                    // navigation.navigate("OrderStatus")
+                    navigation.navigate("OrderStatus")
                 }}
                 title="ORDER"
             />
