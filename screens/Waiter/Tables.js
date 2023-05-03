@@ -30,12 +30,12 @@ const Tables = ({ navigation, route }) => {
         token = JSON.parse(token);
         axios({
             method: "get",
-            url: Route.host + '/restaurants/waiters/tables/?resId=' + token.rest_id +'&waiterId=' +token.uid
+            url: Route.host + '/restaurants/waiters/tables/?resId=' + token.rest_id + '&waiterId=' + token.uid
         }).then(function (response) {
             setTables(response.data.items)
         });
     }
-   async function getTableOrderDetails(table_id) {
+    async function getTableOrderDetails(table_id) {
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
         toggleDialog2()
@@ -44,7 +44,7 @@ const Tables = ({ navigation, route }) => {
 
         axios({
             method: "get",
-            url: Route.host + '/restaurants/tables/orders/?resId=' + token.rest_id +'&tableId=' + table_id
+            url: Route.host + '/restaurants/tables/orders/?resId=' + token.rest_id + '&tableId=' + table_id
         }).then(function (response) {
             console.log(response.data.orders)
             setTableOrders(response.data.orders)
@@ -60,6 +60,9 @@ const Tables = ({ navigation, route }) => {
         axios({
             method: 'post',
             url: Route.host + '/restaurants/orders/alter',
+            headers: {
+                Authorization: "Bearer <" + token + ">"
+            },
             data: {
                 order_status: "done",
                 rest_id: 1,
@@ -135,7 +138,7 @@ const Tables = ({ navigation, route }) => {
                                             <Dialog.Button title="DONE" onPress={() =>
                                                 updateOrders(order_item_id)
                                             } />
-                                        : ""}
+                                            : ""}
                                     </Dialog.Actions>
                                 </View>
                             )

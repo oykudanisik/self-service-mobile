@@ -24,8 +24,6 @@ const OrderStatus = ({ navigation }) => {
     const [selectedCard, setSelectedCard] = React.useState(null)
     const [ordersCount, setOrdersCount] = React.useState()
 
-    let orderCount = 0;
-
     async function getOrderStatus() {
         let token = await AsyncStorage.getItem("accessToken");
         let restId = await AsyncStorage.getItem("restaurantId");
@@ -137,7 +135,7 @@ const OrderStatus = ({ navigation }) => {
             <Text style={{ ...FONTS.h2, textAlign: "center", alignItems: "center", justifyContent: "center", paddingTop: 20 }}> My Orders</Text>
             {renderTable()}
             <PrimaryButton
-                onPress={() => navigation.navigate("Pay", { selectedCard: selectedCard })}
+                onPress={() => navigation.navigate("Pay")}
                 title="PAY"
             />
         </SafeAreaView>

@@ -37,7 +37,6 @@ const Pay = ({ navigation, route }) => {
     const [cvv, setCvv] = React.useState("")
     const [cvvError, setCvvError] = React.useState("")
     const [tip, setTip] = React.useState("")
-    const [selectedCard, setSelectedCard] = React.useState(null)
     const [order, setOrder] = React.useState([{}]);
     const [totalPrice, setTotalPrice] = React.useState(0);
     const [isRemember, setIsRemember] = React.useState(false)
@@ -143,8 +142,6 @@ const Pay = ({ navigation, route }) => {
     }
 
     React.useEffect(() => {
-        let { selectedCard } = route.params
-        setSelectedCard(selectedCard)
         getOrderTotal()
 
     }, [])

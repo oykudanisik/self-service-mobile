@@ -46,7 +46,7 @@ const Login = ({ navigation }) => {
                 setLoginError(false);
                 console.log(role);
                 if (role == "waiter") {
-                    navigation.navigate("Tables");
+                    navigation.navigate("Tables2");
                 } else if (role == "customer") {
                     navigation.navigate("Home");
                 } else {

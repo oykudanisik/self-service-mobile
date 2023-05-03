@@ -28,7 +28,7 @@ const Home = ({ navigation, route }) => {
             setRestaurants(rest);
         });
     }, []);
-   
+
 
     function renderRestaurantList() {
         const renderItem = ({ item }) => (
@@ -81,6 +81,23 @@ const Home = ({ navigation, route }) => {
                     }}>
                         {item.address}
                     </Text>
+                    <Image
+                        source={icons.info}
+                        style={{
+                            height: 20,
+                            width: 20,
+                            tintColor: COLORS.primary,
+                            marginRight: 10,
+                            marginTop: 10,
+                            left: 280
+                        }}
+                        onPress={() => {
+                            console.log(item.rest_id)
+                            navigation.navigate("RestaurantFavorites", {
+                                restaurantId: item.rest_id
+                            })
+                        }}
+                    />
                 </View>
             </TouchableOpacity>
         )

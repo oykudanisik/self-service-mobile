@@ -16,6 +16,8 @@ import Loading from './Customer/Loading'
 import PaymentSuccess from './Customer/PaymentSuccess'
 
 import Tables from './Waiter/Tables'
+import Tables2 from './Waiter/Tables2'
+
 import OnBoarding from './OnBoarding'
 
 export {
@@ -36,5 +38,7 @@ export {
     PaymentSuccess,
     Loading,
     Tables,
+    Tables2,
+
     OnBoarding
 }

@@ -37,12 +37,14 @@ const Menu = ({ navigation, count }) => {
         getItemCount()
         var restId = "";
         var tableId = "";
+
         if (scanned) {
             restId = "1";
             tableId = "5"
         } else {
             restId = "1";
             tableId = "5"
+
         }
         AsyncStorage.setItem("restaurantId", restId);
         AsyncStorage.setItem("tableId", tableId);
