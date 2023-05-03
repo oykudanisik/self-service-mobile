@@ -5,7 +5,10 @@ import {
     LayoutAnimation,
     StyleSheet,
     UIManager,
-    Platform
+    Platform,
+    ScrollView,
+    TouchableHighlight,
+    Image
 } from "react-native";
 import { Header } from '../../components';
 
@@ -20,14 +23,37 @@ import Route from "../../routes/Route";
 
 const Accordion = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
+
+
+    const toggleOpen = () => {
+        setIsOpen(value => !value);
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    }
+
+    return (
+        <>
+            <TouchableOpacity onPress={toggleOpen} style={styles.heading} activeOpacity={0.6}>
+                {title}
+                <Icon name={isOpen ? "chevron-up-outline" : "chevron-down-outline"} size={18} color="black" />
+            </TouchableOpacity>
+            <View style={[styles.list, !isOpen ? styles.hidden : undefined]}>
+                {children}
+            </View>
+        </>
+    );
+};
+
+const Tables2 = ({ navigation }) => {
+
     const [tables, setTables] = React.useState([{}]);
     const [tableOrders, setTableOrders] = React.useState([{}]);
-    const [visible2, setVisible2] = useState(false);
     const [todoOrders, setTodoOrders] = useState([{}])
     const [inprogressOrders, setInprogressOrders] = useState([{}])
     const [completedOrders, setCompletedOrders] = useState([{}])
-
-
+    const [visible2, setVisible2] = useState(false);
+    let todo = [];
+    let inprogress = [];
+    let completed = [];
     const toggleDialog2 = () => {
         setVisible2(!visible2);
     };
@@ -53,10 +79,21 @@ const Accordion = ({ title, children }) => {
             method: "get",
             url: Route.host + '/restaurants/tables/orders/?resId=' + token.rest_id + '&tableId=' + table_id
         }).then(function (response) {
-            // if(response.data.orders['order_status'] == "To do"){
-            //     console.log("abow");
-            // }
-            console.log("xxxx",response.data.orders.order_status)
+            response.data.orders.map((x) => {
+                if (x.order_status == "To do") {
+                    todo.push(x);
+                }
+                if (x.order_status == "In progress") {
+                    inprogress.push(x);
+                }
+                if (x.order_status == "Completed") {
+                    completed.push(x);
+                }
+            })
+            console.log(todo);
+            setTodoOrders(todo);
+            setInprogressOrders(inprogress);
+            setCompletedOrders(completed)
             setTableOrders(response.data.orders)
         }, (error) => {
             setTableOrders([{}])
@@ -76,59 +113,28 @@ const Accordion = ({ title, children }) => {
                 rest_id: 1,
                 order_item_id: orderId
             }
+            
         }).then((response) => {
+            getWaiterTables()
         }, (error) => {
             console.log(error);
         });
     }
 
     useEffect(() => {
-        getWaiterTables()
+        getWaiterTables();
+
     }, []);
 
-    const toggleOpen = () => {
-        setIsOpen(value => !value);
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    }
-
-    return (
-        <>
-            <TouchableOpacity onPress={toggleOpen} style={styles.heading} activeOpacity={0.6}>
-                {title}
-                <Icon name={isOpen ? "chevron-up-outline" : "chevron-down-outline"} size={18} color="black" />
-            </TouchableOpacity>
-            <View style={[styles.list, !isOpen ? styles.hidden : undefined]}>
-                {children}
-            </View>
-        </>
-    );
-};
-
-const Tables2 = ({ navigation }) => {
     const todoTitle = (
         <View>
             <Text style={{ ...FONTS.h4 }} >To do</Text>
         </View>
     )
-    const todoBody = (
-        <View>
-            <Text style={styles.sectionTitle} >Profile</Text>
-            <Text style={styles.sectionDescription} >Address, Contact</Text>
-            <Text style={styles.sectionTitle} >Profile</Text>
-            <Text style={styles.sectionDescription} >Address, Contact</Text>
-        </View>
-    )
+
     const inProgressTitle = (
         <View>
             <Text style={{ ...FONTS.h4 }} >In Progress</Text>
-        </View>
-    )
-    const inProgressBody = (
-        <View>
-            <Text style={styles.sectionTitle} >Profile</Text>
-            <Text style={styles.sectionDescription} >Address, Contact</Text>
-            <Text style={styles.sectionTitle} >Profile</Text>
-            <Text style={styles.sectionDescription} >Address, Contact</Text>
         </View>
     )
     const completedTitle = (
@@ -136,50 +142,90 @@ const Tables2 = ({ navigation }) => {
             <Text style={{ ...FONTS.h4 }} >Completed</Text>
         </View>
     )
-    let completedBody = (
-        <View>
-            <Text style={styles.sectionTitle} >Profile</Text>
-            <Text style={styles.sectionDescription} >Address, Contact</Text>
-            <Text style={styles.sectionTitle} >Profile</Text>
-            <Text style={styles.sectionDescription} >Address, Contact</Text>
-        </View>
-
-    )
     return (
         <SafeAreaProvider>
-            <SafeAreaView style={styles.safeArea}>
-                <Header navigation={navigation}></Header>
-                <View style={styles.container}>
-                    <Text style={{ ...FONTS.h2 }}>Order Details of My Tables</Text>
-                    <Accordion title={completedTitle} >
-                        {/* {
-                            tableOrders.map(({ order_status, prod_name, order_item_id }) => {
-                                if (order_status == "Completed") {
+            <ScrollView>
+                <SafeAreaView style={styles.safeArea}>
+                    <Header navigation={navigation}></Header>
+                    <View style={styles.container}>
+                        <Text style={{ ...FONTS.h2, paddingBottom: 20 }}>Order Details of My Tables</Text>
+                        <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
+                        <Accordion title={completedTitle} >
+                            {
+                                completedOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
+                                    return (
+                                        <TouchableHighlight onPress={() => updateOrders(order_item_id)}>
+                                            <View
+                                                style={{
+                                                    width: "95%",
+                                                    height: 30,
+                                                    marginLeft: 10
+                                                }}
+                                            >
+                                                <Text>{prod_name} / Table {table_id}</Text>
+                                                <Image
+                                                    source={icons.check_mark}
+                                                    onPress={() => updateOrders(order_item_id)}
+                                                    resizeMode="contain"
+                                                    style={{
+                                                        width: "65%",
+                                                        height: "65%",
+                                                        position: 'absolute',
+                                                        left: 250
+                                                    }}
+                                                />
+                                            </View>
+                                        </TouchableHighlight>
+                                    )
+                                })
+                            }
+                        </Accordion>
+                        <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
+                        <Accordion title={inProgressTitle} >
+                            {
+                                inprogressOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
                                     return (
                                         <View>
-                                            <Text style={styles.sectionTitle} >Profile</Text>
-                                            <Text style={styles.sectionDescription} >Address, Contact</Text>
-                                            <Text style={styles.sectionTitle} >Profile</Text>
-                                            <Text style={styles.sectionDescription} >Address, Contact</Text>
+                                            <View
+                                                style={{
+                                                    width: "95%",
+                                                    height: 30,
+                                                    marginLeft: 10
+                                                }}
+                                            >
+                                                <Text>{prod_name} / Table {table_id}</Text>
+
+                                            </View>
                                         </View>
                                     )
-                                }
-                            })
-                        } */}
+                                })
+                            }
+                        </Accordion>
+                        <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
+                        <Accordion title={todoTitle} >
+                            {
+                                todoOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
+                                    return (
+                                        <View >
+                                            <View
+                                                style={{
+                                                    width: "95%",
+                                                    height: 30,
+                                                    marginLeft: 10
+                                                }}
+                                            >
+                                                <Text>{prod_name} / Table {table_id}</Text>
+                                            </View>
+                                        </View>
+                                    )
+                                })
+                            }
+                        </Accordion>
+                        <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
 
-                    </Accordion>
-                    <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
-                    <Accordion title={inProgressTitle} >
-                        {inProgressBody}
-                    </Accordion>
-                    <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
-                    <Accordion title={todoTitle} >
-                        {todoBody}
-                    </Accordion>
-                    <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
-
-                </View>
-            </SafeAreaView>
+                    </View>
+                </SafeAreaView>
+            </ScrollView>
         </SafeAreaProvider>
 
     );

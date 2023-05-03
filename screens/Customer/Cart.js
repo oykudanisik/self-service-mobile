@@ -21,7 +21,7 @@ import Route from "../../routes/Route";
 const Cart = ({ navigation }) => {
 
     // AsyncStorage.clear();
-    const [myCartList, setMyCartList] = React.useState([])
+    const [myCartList, setMyCartList] = React.useState([{}])
     const [totalPrice, setToralPrice] = React.useState(0);
     const [accessToken, setAccessToken] = React.useState({});
     const [orderId, setOrderId] = React.useState("");
@@ -29,35 +29,33 @@ const Cart = ({ navigation }) => {
 
     let price = 0
     let cartList = [];
+    async function deneme() {
+        cartList = await AsyncStorage.getItem("item")
+        cartList = JSON.parse(cartList);
+        cartList.map((item) =>
+            price += item.price * item.count
+        );
+        setToralPrice(price)
+        setMyCartList(cartList);
+    }
 
-    React.useEffect(() => {
-        async function deneme() {
-            cartList = await AsyncStorage.getItem("item")
-            cartList = JSON.parse(cartList);
-            cartList.forEach(item =>
-                price += item.price * item.count
-            );
-            setToralPrice(price)
-            setMyCartList(cartList);
-        }
-        deneme();
-    }, [myCartList])
 
     async function placeOrder() {
         let token = await AsyncStorage.getItem("accessToken");
-        console.log(token);
-
         token = JSON.parse(token);
         let details = [];
         let restId = await AsyncStorage.getItem("restaurantId");
         let tableId = await AsyncStorage.getItem("tableId");
         let orders = await AsyncStorage.getItem("item");
         orders = JSON.parse(orders);
-        orders.forEach((element, index, array) => {
 
+        orders.forEach((element, index, array) => {
+            console.log(element)
             details.push({ "prod_id": element.prod_id, "price": element.price, "prod_count": element.count })
         })
-        console.log(JSON.stringify(details));
+        console.log("details", JSON.stringify(details));
+        console.log(parseInt(token.uid))
+        console.log(parseInt(restId))
 
         axios({
             method: 'post',
@@ -67,15 +65,14 @@ const Cart = ({ navigation }) => {
                 order_id: uuid(),
                 user_id: parseInt(token.uid),
                 rest_id: parseInt(restId),
-                table_id: 5,
+                table_id: 6,
                 order_status: "To do",
             }
         }).then((response) => {
             //set the returned orderId to orderI
-            console.log(response);
             AsyncStorage.removeItem("item");
         }, (error) => {
-            console.log(error);
+            console.log("e", error);
         });
     }
 
@@ -91,9 +88,6 @@ const Cart = ({ navigation }) => {
         setMyCartList(newMyCartList)
         let cartList = await AsyncStorage.getItem("item");
         let cartItems = await JSON.parse(cartList);
-        console.log(cartItems);
-        console.log(id);
-        console.log(newQty);
 
         for (var i = 0; i < cartItems.length; i++) {
             if (cartItems[i].prod_id === id) {
@@ -118,6 +112,9 @@ const Cart = ({ navigation }) => {
         );
         setMyCartList(cartItems);
     }
+    React.useEffect(() => {
+        deneme();
+    }, [])
 
     function renderCartList() {
         return (
@@ -246,7 +243,7 @@ const Cart = ({ navigation }) => {
                 onPress={() => {
                     placeOrder();
                     // toggleDialog2();
-                    navigation.navigate("OrderStatus")
+                    // navigation.navigate("OrderStatus")
                 }}
                 title="ORDER"
             />

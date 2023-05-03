@@ -40,6 +40,7 @@ export const refresh = require("../assets/icons/refresh.png");
 export const check_on = require("../assets/icons/check_on.png");
 export const check_off = require("../assets/icons/check_off.png");
 export const info = require("../assets/icons/info.png");
+export const check_mark = require("../assets/icons/check-mark.png");
 
 
 
@@ -85,5 +86,6 @@ export default {
     refresh,
     check_on,
     check_off,
-    info
+    info,
+    check_mark
 }

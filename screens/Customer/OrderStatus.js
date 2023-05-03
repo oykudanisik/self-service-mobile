@@ -29,23 +29,20 @@ const OrderStatus = ({ navigation }) => {
         let restId = await AsyncStorage.getItem("restaurantId");
 
         console.log(token);
-        token = JSON.parse(token);
         axios({
             method: "get",
             url: Route.host + '/users/orders?userId=' + token.uid + '&resId=' + restId,
         }).then(function (response) {
             setOrder(response.data.data)
-            setOrdersCount(response.data.count)
-            console.log(response.data)
         });
     }
     useEffect(() => {
         getOrderStatus();
-        console.log(order);
-        const interval = setInterval(() => {
-            getOrderStatus();
-        }, 10000);
-        return () => clearInterval(interval);
+        // console.log(order);
+        // const interval = setInterval(() => {
+        //     getOrderStatus();
+        // }, 10000);
+        // return () => clearInterval(interval);
     }, [])
 
     function renderTable() {
