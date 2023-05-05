@@ -45,7 +45,7 @@ const Home = ({ navigation, route }) => {
                     }}
                 >
                     <Image
-                        source={{ uri: item.logo }}
+                        source={{ uri: item.logo.String }}
                         resizeMode="contain"
                         style={{
                             width: "100%",

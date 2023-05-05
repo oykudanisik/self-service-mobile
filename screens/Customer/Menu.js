@@ -59,6 +59,8 @@ const Menu = ({ navigation, count }) => {
             .then(axios.spread((...responses) => {
                 const responseOne = responses[0]
                 const responseTwo = responses[1]
+                console.log("cat", responseTwo.data.items)
+                console.log("prod", responseOne.data.items)
                 setCategories(responseTwo.data.items);
                 setProducts(responseOne.data.items);
             }))
@@ -79,7 +81,7 @@ const Menu = ({ navigation, count }) => {
             url:
                 Route.host + '/restaurants/categories/products?resId=' + restId + '&catId=' + category.cat_id,
         }).then(function (response) {
-            console.log(response.data.items);
+            console.log("cat", response.data.items);
             setProducts(response.data.items);
         });
     }
@@ -109,14 +111,23 @@ const Menu = ({ navigation, count }) => {
                             backgroundColor: (selectedCategory?.id == item.cat_id) ? COLORS.white : COLORS.lightGray
                         }}
                     >
-                        <Image
-                            source={{ uri: item.cat_image }}
-                            resizeMode="contain"
+                        {item.cat_image ? (<Image
+                            source={{ uri: item.cat_image['String'] }}
+                            resizeMode="cover"
                             style={{
-                                width: 30,
-                                height: 30
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: SIZES.radius
                             }}
-                        />
+                        />) : (<Image
+                            source={images.logo}
+                            resizeMode="cover"
+                            style={{
+                                width: "100%",
+                                height: 200,
+                                borderRadius: SIZES.radius
+                            }}
+                        />)}
                     </View>
 
                     <Text
@@ -165,15 +176,24 @@ const Menu = ({ navigation, count }) => {
                         marginBottom: SIZES.padding
                     }}
                 >
-                    <Image
-                        source={{ uri: item.prod_image }}
+                    {item.prod_image ? (<Image
+                        source={{ uri: item.prod_image['String'] }}
                         resizeMode="cover"
                         style={{
                             width: "100%",
                             height: 200,
                             borderRadius: SIZES.radius
                         }}
-                    />
+                    />) : (<Image
+                        source={images.logo}
+                        resizeMode="cover"
+                        style={{
+                            width: "100%",
+                            height: 200,
+                            borderRadius: SIZES.radius
+                        }}
+                    />)}
+
 
                     <View
                         style={{

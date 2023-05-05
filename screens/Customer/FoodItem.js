@@ -36,7 +36,7 @@ const FoodItem = ({ route, navigation }) => {
                     <View style={{ height: SIZES.height * 0.35 }}>
                         {/* Food Image */}
                         <Image
-                            source={{ uri: route.params.item.prod_image }}
+                            source={{ uri: route.params.item.prod_image.String }}
                             resizeMode="cover"
                             style={{
                                 width: SIZES.width,

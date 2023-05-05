@@ -13,7 +13,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { PrimaryButton } from '../../components/Button';
 
 import { StepperInput, FooterTotal, HeaderInside, HeaderOrder } from '../../components';
-import { FONTS, SIZES, COLORS, icons } from "../../constants"
+import { FONTS, SIZES, COLORS, icons, images } from "../../constants"
 import uuid from 'react-uuid';
 import Route from "../../routes/Route";
 
@@ -32,9 +32,12 @@ const Cart = ({ navigation }) => {
     async function deneme() {
         cartList = await AsyncStorage.getItem("item")
         cartList = JSON.parse(cartList);
-        cartList.map((item) =>
-            price += item.price * item.count
-        );
+        cartList ?? (
+            cartList.map((item) =>
+                price += item.price * item.count
+            )
+        )
+
         setToralPrice(price)
         setMyCartList(cartList ?? [{}]);
     }
@@ -127,77 +130,90 @@ const Cart = ({ navigation }) => {
                 disableRightSwipe={true}
                 rightOpenValue={-75}
                 renderItem={(data, rowMap) => (
-                    <View
-                        style={{
-                            height: 100,
-                            backgroundColor: COLORS.lightGray4,
-                            ...styles.cartItemContainer
-                        }}
-                    >
-                        {/* Food Image */}
+                    data.item ? (
                         <View
                             style={{
-                                width: 90,
                                 height: 100,
-                                marginLeft: -10
+                                backgroundColor: COLORS.lightGray4,
+                                ...styles.cartItemContainer
                             }}
                         >
-                            <Image
-                                source={{ uri: data.item.prod_image }}
-                                resizeMode="contain"
-                                style={{
-                                    width: "75%",
-                                    height: "75%",
-                                    position: 'absolute',
-                                    borderRadius: 10,
-                                    top: 10,
-                                }}
-                            />
-                        </View>
-
-                        {/* Food Info */}
-                        <View
-                            style={{
-                                flex: 1
-                            }}
-                        >
-                            <Text style={{ ...FONTS.body3 }}>{data.item.prod_name}</Text>
-                            <Text style={{ color: COLORS.black, ...FONTS.h4 }}>{data.item.price} {data.item.currency}</Text>
-                        </View>
-
-                        {/* Quantity */}
-                        <StepperInput
-                            containerStyle={{
-                                height: 40,
-                                width: 100,
-                                backgroundColor: COLORS.white
-                            }}
-                            value={data.item.count}
-                            onAdd={() => { updateQuantityHandler(data.item.count + 1, data.item.prod_id) }}
-                            onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.prod_id) }}
-                        />
-                        <TouchableHighlight
-                            onPress={() => { deleteItem(data.item.prod_id) }}>
+                            {/* Food Image */}
                             <View
                                 style={{
-                                    width: 30,
-                                    height: 30,
-                                    marginLeft: 10
+                                    width: 90,
+                                    height: 100,
+                                    marginLeft: -10
                                 }}
                             >
-
-                                <Image
-                                    source={icons.bin}
-                                    resizeMode="contain"
+                                {data.item.prod_image ? (<Image
+                                    source={{ uri: data.item.prod_image['String'] }}
+                                    resizeMode="cover"
                                     style={{
-                                        width: "65%",
-                                        height: "65%",
+                                        width: "75%",
+                                        height: "75%",
                                         position: 'absolute',
+                                        borderRadius: 10,
+                                        top: 10,
                                     }}
-                                />
+                                />) : (<Image
+                                    source={images.logo}
+                                    resizeMode="cover"
+                                    style={{
+                                        width: "100%",
+                                        height: 200,
+                                        borderRadius: SIZES.radius
+                                    }}
+                                />)}
                             </View>
-                        </TouchableHighlight>
-                    </View>
+
+                            {/* Food Info */}
+                            <View
+                                style={{
+                                    flex: 1
+                                }}
+                            >
+                                <Text style={{ ...FONTS.body3 }}>{data.item.prod_name}</Text>
+                                <Text style={{ color: COLORS.black, ...FONTS.h4 }}>{data.item.price} {data.item.currency}</Text>
+                            </View>
+
+                            {/* Quantity */}
+                            <StepperInput
+                                containerStyle={{
+                                    height: 40,
+                                    width: 100,
+                                    backgroundColor: COLORS.white
+                                }}
+                                value={data.item.count}
+                                onAdd={() => { updateQuantityHandler(data.item.count + 1, data.item.prod_id) }}
+                                onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.prod_id) }}
+                            />
+                            <TouchableHighlight
+                                onPress={() => { deleteItem(data.item.prod_id) }}>
+                                <View
+                                    style={{
+                                        width: 30,
+                                        height: 30,
+                                        marginLeft: 10
+                                    }}
+                                >
+
+                                    <Image
+                                        source={icons.bin}
+                                        resizeMode="contain"
+                                        style={{
+                                            width: "65%",
+                                            height: "65%",
+                                            position: 'absolute',
+                                        }}
+                                    />
+                                </View>
+                            </TouchableHighlight>
+                        </View>
+                    )
+                        : (
+                            <Text>No products found</Text>
+                        )
                 )}
             />
         )
@@ -241,7 +257,7 @@ const Cart = ({ navigation }) => {
                 onPress={() => {
                     placeOrder();
                     // toggleDialog2();
-                    navigation.navigate("OrderStatus")
+                    navigation.navigate("OrderStatus2")
                 }}
                 title="ORDER"
             />

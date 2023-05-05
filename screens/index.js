@@ -4,6 +4,8 @@ import Scan from "./Customer/Scan"
 import Menu from './Customer/Menu'
 import Cart from './Customer/Cart'
 import OrderStatus from './Customer/OrderStatus'
+import OrderStatus2 from './Customer/OrderStatus2'
+
 import Login from './Authentication/Login'
 import Register from './Authentication/Register'
 import ForgotPassword from './Authentication/ForgotPassword'
@@ -27,6 +29,7 @@ export {
     Menu,
     Cart,
     OrderStatus,
+    OrderStatus2,
     Login,
     Register,
     ForgotPassword,
