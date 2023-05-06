@@ -118,25 +118,6 @@ const Pay = ({ navigation, route }) => {
         let userId = JSON.parse(accessToken);
         console.log("xx",tableId);
         console.log(userId.uid);
-
-        // axios({
-        //     method: "post",
-        //     url: Route.host + "/restaurants/waiters/tip",
-        //     data: {
-        //         rest_id: parseInt(restId),
-        //         user_id: parseInt(userId.uid),
-        //         waiter_id: 5,
-        //         tip: tip
-        //     },
-        // }).then(
-        //     (response) => {
-        //         console.log(response);
-        //     },
-        //     (error) => {
-        //         console.log(error);
-        //     }
-        // );
-        // setOpenDelete(false);
     }
 
     React.useEffect(() => {

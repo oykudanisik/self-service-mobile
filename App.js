@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from '@react-navigation/native'
 import { useFonts } from 'expo-font';
 
-import { FoodItem, Menu, Cart, Home, OrderStatus,OrderStatus2, Login, Register, ForgotPassword, Tables,Tables2, MyCard, AddCard, Pay, PaymentSuccess,Loading, OnBoarding } from './screens'
+import { FoodItem, Menu, Cart, Home,RestaurantFavorites, OrderStatus,OrderStatus2, Login, Register, ForgotPassword, Tables,Tables2, MyCard, AddCard, Pay, PaymentSuccess,Loading, OnBoarding } from './screens'
 import Tabs from './navigation/tabs'
 import Profile from "./screens/Profile/Profile";
 
@@ -39,6 +39,8 @@ const App = () => {
 
                 <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
                 <Stack.Screen name="Home" component={Tabs} />
+                <Stack.Screen name="RestaurantFavorites" component={RestaurantFavorites} />
+
                 <Stack.Screen name="Tables" component={Tables} />
                 <Stack.Screen name="Tables2" component={Tables2} />
 

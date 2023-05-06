@@ -17,11 +17,11 @@ import { icons, images, SIZES, COLORS, FONTS } from '../../constants'
 import { HeaderInside } from '../../components';
 import Route from "../../routes/Route";
 
-const Menu = ({ navigation, count }) => {
+const Menu = ({ navigation, route }) => {
     const [categories, setCategories] = React.useState([{}]);
     const [selectedCategory, setSelectedCategory] = React.useState(null);
     const [products, setProducts] = React.useState([{}]);
-    const [scanned, setScanned] = React.useState(true);
+    const [scanned, setScanned] = React.useState(false);
     const [restaurantName, setRestaurantName] = React.useState("");
     let cartCount = 0;
 
@@ -37,17 +37,16 @@ const Menu = ({ navigation, count }) => {
         getItemCount()
         var restId = "";
         var tableId = "";
+        console.log("r",route.params.item.rest_id);
 
         if (scanned) {
-            restId = "1";
-            tableId = "5"
+            restId = route.params.restaurantId.toString();
+            tableId = route.params.tableId.toString();
+            AsyncStorage.setItem("tableId", tableId);
         } else {
-            restId = "1";
-            tableId = "5"
-
+            restId = route.params.item.rest_id.toString();
         }
         AsyncStorage.setItem("restaurantId", restId);
-        AsyncStorage.setItem("tableId", tableId);
 
         const productsUrl = Route.host + "/restaurants/products?resId=" + restId
         const categoriesUrl = Route.host + "/restaurants/categories?resId=" + restId;
@@ -150,7 +149,7 @@ const Menu = ({ navigation, count }) => {
                     data={categories}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    keyExtractor={item => `${item.prod_id}`}
+                    keyExtractor={item => `${item.cat_id}`}
                     renderItem={renderItem}
                     contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
                 />

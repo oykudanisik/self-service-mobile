@@ -32,80 +32,88 @@ const Home = ({ navigation, route }) => {
 
     function renderRestaurantList() {
         const renderItem = ({ item }) => (
-            <TouchableOpacity
-                style={{ marginBottom: SIZES.padding * 2 }}
-                onPress={() => navigation.navigate("Menu", {
-                    item, scanned
-                })}
-            >
-                {/* Image */}
-                <View
-                    style={{
-                        marginBottom: SIZES.padding
+            <View>
+                <TouchableOpacity
+                    style={{ marginBottom: SIZES.padding * 2 }}
+                    onPress={() => navigation.navigate("Menu", {
+                        item, scanned
+                    })}
+                >
+                    {/* Image */}
+                    <View
+                        style={{
+                        }}
+                    >
+                        <Image
+                            source={{ uri: item.logo.String }}
+                            resizeMode="contain"
+                            style={{
+                                width: "100%",
+                                height: 250,
+                                borderRadius: SIZES.radius
+                            }}
+                        />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log(item.rest_id)
+                        navigation.navigate("RestaurantFavorites", {
+                            restaurantId: item.rest_id,
+                            restaurantName: item.rest_name
+
+                        })
                     }}
                 >
-                    <Image
-                        source={{ uri: item.logo.String }}
-                        resizeMode="contain"
+                    {/* Restaurant Info */}
+                    <Text style={{ ...FONTS.body2 }}>{item.rest_name}</Text>
+                    <Text style={{ ...FONTS.body4 }}>{item.summary}</Text>
+                    <View
                         style={{
-                            width: "100%",
-                            height: 250,
-                            borderRadius: SIZES.radius
-                        }}
-                    />
-                </View>
+                            flexDirection: 'row',
+                            paddingBottom: 20
+                        }}>
+                        <Image
+                            source={icons.location}
+                            style={{
+                                height: 20,
+                                width: 20,
+                                tintColor: COLORS.primary,
+                                marginRight: 10,
+                                marginTop: 10
+                            }}
+                        />
+                        <Text style={{
+                            ...FONTS.body3,
+                            marginTop: SIZES.padding,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            {item.address}
+                        </Text>
+                        <Image
+                            source={icons.info}
+                            style={{
+                                height: 20,
+                                width: 20,
+                                tintColor: COLORS.primary,
+                                marginRight: 10,
+                                marginTop: 10,
+                                left: 8
+                            }}
+                        />
+                    </View>
+                </TouchableOpacity>
 
-                {/* Restaurant Info */}
-                <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
-                <Text style={{ ...FONTS.body4 }}>{item.summary}</Text>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                    }}>
-                    <Image
-                        source={icons.location}
-                        style={{
-                            height: 20,
-                            width: 20,
-                            tintColor: COLORS.primary,
-                            marginRight: 10,
-                            marginTop: 10
-                        }}
-                    />
-                    <Text style={{
-                        ...FONTS.body3,
-                        marginTop: SIZES.padding,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {item.address}
-                    </Text>
-                    <Image
-                        source={icons.info}
-                        style={{
-                            height: 20,
-                            width: 20,
-                            tintColor: COLORS.primary,
-                            marginRight: 10,
-                            marginTop: 10,
-                            left: 280
-                        }}
-                        onPress={() => {
-                            console.log(item.rest_id)
-                            navigation.navigate("RestaurantFavorites", {
-                                restaurantId: item.rest_id
-                            })
-                        }}
-                    />
-                </View>
-            </TouchableOpacity>
+            </View>
+
         )
 
         return (
             <FlatList
                 data={restaurants}
-                keyExtractor={item => `${item.id}`}
+                keyExtractor={item => `${item.rest_id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingHorizontal: SIZES.padding * 2,

@@ -1,4 +1,5 @@
 import Home from "./Customer/Home"
+import RestaurantFavorites from './Customer/RestaurantFavorites'
 import FoodItem from "./Customer/FoodItem"
 import Scan from "./Customer/Scan"
 import Menu from './Customer/Menu'
@@ -24,6 +25,7 @@ import OnBoarding from './OnBoarding'
 
 export {
     Home,
+    RestaurantFavorites,
     FoodItem,
     Scan,
     Menu,

@@ -46,7 +46,7 @@ function HeaderOrder({ navigation, ordersCount }) {
 
 
             <TouchableOpacity
-                onPress={() => navigation.navigate("OrderStatus2")}
+                onPress={() => navigation.navigate("OrderStatus")}
                 style={{
                     width: 50,
                     paddingRight: SIZES.padding * 2,
@@ -55,7 +55,7 @@ function HeaderOrder({ navigation, ordersCount }) {
             >
                 <CartQuantityButton
                     quantity={ordersCount}
-                    onPress={() => navigation.navigate("OrderStatus2")}
+                    onPress={() => navigation.navigate("OrderStatus")}
                     icon={icons.order}
                 />
             </TouchableOpacity>
