@@ -20,11 +20,11 @@ import Route from "../../routes/Route";
 import { HeaderOrder, PrimaryButton } from '../../components';
 
 const Accordion = ({ title, children }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
 
 
     const toggleOpen = () => {
-        setIsOpen(value => !value);
+        // setIsOpen(value => !value);
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     }
 

@@ -13,7 +13,6 @@ import {
 import { Header } from '../../components';
 
 import { TouchableOpacity } from "react-native-gesture-handler";
-import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dialog } from '@rneui/themed';
@@ -34,7 +33,6 @@ const Accordion = ({ title, children }) => {
         <>
             <TouchableOpacity onPress={toggleOpen} style={styles.heading} activeOpacity={0.6}>
                 {title}
-                <Icon name={isOpen ? "chevron-up-outline" : "chevron-down-outline"} size={18} color="black" />
             </TouchableOpacity>
             <View style={[styles.list, !isOpen ? styles.hidden : undefined]}>
                 {children}
@@ -59,12 +57,14 @@ const Tables2 = ({ navigation }) => {
     };
     async function getWaiterTables() {
         let token = await AsyncStorage.getItem("accessToken");
+        console.log("token",token)
         token = JSON.parse(token);
         axios({
             method: "get",
             url: Route.host + '/restaurants/waiters/tables/?resId=' + token.rest_id + '&waiterId=' + token.uid
         }).then(function (response) {
             setTables(response.data.items)
+            console.log("aaaaa", response.data.items)
             response.data.items.map(({ rest_id, table_no }) => {
                 getTableOrderDetails(table_no)
             })
@@ -74,7 +74,6 @@ const Tables2 = ({ navigation }) => {
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
         toggleDialog2()
-
         axios({
             method: "get",
             url: Route.host + '/restaurants/tables/orders/?resId=' + token.rest_id + '&tableId=' + table_id
@@ -100,30 +99,27 @@ const Tables2 = ({ navigation }) => {
         });
     }
     async function updateOrders(orderId) {
+        
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
+        console.log("rr",token.rest_id);
         axios({
             method: 'post',
             url: Route.host + '/restaurants/orders/alter',
-            headers: {
-                Authorization: "Bearer <" + token + ">"
-            },
             data: {
-                order_status: "done",
-                rest_id: 1,
-                order_item_id: orderId
+              order_status: "done",
+              rest_id: parseInt(token.rest_id),
+              order_item_id: parseInt(orderId)
             }
-            
-        }).then((response) => {
-            getWaiterTables()
-        }, (error) => {
+          }).then((response) => {
+            console.log(response);
+          }, (error) => {
             console.log(error);
-        });
+          });
     }
 
     useEffect(() => {
         getWaiterTables();
-
     }, []);
 
     const todoTitle = (

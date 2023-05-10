@@ -31,11 +31,11 @@ const Cart = ({ navigation }) => {
     let cartList = [];
     async function deneme() {
         cartList = await AsyncStorage.getItem("item")
+
         cartList = JSON.parse(cartList);
-        cartList ?? (
-            cartList.map((item) =>
-                price += item.price * item.count
-            )
+
+        cartList.map((item) =>
+            price += item.price * item.count
         )
 
         setToralPrice(price)
@@ -67,7 +67,7 @@ const Cart = ({ navigation }) => {
                 order_id: uuid(),
                 user_id: parseInt(token.uid),
                 rest_id: parseInt(restId),
-                table_id: 6,
+                table_id: parseInt(tableId),
                 order_status: "To do",
             }
         }).then((response) => {

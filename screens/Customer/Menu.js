@@ -22,56 +22,62 @@ const Menu = ({ navigation, route }) => {
     const [selectedCategory, setSelectedCategory] = React.useState(null);
     const [products, setProducts] = React.useState([{}]);
     const [scanned, setScanned] = React.useState(false);
-    const [restaurantName, setRestaurantName] = React.useState("");
     let cartCount = 0;
 
-    async function getItemCount() {
-        cartList = await AsyncStorage.getItem("item")
-        console.log("cartList", cartList)
-        // cartList = JSON.parse(cartList);
-        // cartList.forEach(item =>
-        //     cartCount++
-        // );
-    }
     useEffect(() => {
-        getItemCount()
         var restId = "";
         var tableId = "";
-        console.log("r",route.params.item.rest_id);
+        console.log("t", route.params.scanned);
 
-        if (scanned) {
-            restId = route.params.restaurantId.toString();
-            tableId = route.params.tableId.toString();
+        if (route.params.scanned) {
+            setScanned(true)
+            restId = route.params.restaurantId
+            tableId = route.params.tableId
+            console.log("r", restId);
+            console.log("t", tableId);
             AsyncStorage.setItem("tableId", tableId);
         } else {
-            restId = route.params.item.rest_id.toString();
+            restId = route.params.item.rest_id.toString()
         }
         AsyncStorage.setItem("restaurantId", restId);
-
-        const productsUrl = Route.host + "/restaurants/products?resId=" + restId
-        const categoriesUrl = Route.host + "/restaurants/categories?resId=" + restId;
-
-        const productRequest = axios.get(productsUrl);
-        const categoriesRequest = axios.get(categoriesUrl);
-
-        axios.all([productRequest, categoriesRequest])
-            .then(axios.spread((...responses) => {
-                const responseOne = responses[0]
-                const responseTwo = responses[1]
-                console.log("cat", responseTwo.data.items)
-                console.log("prod", responseOne.data.items)
-                setCategories(responseTwo.data.items);
-                setProducts(responseOne.data.items);
-            }))
+        getCategories(restId);
+        getMenuItems(restId);
     }, []);
 
+    function getCategories(rest_id) {
+        axios({
+            method: "get",
+            url: Route.host + "/restaurants/categories?resId=" + rest_id
+        }).then(function (response) {
+            console.log(response.data.items);
+            setCategories(response.data.items);
+        });
+    }
+
+    function getMenuItems(rest_id) {
+        axios({
+            method: "get",
+            url:
+                Route.host + "/restaurants/products?resId=" + rest_id
+        }).then(function (response) {
+            setProducts(response.data.items);
+        });
+    }
+
     function onSelectCategory(category) {
-        //filter restaurantü
         var restId = "";
-        if (scanned) {
-            restId = "1";
+        var tableId = "";
+        console.log("t", route.params.scanned);
+
+        if (route.params.scanned) {
+            setScanned(true)
+            restId = route.params.restaurantId
+            tableId = route.params.tableId
+            console.log("r", restId);
+            console.log("t", tableId);
+            AsyncStorage.setItem("tableId", tableId);
         } else {
-            restId = "1";
+            restId = route.params.item.rest_id
         }
         console.log(category.cat_id);
         console.log(restId);
@@ -84,6 +90,7 @@ const Menu = ({ navigation, route }) => {
             setProducts(response.data.items);
         });
     }
+
     function renderMainCategories() {
         const renderItem = ({ item }) => {
             return (

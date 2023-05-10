@@ -116,8 +116,7 @@ const Pay = ({ navigation, route }) => {
         let tableId = await AsyncStorage.getItem("tableId");
         let accessToken = await AsyncStorage.getItem("accessToken")
         let userId = JSON.parse(accessToken);
-        console.log("xx",tableId);
-        console.log(userId.uid);
+        getTableWaiter();
     }
 
     React.useEffect(() => {

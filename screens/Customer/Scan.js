@@ -9,10 +9,9 @@ export default function Scan({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('Not yet scanned');
-  const [restaurantId, setRestaurantId] = useState(null);
-  const [restaurantName, setRestaurantName] = useState(null);
-
-  const [tableId, setTableId] = useState(null);
+  const [restaurantId, setRestaurantId] = useState();
+  const [restaurantName, setRestaurantName] = useState();
+  const [tableId, setTableId] = useState();
   const askForCameraPermission = () => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -44,9 +43,9 @@ export default function Scan({ navigation }) {
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
     setText(data)
-    console.log(JSON.parse(data).rest_id);
-    setRestaurantId(JSON.parse(data).rest_id);
-    setTableId(JSON.parse(data).table_no);
+    console.log("asjkdhkajs",JSON.parse(data));
+    setRestaurantId(JSON.parse(data).rest_id.toString());
+    setTableId(JSON.parse(data).table_no.toString());
   };
 
   // Check permissions and return the screens
