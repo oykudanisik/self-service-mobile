@@ -49,9 +49,7 @@ const Tables2 = ({ navigation }) => {
     const [inprogressOrders, setInprogressOrders] = useState([{}])
     const [completedOrders, setCompletedOrders] = useState([{}])
     const [visible2, setVisible2] = useState(false);
-    let todo = [];
-    let inprogress = [];
-    let completed = [];
+
     const toggleDialog2 = () => {
         setVisible2(!visible2);
     };
@@ -71,6 +69,9 @@ const Tables2 = ({ navigation }) => {
         });
     }
     async function getTableOrderDetails(table_id) {
+        let todo = [];
+        let inprogress = [];
+        let completed = [];
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
         toggleDialog2()
@@ -99,7 +100,6 @@ const Tables2 = ({ navigation }) => {
         });
     }
     async function updateOrders(orderId) {
-        
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
         console.log("rr",token.rest_id);
@@ -113,6 +113,7 @@ const Tables2 = ({ navigation }) => {
             }
           }).then((response) => {
             console.log(response);
+            getWaiterTables();
           }, (error) => {
             console.log(error);
           });
@@ -120,6 +121,11 @@ const Tables2 = ({ navigation }) => {
 
     useEffect(() => {
         getWaiterTables();
+        const interval = setInterval(() => {
+            console.log("giriyo")
+            getWaiterTables();
+        }, 10000);
+        return () => clearInterval(interval);
     }, []);
 
     const todoTitle = (
@@ -136,6 +142,11 @@ const Tables2 = ({ navigation }) => {
     const completedTitle = (
         <View>
             <Text style={{ ...FONTS.h4 }} >Completed</Text>
+        </View>
+    )
+    const paidTitle = (
+        <View>
+            <Text style={{ ...FONTS.h4 }} >To be Paid</Text>
         </View>
     )
     return (
@@ -158,6 +169,7 @@ const Tables2 = ({ navigation }) => {
                                                     marginLeft: 10
                                                 }}
                                             >
+
                                                 <Text>{prod_name} / Table {table_id}</Text>
                                                 <Image
                                                     source={icons.check_mark}
@@ -172,6 +184,27 @@ const Tables2 = ({ navigation }) => {
                                                 />
                                             </View>
                                         </TouchableHighlight>
+                                    )
+                                })
+                            }
+                        </Accordion>
+                        <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
+                        <Accordion title={paidTitle} >
+                            {
+                                inprogressOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
+                                    return (
+                                        <View>
+                                            <View
+                                                style={{
+                                                    width: "95%",
+                                                    height: 30,
+                                                    marginLeft: 10
+                                                }}
+                                            >
+                                                <Text>{prod_name} / Table {table_id}</Text>
+
+                                            </View>
+                                        </View>
                                     )
                                 })
                             }

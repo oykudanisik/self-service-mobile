@@ -42,11 +42,11 @@ const OrderStatus = ({ navigation }) => {
     }
     useEffect(() => {
         getOrderStatus();
-        // console.log(order);
-        // const interval = setInterval(() => {
-        //     getOrderStatus();
-        // }, 10000);
-        // return () => clearInterval(interval);
+        console.log(order);
+        const interval = setInterval(() => {
+            getOrderStatus();
+        }, 10000);
+        return () => clearInterval(interval);
     }, [])
 
     function renderTable() {
