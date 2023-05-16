@@ -9,7 +9,9 @@ import {
     TouchableOpacity,
     Image,
     FlatList,
-    TextInput
+    TextInput,
+    RefreshControl,
+
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dialog } from '@rneui/themed';
@@ -21,7 +23,13 @@ const Tables = ({ navigation, route }) => {
     const [tables, setTables] = React.useState([{}]);
     const [tableOrders, setTableOrders] = React.useState([{}]);
     const [visible2, setVisible2] = useState(false);
-
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    }, []);
     const toggleDialog2 = () => {
         setVisible2(!visible2);
     };
@@ -159,6 +167,9 @@ const Tables = ({ navigation, route }) => {
                     paddingBottom: 30,
                 }}
                 numColumns={2}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             />
         )
     }

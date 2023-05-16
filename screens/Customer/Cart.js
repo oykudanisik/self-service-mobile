@@ -4,7 +4,9 @@ import {
     View,
     Text,
     Image,
-    StyleSheet
+    StyleSheet,
+    RefreshControl,
+
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,6 +28,14 @@ const Cart = ({ navigation }) => {
     const [accessToken, setAccessToken] = React.useState({});
     const [orderId, setOrderId] = React.useState("");
     const [orderStatus, setOrderStatus] = React.useState("");
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
+
 
     let price = 0
     let cartList = [];
@@ -119,127 +129,113 @@ const Cart = ({ navigation }) => {
 
     function renderCartList() {
         return (
-            <View>
-                <View
-                    style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-                >
-                        <Text> My Cart</Text>
+            <SwipeListView
+                data={myCartList}
+                keyExtractor={item => `${item.prod_id}`}
+                contentContainerStyle={{
+                    marginTop: SIZES.radius,
+                    paddingHorizontal: SIZES.padding,
+                    paddingBottom: SIZES.padding * 2
+                }}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+                disableRightSwipe={true}
+                rightOpenValue={-75}
+                renderItem={(data, rowMap) => (
+                    data.item.prod_image ? (
+                        <View>
 
-                    <Text style={{ ...FONTS.h2 }}>
-                    </Text>
-                </View>
-                <SwipeListView
-                    data={myCartList ?? ""}
-                    keyExtractor={item => `${item.prod_id}`}
-                    contentContainerStyle={{
-                        marginTop: SIZES.radius,
-                        paddingHorizontal: SIZES.padding,
-                        paddingBottom: SIZES.padding * 2
-                    }}
-                    disableRightSwipe={true}
-                    rightOpenValue={-75}
-                    renderItem={(data, rowMap) => (
-                        data.item.prod_image ? (
-                            <View>
-
+                            <View
+                                style={{
+                                    height: 100,
+                                    backgroundColor: COLORS.lightGray4,
+                                    ...styles.cartItemContainer
+                                }}
+                            >
+                                {/* Food Image */}
                                 <View
                                     style={{
+                                        width: 90,
                                         height: 100,
-                                        backgroundColor: COLORS.lightGray4,
-                                        ...styles.cartItemContainer
+                                        marginLeft: -10
                                     }}
                                 >
-                                    {/* Food Image */}
-                                    <View
+                                    {data.item.prod_image ? (<Image
+                                        source={{ uri: data.item.prod_image['String'] }}
+                                        resizeMode="cover"
                                         style={{
-                                            width: 90,
-                                            height: 100,
-                                            marginLeft: -10
+                                            width: "75%",
+                                            height: "75%",
+                                            position: 'absolute',
+                                            borderRadius: 10,
+                                            top: 10,
                                         }}
-                                    >
-                                        {data.item.prod_image ? (<Image
-                                            source={{ uri: data.item.prod_image['String'] }}
-                                            resizeMode="cover"
-                                            style={{
-                                                width: "75%",
-                                                height: "75%",
-                                                position: 'absolute',
-                                                borderRadius: 10,
-                                                top: 10,
-                                            }}
-                                        />) : (<Image
-                                            source={images.logo}
-                                            resizeMode="cover"
-                                            style={{
-                                                width: "100%",
-                                                height: 200,
-                                                borderRadius: SIZES.radius
-                                            }}
-                                        />)}
-                                    </View>
-
-                                    {/* Food Info */}
-                                    <View
+                                    />) : (<Image
+                                        source={images.logo}
+                                        resizeMode="cover"
                                         style={{
-                                            flex: 1
+                                            width: "100%",
+                                            height: 200,
+                                            borderRadius: SIZES.radius
                                         }}
-                                    >
-                                        <Text style={{ ...FONTS.body3 }}>{data.item.prod_name}</Text>
-                                        <Text style={{ color: COLORS.black, ...FONTS.h4 }}>{data.item.price} {data.item.currency}</Text>
-                                    </View>
-
-                                    {/* Quantity */}
-                                    <StepperInput
-                                        containerStyle={{
-                                            height: 40,
-                                            width: 100,
-                                            backgroundColor: COLORS.white
-                                        }}
-                                        value={data.item.count}
-                                        onAdd={() => { updateQuantityHandler(data.item.count + 1, data.item.prod_id) }}
-                                        onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.prod_id) }}
-                                    />
-                                    <TouchableHighlight
-                                        onPress={() => { deleteItem(data.item.prod_id) }}>
-                                        <View
-                                            style={{
-                                                width: 30,
-                                                height: 30,
-                                                marginLeft: 10
-                                            }}
-                                        >
-
-                                            <Image
-                                                source={icons.bin}
-                                                resizeMode="contain"
-                                                style={{
-                                                    width: "65%",
-                                                    height: "65%",
-                                                    position: 'absolute',
-                                                }}
-                                            />
-                                        </View>
-                                    </TouchableHighlight>
+                                    />)}
                                 </View>
-                            </View>
-                        ) :
-                            (
-                                <View style={{ paddingTop: 150, flex: 1, alignItems: "center", justifyContent: "center" }}>
-                                    <Text style={{ ...FONTS.h4, textAlign: "center" }}>Your cart is empty</Text>
-                                    {/* <Image
-                                    source={images.emptycart}
+
+                                {/* Food Info */}
+                                <View
                                     style={{
-                                        width: 320,
-                                        height: 320,
-                                        borderRadius: SIZES.radius
+                                        flex: 1
                                     }}
-                                /> */}
+                                >
+                                    <Text style={{ ...FONTS.body3 }}>{data.item.prod_name}</Text>
+                                    <Text style={{ color: COLORS.black, ...FONTS.h4 }}>{data.item.price} {data.item.currency}</Text>
                                 </View>
 
-                            )
-                    )}
-                />
-            </View>
+                                {/* Quantity */}
+                                <StepperInput
+                                    containerStyle={{
+                                        height: 40,
+                                        width: 100,
+                                        backgroundColor: COLORS.white
+                                    }}
+                                    value={data.item.count}
+                                    onAdd={() => { updateQuantityHandler(data.item.count + 1, data.item.prod_id) }}
+                                    onMinus={() => { updateQuantityHandler(data.item.count - 1, data.item.prod_id) }}
+                                />
+                                <TouchableHighlight
+                                    onPress={() => { deleteItem(data.item.prod_id) }}>
+                                    <View
+                                        style={{
+                                            width: 30,
+                                            height: 30,
+                                            marginLeft: 10
+                                        }}
+                                    >
+
+                                        <Image
+                                            source={icons.bin}
+                                            resizeMode="contain"
+                                            style={{
+                                                width: "65%",
+                                                height: "65%",
+                                                position: 'absolute',
+                                            }}
+                                        />
+                                    </View>
+                                </TouchableHighlight>
+                            </View>
+
+                        </View>
+                    ) :
+                        (
+                            <View style={{ paddingTop: 150, paddingBottom: 300, flex: 1, alignItems: "center", justifyContent: "center" }}>
+                                <Text style={{ ...FONTS.h4, textAlign: "center" }}>Your cart is empty</Text>
+                            </View>
+
+                        )
+                )}
+            />
         )
     }
 
@@ -257,6 +253,7 @@ const Cart = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             {/* Header */}
             <HeaderOrder navigation={navigation} ></HeaderOrder>
+            <Text style={{ ...FONTS.h2, textAlign: "center", alignItems: "center", justifyContent: "center", paddingTop: 20 }}> My Orders</Text>
             {/* Cart */}
             {renderCartList()}
             {/* Footer */}

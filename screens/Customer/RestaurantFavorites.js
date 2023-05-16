@@ -9,7 +9,9 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    FlatList
+    FlatList,
+    RefreshControl,
+
 } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants'
@@ -17,6 +19,13 @@ import { Header } from '../../components';
 import Route from "../../routes/Route";
 
 const RestaurantFavorites = ({ navigation, route }) => {
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
     console.log(route.params.restaurantName);
     const [foods, setFoods] = useState([{}]);
     function getFoodStats() {
@@ -92,6 +101,9 @@ const RestaurantFavorites = ({ navigation, route }) => {
                     paddingHorizontal: SIZES.padding * 2,
                     paddingBottom: 30,
                 }}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             />
         )
     }

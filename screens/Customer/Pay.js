@@ -6,7 +6,9 @@ import {
     Image,
     SafeAreaView,
     StyleSheet,
-    LinearGradient
+    LinearGradient,
+    RefreshControl,
+
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -40,6 +42,13 @@ const Pay = ({ navigation, route }) => {
     const [order, setOrder] = React.useState([{}]);
     const [totalPrice, setTotalPrice] = React.useState(0);
     const [isRemember, setIsRemember] = React.useState(false)
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     async function updateOrders() {
         let token = await AsyncStorage.getItem("accessToken");
@@ -304,6 +313,9 @@ const Pay = ({ navigation, route }) => {
                     paddingHorizontal: SIZES.padding,
                     paddingBottom: 20
                 }}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 {renderForm()}
                 {renderOrderDetails()}

@@ -8,6 +8,8 @@ import {
   TextInput,
   StyleSheet,
   Image,
+  RefreshControl,
+
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,12 +18,22 @@ import Route from '../../routes/Route';
 import { Dialog } from '@rneui/themed';
 import { icons, COLORS, SIZES, FONTS, images } from "../../constants";
 import { Header } from "../../components";
+import { SwipeListView } from "react-native-swipe-list-view";
 
 const Profile = ({ navigation }) => {
 
   const [userDetails, setUserDetails] = useState({});
   const [userProfilePicture, setUserProfilePicture] = useState("");
   const [visible2, setVisible2] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  let ppicture = "";
   const toggleDialog2 = () => {
     setVisible2(!visible2);
   };
@@ -29,103 +41,45 @@ const Profile = ({ navigation }) => {
     let token = await AsyncStorage.getItem("accessToken");
     console.log(token);
     token = JSON.parse(token);
+    console.log(token.uid)
     axios({
       method: "get",
-      url: Route.host + '/users/' + parseInt(token.uid)
+      url: Route.host + '/users?userId=' + token.uid
 
     }).then(function (response) {
+      console.log(response.data.items[0].type);
       setUserDetails(response.data.items[0]);
-      setUserProfilePicture(response.data.items[0].type + "pp");
-      console.log(userProfilePicture)
+      ppicture = response.data.items[0].type + "pp";
     });
   }
-  
+
   useEffect(() => {
     getUserDetails();
   }, [])
+
+  async function removeToken() {
+    await AsyncStorage.removeItem("accessToken");
+    await navigation.navigate("Login")
+  }
   return (
     <SafeAreaView>
-      <Header navigation={navigation}></Header>
-      <View style={styles.container}>
-        <Image style={styles.header} source={images.bground} />
-        <Image style={styles.avatar} source={images.waiterpp} />
+        <Header navigation={navigation}></Header>
+        <View style={styles.container}>
+          <Image style={styles.header} source={images.logo} />
+          <Image style={styles.avatar} source={images.ppicture} />
 
-        <View style={styles.body}>
-          <Text style={styles.name}>{userDetails.user_name}</Text>
-          <TouchableOpacity
-            onPress={() => {
-              toggleDialog2()
-            }} 
-            style={styles.buttonContainer}>
-            <Text style={{ color: COLORS.white }}>Edit Profile</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: 320,
-              borderTopWidth: 1,
-              paddingTop: 12,
-              paddingBottom: 12,
-              marginTop: 32,
-            }}
-          >
-            <View
-              style={{
-                justifyContent: "space-between",
-                flexDirection: "row",
+          <View style={styles.body}>
+            <Text style={styles.name}>{userDetails.user_name}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                removeToken();
               }}
-            >
-              <Text>Privacy Settings</Text>
-              <Image style={{ width: 24, height: 24 }} source={icons.user} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: 320,
-              paddingBottom: 12,
-              paddingTop: 12,
-              borderTopWidth: 1,
-            }}
-          >
-            <View
-              style={{
-                justifyContent: "space-between",
-                flexDirection: "row",
-              }}
-            >
-              <Text>Notifications</Text>
-              <Image
-                style={{ width: 24, height: 24 }}
-                source={icons.notification}
-              />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: 320,
-              paddingBottom: 12,
-              paddingTop: 12,
-              borderTopWidth: 1,
-            }}
-          >
-            <View
-              style={{
-                justifyContent: "space-between",
-                flexDirection: "row",
-              }}
-            >
-              <Text>Payment History</Text>
-              <Image style={{ width: 24, height: 24 }} source={icons.payment} />
-            </View>
-            <Dialog
-              isVisible={visible2}
-              onBackdropPress={toggleDialog2}
-            >
-              <Dialog.Title title="Edit User Profile" />
-
-            </Dialog>
-          </TouchableOpacity>
+              style={styles.buttonContainer}>
+              <Text style={{ color: COLORS.white }}>Logout</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+
     </SafeAreaView>
   );
 };

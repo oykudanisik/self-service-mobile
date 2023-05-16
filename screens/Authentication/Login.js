@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import jwt from 'jwt-decode';
 import axios from 'axios';
 import {
@@ -58,7 +58,13 @@ const Login = ({ navigation }) => {
             console.log(error);
         });
     }
+    async function getToken() {
+        await AsyncStorage.getItem("accessToken");
+    }
 
+    useEffect(() => {
+        getToken();
+    }, [])
     return (
         <AuthenticationLayout
         >

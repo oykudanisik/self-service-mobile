@@ -8,7 +8,9 @@ import {
     Platform,
     ScrollView,
     TouchableHighlight,
-    Image
+    Image,
+    RefreshControl,
+
 } from "react-native";
 import { Header } from '../../components';
 
@@ -51,7 +53,13 @@ const Tables2 = ({ navigation }) => {
     const [toBePaidOrders, setToBePaidOrders] = useState([{}])
 
     const [visible2, setVisible2] = useState(false);
-
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    }, []);
     const toggleDialog2 = () => {
         setVisible2(!visible2);
     };
@@ -160,7 +168,9 @@ const Tables2 = ({ navigation }) => {
     )
     return (
         <SafeAreaProvider>
-            <ScrollView>
+            <ScrollView refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }>
                 <SafeAreaView style={styles.safeArea}>
                     <Header navigation={navigation}></Header>
                     <View style={styles.container}>

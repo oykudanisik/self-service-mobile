@@ -8,7 +8,9 @@ import {
     Text,
     FlatList,
     TouchableOpacity,
-    TouchableHighlight
+    TouchableHighlight,
+    RefreshControl,
+
 } from 'react-native';
 import Slider from '@react-native-community/slider'
 import { HeaderOrder, PrimaryButton } from '../../components';
@@ -23,6 +25,13 @@ const OrderStatus = ({ navigation }) => {
     const [order, setOrder] = React.useState();
     const [selectedCard, setSelectedCard] = React.useState(null)
     const [ordersCount, setOrdersCount] = React.useState()
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     async function getOrderStatus() {
         let token = await AsyncStorage.getItem("accessToken");
@@ -123,6 +132,9 @@ const OrderStatus = ({ navigation }) => {
                     paddingHorizontal: SIZES.padding * 2,
                     paddingBottom: 30,
                 }}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             />
         )
     }
@@ -130,10 +142,6 @@ const OrderStatus = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <HeaderOrder navigation={navigation} ordersCount={ordersCount}></HeaderOrder>
-            <View
-                style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-            >
-            </View>
             <Text style={{ ...FONTS.h2, textAlign: "center", alignItems: "center", justifyContent: "center", paddingTop: 20 }}> My Orders</Text>
             {renderTable()}
             <PrimaryButton

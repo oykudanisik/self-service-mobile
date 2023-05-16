@@ -9,7 +9,9 @@ import {
     TouchableOpacity,
     Image,
     FlatList,
-    TextInput
+    TextInput,
+    RefreshControl,
+
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -23,7 +25,13 @@ const Menu = ({ navigation, route }) => {
     const [products, setProducts] = React.useState([{}]);
     const [scanned, setScanned] = React.useState(false);
     const [restaurantName, setRestaurantName] = React.useState("");
-
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
     setRestaurantName
     let cartCount = 0;
 
@@ -49,18 +57,18 @@ const Menu = ({ navigation, route }) => {
     function getRestauranName(restId) {
         console.log(restId);
         axios({
-          method: "get",
-          url: Route.host + "/restaurants/?resId=" + restId,
+            method: "get",
+            url: Route.host + "/restaurants/?resId=" + restId,
         }).then(
-          function (response) {
-            console.log(response.data.items);
-           setRestaurantName(response.data.items[0].rest_name)
-          },
-          (error) => {
-            console.log(error);
-          }
+            function (response) {
+                console.log(response.data.items);
+                setRestaurantName(response.data.items[0].rest_name)
+            },
+            (error) => {
+                console.log(error);
+            }
         );
-      }
+    }
     function getCategories(rest_id) {
         axios({
             method: "get",
@@ -161,7 +169,7 @@ const Menu = ({ navigation, route }) => {
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h2, textAlign: "center" }}>{scanned ? restaurantName :  route.params.restaurantName}</Text>
+                <Text style={{ ...FONTS.h2, textAlign: "center" }}>{scanned ? restaurantName : route.params.restaurantName}</Text>
                 <FlatList
                     data={categories}
                     horizontal
@@ -244,6 +252,9 @@ const Menu = ({ navigation, route }) => {
                     paddingBottom: 30,
                 }}
                 numColumns={2}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             />
         )
     }

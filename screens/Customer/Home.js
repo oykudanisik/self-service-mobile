@@ -9,7 +9,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    FlatList
+    FlatList,
+    RefreshControl,
 } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from '../../constants'
@@ -19,6 +20,7 @@ import Route from "../../routes/Route";
 const Home = ({ navigation, route }) => {
     const [scanned, setScananed] = useState(false);
     const [restaurants, setRestaurants] = useState([]);
+    const [refreshing, setRefreshing] = React.useState(false);
     useEffect(() => {
         axios({
             method: "get",
@@ -28,7 +30,12 @@ const Home = ({ navigation, route }) => {
             setRestaurants(rest);
         });
     }, []);
-
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+          setRefreshing(false);
+        }, 2000);
+      }, []);
 
     function renderRestaurantList() {
         const renderItem = ({ item }) => (
@@ -119,6 +126,9 @@ const Home = ({ navigation, route }) => {
                     paddingHorizontal: SIZES.padding * 2,
                     paddingBottom: 30,
                 }}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                  }
             />
         )
     }
