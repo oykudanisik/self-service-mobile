@@ -8,7 +8,7 @@ import {
 
 import { FONTS, SIZES, COLORS } from "../constants"
 import PhoneInput from "react-native-phone-number-input";
-    
+
 const PhoneNumberInput = ({
     containerStyle,
     inputContainerStyle,
@@ -25,6 +25,7 @@ const PhoneNumberInput = ({
     autoCapitalize = "none",
     errorMsg = "",
     maxLength,
+    defaultCode
 }
 ) => {
     return (
@@ -49,9 +50,10 @@ const PhoneNumberInput = ({
                     prependComponent
                 }
                 <PhoneInput
-                    countryCode= "90"
                     style={{ flex: 1, ...inputStyle }}
                     value={value}
+                    defaultCode={defaultCode}
+
                     placeholder={placeholder}
                     placeholderTextColor={COLORS.gray}
                     secureTextEntry={secureTextEntry}

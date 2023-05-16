@@ -39,6 +39,7 @@ const Profile = ({ navigation }) => {
       console.log(userProfilePicture)
     });
   }
+  
   useEffect(() => {
     getUserDetails();
   }, [])

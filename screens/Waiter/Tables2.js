@@ -48,12 +48,18 @@ const Tables2 = ({ navigation }) => {
     const [todoOrders, setTodoOrders] = useState([{}])
     const [inprogressOrders, setInprogressOrders] = useState([{}])
     const [completedOrders, setCompletedOrders] = useState([{}])
+    const [toBePaidOrders, setToBePaidOrders] = useState([{}])
+
     const [visible2, setVisible2] = useState(false);
 
     const toggleDialog2 = () => {
         setVisible2(!visible2);
     };
     async function getWaiterTables() {
+        let todo = [];
+        let inprogress = [];
+        let completed = [];
+        let paid = [];
         let token = await AsyncStorage.getItem("accessToken");
         console.log("token",token)
         token = JSON.parse(token);
@@ -64,14 +70,13 @@ const Tables2 = ({ navigation }) => {
             setTables(response.data.items)
             console.log("aaaaa", response.data.items)
             response.data.items.map(({ rest_id, table_no }) => {
-                getTableOrderDetails(table_no)
+                console.log("ananananaann")
+                getTableOrderDetails(table_no, todo,inprogress,completed,paid)
             })
         });
     }
-    async function getTableOrderDetails(table_id) {
-        let todo = [];
-        let inprogress = [];
-        let completed = [];
+    async function getTableOrderDetails(table_id,todo,inprogress,completed,paid) {
+
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
         toggleDialog2()
@@ -79,6 +84,7 @@ const Tables2 = ({ navigation }) => {
             method: "get",
             url: Route.host + '/restaurants/tables/orders/?resId=' + token.rest_id + '&tableId=' + table_id
         }).then(function (response) {
+            console.log("x", response.data.orders);
             response.data.orders.map((x) => {
                 if (x.order_status == "To do") {
                     todo.push(x);
@@ -89,11 +95,15 @@ const Tables2 = ({ navigation }) => {
                 if (x.order_status == "Completed") {
                     completed.push(x);
                 }
+                if (x.order_status == "done") {
+                    paid.push(x);
+                }
             })
             console.log(todo);
             setTodoOrders(todo);
             setInprogressOrders(inprogress);
             setCompletedOrders(completed)
+            setToBePaidOrders(paid)
             setTableOrders(response.data.orders)
         }, (error) => {
             setTableOrders([{}])
@@ -122,7 +132,6 @@ const Tables2 = ({ navigation }) => {
     useEffect(() => {
         getWaiterTables();
         const interval = setInterval(() => {
-            console.log("giriyo")
             getWaiterTables();
         }, 10000);
         return () => clearInterval(interval);
@@ -191,7 +200,7 @@ const Tables2 = ({ navigation }) => {
                         <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
                         <Accordion title={paidTitle} >
                             {
-                                inprogressOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
+                                toBePaidOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
                                     return (
                                         <View>
                                             <View

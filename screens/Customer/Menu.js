@@ -22,34 +22,50 @@ const Menu = ({ navigation, route }) => {
     const [selectedCategory, setSelectedCategory] = React.useState(null);
     const [products, setProducts] = React.useState([{}]);
     const [scanned, setScanned] = React.useState(false);
+    const [restaurantName, setRestaurantName] = React.useState("");
+
+    setRestaurantName
     let cartCount = 0;
 
     useEffect(() => {
         var restId = "";
         var tableId = "";
-        console.log("t", route.params.scanned);
 
         if (route.params.scanned) {
             setScanned(true)
             restId = route.params.restaurantId
+            console.log(route.params.restaurantName)
             tableId = route.params.tableId
-            console.log("r", restId);
-            console.log("t", tableId);
             AsyncStorage.setItem("tableId", tableId);
         } else {
             restId = route.params.item.rest_id.toString()
         }
         AsyncStorage.setItem("restaurantId", restId);
         getCategories(restId);
+        console.log(restId);
         getMenuItems(restId);
+        getRestauranName(restId)
     }, []);
-
+    function getRestauranName(restId) {
+        console.log(restId);
+        axios({
+          method: "get",
+          url: Route.host + "/restaurants/?resId=" + restId,
+        }).then(
+          function (response) {
+            console.log(response.data.items);
+           setRestaurantName(response.data.items[0].rest_name)
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     function getCategories(rest_id) {
         axios({
             method: "get",
             url: Route.host + "/restaurants/categories?resId=" + rest_id
         }).then(function (response) {
-            console.log(response.data.items);
             setCategories(response.data.items);
         });
     }
@@ -67,26 +83,20 @@ const Menu = ({ navigation, route }) => {
     function onSelectCategory(category) {
         var restId = "";
         var tableId = "";
-        console.log("t", route.params.scanned);
 
         if (route.params.scanned) {
             setScanned(true)
             restId = route.params.restaurantId
             tableId = route.params.tableId
-            console.log("r", restId);
-            console.log("t", tableId);
             AsyncStorage.setItem("tableId", tableId);
         } else {
             restId = route.params.item.rest_id
         }
-        console.log(category.cat_id);
-        console.log(restId);
         axios({
             method: "get",
             url:
                 Route.host + '/restaurants/categories/products?resId=' + restId + '&catId=' + category.cat_id,
         }).then(function (response) {
-            console.log("cat", response.data.items);
             setProducts(response.data.items);
         });
     }
@@ -151,7 +161,7 @@ const Menu = ({ navigation, route }) => {
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h2, textAlign: "center" }}>{scanned ? "route.params.restaurantName" : "route.params.item.prod_name"}</Text>
+                <Text style={{ ...FONTS.h2, textAlign: "center" }}>{scanned ? restaurantName :  route.params.restaurantName}</Text>
                 <FlatList
                     data={categories}
                     horizontal

@@ -36,24 +36,24 @@ const Register = ({ navigation }) => {
         console.log(fullname);
         console.log(phonenumber);
         axios({
-          method: 'post',
-          url: Route.host + '/users/register',
-          data: {
-            user_name: fullname,
-            password: password,
-            email: email,
-            phone: phonenumber,
-            type: "customer",
-          }
+            method: 'post',
+            url: Route.host + '/users/register',
+            data: {
+                user_name: fullname,
+                password: password,
+                email: email,
+                phone: phonenumber,
+                type: "customer",
+            }
         }).then((response) => {
-          console.log(response);
-          if(response){
-            return true;
-          } else{
-            return false;
-          }
+            console.log(response);
+            if (response) {
+                return true;
+            } else {
+                return false;
+            }
         }, (error) => {
-          console.log(error);
+            console.log(error);
         });
     }
     return (
@@ -134,8 +134,8 @@ const Register = ({ navigation }) => {
                 />
 
                 <PhoneNumberInput
+                    defaultCode="TR"
                     label="Phone Number"
-                    country={'tr'}
                     containerStyle={{
                         marginTop: SIZES.radius,
                     }}
@@ -198,9 +198,9 @@ const Register = ({ navigation }) => {
                 />
                 <PrimaryButton
                     onPress={() => {
-                        if(register()){
+                        if (register()) {
                             navigation.navigate('Login');
-                        } 
+                        }
                     }}
                     title="Sign Up"
                 />

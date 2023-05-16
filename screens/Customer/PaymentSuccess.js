@@ -43,7 +43,6 @@ const PaymentSuccess = ({ navigation }) => {
                     }}
                 />
 
-                <Text style={{ marginTop: SIZES.padding, ...FONTS.h1 }}>Congratulations!</Text>
                 <Text style={{ textAlign: 'center', marginTop: SIZES.base, color: COLORS.darkGray, ...FONTS.body3 }}>Payment was successfully made!</Text>
             </View>
 
