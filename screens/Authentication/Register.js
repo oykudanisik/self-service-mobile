@@ -30,32 +30,24 @@ const Register = ({ navigation }) => {
         return email != "" && fullname != "" && password != "" && phonenumber != "" && emailError == "" && passwordError == ""
     }
 
-    function register() {
-        console.log(email);
-        console.log(password);
-        console.log(fullname);
-        console.log(phonenumber);
-        axios({
-            method: 'post',
-            url: Route.host + '/users/register',
-            data: {
-                user_name: fullname,
-                password: password,
-                email: email,
-                phone: phonenumber,
-                type: "customer",
-            }
-        }).then((response) => {
-            console.log(response);
-            if (response) {
-                return true;
-            } else {
-                return false;
-            }
-        }, (error) => {
-            console.log(error);
-        });
-    }
+    async function register() {
+        try {
+          const response = await axios.post(Route.host + '/users/register', {
+            user_name: fullname,
+            password: password,
+            email: email,
+            phone: phonenumber,
+            type: "customer",
+          });
+      
+          console.log(response);
+      
+          return !!response; // Return true if the response exists, false otherwise
+        } catch (error) {
+          console.log(error);
+          return false;
+        }
+      }
     return (
         <AuthenticationLayout
         >
@@ -222,7 +214,9 @@ const Register = ({ navigation }) => {
                             color: COLORS.primary,
                             ...FONTS.h3
                         }}
-                        onPress={() => navigation.navigate("Login")}
+                        onPress={() => {
+                                navigation.navigate('Login');
+                        }}
                     />
                 </View>
             </View>

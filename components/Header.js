@@ -8,6 +8,10 @@ import {
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 export default function Header({ navigation }) {
+    async function removeToken() {
+        await AsyncStorage.removeItem("accessToken");
+        await navigation.navigate("Login")
+      }
     return (
         <View style={{ flexDirection: 'row', height: "13%", marginBottom: 10 }}>
             <TouchableOpacity
@@ -43,7 +47,10 @@ export default function Header({ navigation }) {
             </View>
 
             <TouchableOpacity
-                onPress={() => navigation.navigate("Profile")}
+                onPress={() => {
+                    removeToken()
+                    navigation.navigate("Login")
+                }}
                 style={{
                     width: 50,
                     paddingRight: SIZES.padding * 2,
@@ -51,7 +58,7 @@ export default function Header({ navigation }) {
                 }}
             >
                 <Image
-                    source={icons.user}
+                    source={icons.logout}
                     resizeMode="contain"
                     style={{
                         width: 25,

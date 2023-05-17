@@ -113,11 +113,12 @@ const FoodItem = ({ route, navigation }) => {
                                         );
                                     } else {
                                         let cartItems = await JSON.parse(items);
-                                        var found = false;
-                                        for (var i = 0; i < cartItems.length && !found; i++) {
-                                            if (cartItems[i].id === route.params.item.prod_id) {
+                                        let found = false;
+                                        for (let i = 0; i < cartItems.length; i++) {
+                                            if (cartItems[i].prod_id === route.params.item.prod_id) {
                                                 cartItems[i].count++;
                                                 found = true;
+                                                break;
                                             }
                                         }
                                         if (!found) {

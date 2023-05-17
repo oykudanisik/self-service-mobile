@@ -39,6 +39,7 @@ const Pay = ({ navigation, route }) => {
     const [cvv, setCvv] = React.useState("")
     const [cvvError, setCvvError] = React.useState("")
     const [tip, setTip] = React.useState("")
+    const [waiterId, setWaiterId] = React.useState("")
     const [order, setOrder] = React.useState([{}]);
     const [totalPrice, setTotalPrice] = React.useState(0);
     const [isRemember, setIsRemember] = React.useState(false)
@@ -54,8 +55,6 @@ const Pay = ({ navigation, route }) => {
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
         let restId = await AsyncStorage.getItem("restaurantId");
-        console.log(restId);
-        console.log(token.uid)
         order.map(item =>
             axios({
                 method: 'post',
@@ -67,7 +66,6 @@ const Pay = ({ navigation, route }) => {
                 }
             }).then((response) => {
             }, (error) => {
-                console.log(error);
             })
         )
 
@@ -84,50 +82,66 @@ const Pay = ({ navigation, route }) => {
             // set the returned order status to orderStatus
             setOrder(response.data.data)
             let price = 0;
-            console.log(response.data.data);
             response.data.data.map(item =>
                 price += item.price * item.prod_count
             )
             setTotalPrice(price)
         }, (error) => {
             setOrder([{}])
-            console.log(error);
         });
     }
     async function getTableWaiter() {
         let accessToken = await AsyncStorage.getItem("accessToken");
         let restId = await AsyncStorage.getItem("restaurantId");
-        let tableId = await AsyncStorage.getItem("tabelId");
+        let tableId = await AsyncStorage.getItem("tableId");
         let userId = JSON.parse(accessToken)
-        console.log(tableId);
-        console.log(userId.uid);
-
         axios({
             method: 'get',
-            url: Route.host + '/restaurants/tables/waiters?resId=' + restId + '&tableId=' +tableId
+            url: Route.host + '/restaurants/tables/waiters?resId=' + restId + '&tableId=' + tableId
         }).then((response) => {
             // set the returned order status to orderStatus
-            setOrder(response.data.data)
-            console.log(response.data)
+            setOrder(response.data.items)
+            setWaiterId(response.data.items[0].waiter_id);
             let price = 0;
-            response.data.data.map(item =>
+            response.data.items.map(item =>
                 price += item.price * item.prod_count
             )
             setTotalPrice(price)
         }, (error) => {
             setOrder([{}])
-            console.log(error);
         });
     }
 
-    async function tipWaiter(tip) {
+    async function tipWaiter() {
         let restId = await AsyncStorage.getItem("restaurantId");
         let tableId = await AsyncStorage.getItem("tableId");
         let accessToken = await AsyncStorage.getItem("accessToken")
         let userId = JSON.parse(accessToken);
         getTableWaiter();
+        await tips(restId,userId);
     }
 
+    async function tips(restId,userId) {
+        console.log("x",parseInt(restId))
+        console.log("y",parseInt(userId.uid))
+        console.log("z", parseInt(waiterId))
+        console.log("w",tip)
+        axios({
+            method: 'post',
+            url: Route.host + '/restaurants/waiters/tips',
+            data: {
+                rest_id: parseInt(restId),
+                user_id: parseInt(userId.uid),
+                waiter_id: parseInt(waiterId),
+                tip: parseInt(tip)
+            }
+        }).then((response) => {
+            console.log(response);
+        }, (error) => {
+            console.log(error);
+
+        })
+    }
     React.useEffect(() => {
         getOrderTotal()
     }, [])
@@ -169,7 +183,7 @@ const Pay = ({ navigation, route }) => {
                 subTotal={37.97}
                 shippingFee={0.00}
                 total={totalPrice}
-                onPress={() => navigation.replace("Success")}
+            // onPress={() => navigation.replace("Success")}
             />
         )
     }
@@ -231,15 +245,17 @@ const Pay = ({ navigation, route }) => {
                     <FormInput
                         label="Expiry Date"
                         value={expiryDate}
+
                         placeholder="MM/YY"
                         maxLength={5}
                         containerStyle={{
                             flex: 1
-
                         }}
                         onChange={(value) => {
-                            validation.validateInput(value, 5, setExpiryDateError)
-                            setExpiryDate(value)
+                            if (/^[0-9/]*$/.test(value)) { // Check if the value contains only numbers and '/'
+                                validation.validateInput(value, 5, setExpiryDateError);
+                                setExpiryDate(value);
+                            }
                         }}
                         appendComponent={
                             <FormInputCheck
@@ -253,13 +269,18 @@ const Pay = ({ navigation, route }) => {
                         label="CVV"
                         value={cvv}
                         maxLength={3}
+                        keyboardType="number-pad"
+
                         containerStyle={{
                             flex: 1,
                             marginLeft: SIZES.radius
                         }}
                         onChange={(value) => {
-                            validation.validateInput(value, 3, setCvvError)
-                            setCvv(value)
+                            if (!isNaN(value)) {
+                                validation.validateInput(value, 3, setCvvError)
+                                setCvv(value)
+                            }
+
                         }}
                         appendComponent={
                             <FormInputCheck
@@ -286,6 +307,7 @@ const Pay = ({ navigation, route }) => {
                 <FormInput
                     label="Tip to waiter"
                     value={tip}
+                    keyboardType="number-pad"
                     containerStyle={{
                         flex: 1,
                         paddingTop: 20
@@ -325,8 +347,8 @@ const Pay = ({ navigation, route }) => {
             {renderFooter()}
             <PrimaryButton
                 onPress={() => {
-                    navigation.navigate("Loading")
-                    // tipWaiter()
+                    // navigation.navigate("Loading")
+                    tipWaiter()
                     updateOrders();
                 }}
                 title="PAY"

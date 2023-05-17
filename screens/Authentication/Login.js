@@ -113,6 +113,7 @@ const Login = ({ navigation }) => {
                     autoCompleteType="password"
                     containerStyle={{
                         marginTop: SIZES.radius,
+                        paddingBottom:40
                     }}
                     errorMsg={loginError ? "Password Error" : ""}
                     value={password}
@@ -137,27 +138,7 @@ const Login = ({ navigation }) => {
                         </TouchableOpacity>
                     }
                 />
-                {/* Save me & Forgot pass */}
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        marginTop: SIZES.radius,
-                        marginBottom: SIZES.radius,
-                        justifyContent: 'space-between'
-                    }}
-                >
-                    <TextButton
-                        label="Forgot Password?"
-                        buttonContainerStyle={{
-                            backgroundColor: null
-                        }}
-                        labelStyle={{
-                            color: COLORS.gray,
-                            ...FONTS.body4
-                        }}
-                        onPress={() => navigation.navigate("ForgotPassword")}
-                    />
-                </View>
+
 
                 <PrimaryButton
                     onPress={() => {
@@ -169,8 +150,9 @@ const Login = ({ navigation }) => {
                 {/* Sign Up */}
                 <View
                     style={{
-                        flexDirection: 'row',
                         marginTop: SIZES.radius,
+                        marginBottom: SIZES.radius,
+                        flexDirection: 'row',
                         justifyContent: 'center'
                     }}
                 >

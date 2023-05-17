@@ -30,32 +30,40 @@ const OrderStatus = ({ navigation }) => {
         setRefreshing(true);
         setTimeout(() => {
             setRefreshing(false);
+            getOrderStatus();
         }, 2000);
     }, []);
 
     async function getOrderStatus() {
-        let token = await AsyncStorage.getItem("accessToken");
-        token = JSON.parse(token);
-        let restId = await AsyncStorage.getItem("restaurantId");
+        try {
+            let token = await AsyncStorage.getItem("accessToken");
+            token = JSON.parse(token);
+            let restId = await AsyncStorage.getItem("restaurantId");
 
-        console.log(token.uid);
-        console.log(restId);
+            console.log("a", token.uid);
+            console.log("b", restId);
 
-        axios({
-            method: "get",
-            url: Route.host + '/users/orders?userId=' + token.uid + '&resId=' + restId,
-        }).then(function (response) {
-            console.log(response.data)
-            setOrder(response.data.data)
-        });
+            const response = await axios.get(
+                Route.host + '/users/orders?userId=' + token.uid + '&resId=' + restId
+            );
+
+            console.log("c", response.data);
+            setOrder(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
     }
+
     useEffect(() => {
         getOrderStatus();
-        console.log(order);
-        const interval = setInterval(() => {
-            getOrderStatus();
-        }, 10000);
-        return () => clearInterval(interval);
+    }, []);
+    useEffect(() => {
+        getOrderStatus();
+        console.log("d", order);
+        // const interval = setInterval(() => {
+        //     getOrderStatus();
+        // }, 10000);
+        // return () => clearInterval(interval);
     }, [])
 
     function renderTable() {
