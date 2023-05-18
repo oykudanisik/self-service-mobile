@@ -60,15 +60,11 @@ const Cart = ({ navigation }) => {
         let totalPrice = 0;
 
         if (cartList) {
-
-            setToralPrice(totalPrice);
-
             const filteredCartList = cartList.filter((item) => item.rest_id === rest_id);
             filteredCartList.forEach((item) => {
                 totalPrice += item.price * item.count;
             });
-
-            console.log(filteredCartList)
+            setToralPrice(totalPrice);
             setMyCartList(filteredCartList);
         } else {
             setToralPrice(0);

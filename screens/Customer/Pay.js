@@ -347,9 +347,12 @@ const Pay = ({ navigation, route }) => {
             {renderFooter()}
             <PrimaryButton
                 onPress={() => {
+                    if(/^\d{16}$/.test(cardNumber)){
+                        console.log("aa");
+                    }
                     // navigation.navigate("Loading")
-                    tipWaiter()
-                    updateOrders();
+                    // tipWaiter()
+                    // updateOrders();
                 }}
                 title="PAY"
             />
