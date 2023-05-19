@@ -4,13 +4,14 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 export default function Header({ navigation }) {
     async function removeToken() {
         await AsyncStorage.removeItem("accessToken");
-        await navigation.navigate("Login")
+        await AsyncStorage.removeItem("item");
+        navigation.navigate("Login")
       }
     return (
         <View style={{ flexDirection: 'row', height: "13%", marginBottom: 10 }}>
@@ -22,14 +23,7 @@ export default function Header({ navigation }) {
                     justifyContent: 'center'
                 }}
             >
-                <Image
-                    source={icons.back}
-                    resizeMode="contain"
-                    style={{
-                        width: 25,
-                        height: 25,
-                    }}
-                />
+               
             </TouchableOpacity>
 
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

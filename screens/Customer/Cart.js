@@ -24,7 +24,7 @@ const Cart = ({ navigation }) => {
 
     // AsyncStorage.clear();
     const [myCartList, setMyCartList] = React.useState([])
-    const [totalPrice, setToralPrice] = React.useState(0);
+    const [totalPrice, setTotalPrice] = React.useState(0);
     const [accessToken, setAccessToken] = React.useState({});
     const [orderId, setOrderId] = React.useState("");
     const [orderStatus, setOrderStatus] = React.useState("");
@@ -33,26 +33,17 @@ const Cart = ({ navigation }) => {
         setRefreshing(true);
         setTimeout(() => {
             setRefreshing(false);
+            deneme();
         }, 2000);
     }, []);
 
 
     let price = 0
     let cartList = [];
-    // async function deneme() {
-    //     cartList = await AsyncStorage.getItem("item")
 
-    //     cartList = JSON.parse(cartList);
-
-    //     cartList.map((item) =>
-    //         price += item.price * item.count
-    //     )
-
-    //     setToralPrice(price)
-    //     setMyCartList(cartList ?? [{}]);
-    // }
     async function deneme() {
         let cartList = await AsyncStorage.getItem("item");
+        console.log("ljqnhdwja", cartList)
         let rest_id = await AsyncStorage.getItem("restaurantId");
         rest_id = parseInt(rest_id);
         cartList = JSON.parse(cartList);
@@ -61,13 +52,20 @@ const Cart = ({ navigation }) => {
 
         if (cartList) {
             const filteredCartList = cartList.filter((item) => item.rest_id === rest_id);
-            filteredCartList.forEach((item) => {
-                totalPrice += item.price * item.count;
-            });
-            setToralPrice(totalPrice);
-            setMyCartList(filteredCartList);
+            console.log("filtered",filteredCartList)
+            if(filteredCartList.length!=0){
+                filteredCartList.forEach((item) => {
+                    totalPrice += item.price * item.count;
+                });
+                setTotalPrice(totalPrice);
+                setMyCartList(filteredCartList);
+            } else{
+                setTotalPrice(0);
+                setMyCartList([]);
+            }
+            
         } else {
-            setToralPrice(0);
+            setTotalPrice(0);
             setMyCartList([]);
         }
     }
@@ -113,43 +111,44 @@ const Cart = ({ navigation }) => {
             await deleteItem(id);
             return;
         }
-
+    
         const newMyCartList = myCartList.map((item) =>
             item.prod_id === id ? { ...item, count: newQty } : item
         );
-
+    
         setMyCartList(newMyCartList);
-
+    
         let cartList = await AsyncStorage.getItem("item");
         let cartItems = JSON.parse(cartList);
-
+    
         for (var i = 0; i < cartItems.length; i++) {
             if (cartItems[i].prod_id === id) {
                 cartItems[i].count = newQty;
                 break; // Break the loop after updating the count
             }
         }
-
+    
         await AsyncStorage.setItem("item", JSON.stringify(cartItems));
+    
+        // Recalculate the total price
+        let totalPrice = 0;
+        newMyCartList.forEach((item) => {
+            totalPrice += item.price * item.count;
+        });
+        setTotalPrice(totalPrice);
     }
 
     async function deleteItem(id) {
-        let restId = await AsyncStorage.getItem("restaurantId");
-        restId = parseInt(restId)
-        cartList = await AsyncStorage.getItem("item");
-        let cartItems = await JSON.parse(cartList);
-
-        // Filter out the items with rest_id equal to 1
-        cartItems = cartItems.filter(function (ci) {
-            return ci.rest_id !== restId;
-        });
-
-        await AsyncStorage.setItem(
-            "item",
-            JSON.stringify(cartItems),
-        );
-
+        let cartList = await AsyncStorage.getItem("item");
+        let cartItems = JSON.parse(cartList);
+    
+        // Filter out the item with the specified prod_id
+        cartItems = cartItems.filter((item) => item.prod_id !== id);
+    
+        await AsyncStorage.setItem("item", JSON.stringify(cartItems));
+    
         setMyCartList(cartItems);
+        deneme();
     }
     React.useEffect(() => {
         deneme();

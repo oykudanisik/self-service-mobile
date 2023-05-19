@@ -55,10 +55,10 @@ const Tables2 = ({ navigation }) => {
     const [visible2, setVisible2] = useState(false);
     const [refreshing, setRefreshing] = React.useState(false);
     const onRefresh = React.useCallback(() => {
-      setRefreshing(true);
-      setTimeout(() => {
-        setRefreshing(false);
-      }, 2000);
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
     }, []);
     const toggleDialog2 = () => {
         setVisible2(!visible2);
@@ -69,7 +69,7 @@ const Tables2 = ({ navigation }) => {
         let completed = [];
         let paid = [];
         let token = await AsyncStorage.getItem("accessToken");
-        console.log("token",token)
+        console.log("token", token)
         token = JSON.parse(token);
         axios({
             method: "get",
@@ -79,11 +79,11 @@ const Tables2 = ({ navigation }) => {
             console.log("aaaaa", response.data.items)
             response.data.items.map(({ rest_id, table_no }) => {
                 console.log("ananananaann")
-                getTableOrderDetails(table_no, todo,inprogress,completed,paid)
+                getTableOrderDetails(table_no, todo, inprogress, completed, paid)
             })
         });
     }
-    async function getTableOrderDetails(table_id,todo,inprogress,completed,paid) {
+    async function getTableOrderDetails(table_id, todo, inprogress, completed, paid) {
 
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
@@ -120,29 +120,48 @@ const Tables2 = ({ navigation }) => {
     async function updateOrders(orderId) {
         let token = await AsyncStorage.getItem("accessToken");
         token = JSON.parse(token);
-        console.log("rr",token.rest_id);
+        console.log("rr", token.rest_id);
         axios({
             method: 'post',
             url: Route.host + '/restaurants/orders/alter',
             data: {
-              order_status: "done",
-              rest_id: parseInt(token.rest_id),
-              order_item_id: parseInt(orderId)
+                order_status: "done",
+                rest_id: parseInt(token.rest_id),
+                order_item_id: parseInt(orderId)
             }
-          }).then((response) => {
+        }).then((response) => {
             console.log(response);
             getWaiterTables();
-          }, (error) => {
+        }, (error) => {
             console.log(error);
-          });
+        });
     }
-
+    async function approveOrder(orderId) {
+        let token = await AsyncStorage.getItem("accessToken");
+        token = JSON.parse(token);
+        console.log(orderId);
+        console.log("rr", token.rest_id);
+        axios({
+            method: 'post',
+            url: Route.host + '/restaurants/orders/alter',
+            data: {
+                order_status: "paid",
+                rest_id: parseInt(token.rest_id),
+                order_item_id: parseInt(orderId)
+            }
+        }).then((response) => {
+            console.log(response);
+            getWaiterTables();
+        }, (error) => {
+            console.log(error);
+        });
+    }
     useEffect(() => {
         getWaiterTables();
-        const interval = setInterval(() => {
-            getWaiterTables();
-        }, 10000);
-        return () => clearInterval(interval);
+        // const interval = setInterval(() => {
+        //     getWaiterTables();
+        // }, 10000);
+        // return () => clearInterval(interval);
     }, []);
 
     const todoTitle = (
@@ -169,14 +188,15 @@ const Tables2 = ({ navigation }) => {
     return (
         <SafeAreaProvider>
             <ScrollView refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }>
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
                 <SafeAreaView style={styles.safeArea}>
                     <Header navigation={navigation}></Header>
                     <View style={styles.container}>
                         <Text style={{ ...FONTS.h2, paddingBottom: 20 }}>Order Details of My Tables</Text>
                         <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
                         <Accordion title={completedTitle} >
+                            
                             {
                                 completedOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
                                     return (
@@ -188,7 +208,6 @@ const Tables2 = ({ navigation }) => {
                                                     marginLeft: 10
                                                 }}
                                             >
-
                                                 <Text>{prod_name} / Table {table_id}</Text>
                                                 <Image
                                                     source={icons.check_mark}
@@ -212,7 +231,7 @@ const Tables2 = ({ navigation }) => {
                             {
                                 toBePaidOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
                                     return (
-                                        <View>
+                                        <TouchableHighlight onPress={() => approveOrder(order_item_id)}>
                                             <View
                                                 style={{
                                                     width: "95%",
@@ -221,9 +240,20 @@ const Tables2 = ({ navigation }) => {
                                                 }}
                                             >
                                                 <Text>{prod_name} / Table {table_id}</Text>
-
+                                                <Image
+                                                    source={icons.check_mark}
+                                                    onPress={() => approveOrder(order_item_id)}
+                                                    resizeMode="contain"
+                                                    style={{
+                                                        width: "65%",
+                                                        height: "65%",
+                                                        position: 'absolute',
+                                                        left: 250
+                                                    }}
+                                                />
                                             </View>
-                                        </View>
+                                        </TouchableHighlight>
+
                                     )
                                 })
                             }

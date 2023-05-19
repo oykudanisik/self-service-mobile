@@ -96,10 +96,11 @@ const FoodItem = ({ route, navigation }) => {
                             style={{
                                 width: SIZES.width * 0.9,
                                 padding: SIZES.padding,
-                                backgroundColor: COLORS.primary,
+                                backgroundColor: route.params.item.availability ? COLORS.primary : COLORS.lightGray,
                                 alignItems: 'center',
                                 borderRadius: SIZES.radius
                             }}
+                            disabled={!route.params.item.availability}
                             onPress={
                                 async () => {
                                     let items = await AsyncStorage.getItem("item");
@@ -134,6 +135,7 @@ const FoodItem = ({ route, navigation }) => {
                                     await navigation.goBack();
                                 }}
                         >
+                            
                             <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Add to Cart</Text>
                         </TouchableOpacity>
                     </View>
@@ -155,13 +157,47 @@ const FoodItem = ({ route, navigation }) => {
             </View>
         )
     }
+    function renderInfo() {
+        return (
+            <View>
+                <View
+                    style={{
+                        backgroundColor: COLORS.white,
+                        borderTopLeftRadius: 40,
+                        borderTopRightRadius: 40,
+                    }}
+                >
+                        <Text style={{
+                            padding:20,
+                            ...FONTS.h4,
+                            textAlign:"center"
+                        }}>To add items to your cart, please scan the QR Code on your table</Text>
 
+                    
+                </View>
+
+                {isIphoneX() &&
+                    <View
+                        style={{
+                            position: 'absolute',
+                            bottom: -34,
+                            left: 0,
+                            right: 0,
+                            height: 34,
+                            backgroundColor: COLORS.white
+                        }}
+                    >
+                    </View>
+                }
+            </View>
+        )
+    }
     return (
         <SafeAreaView style={styles.container}>
             <HeaderInside navigation={navigation} />
             {renderFoodInfo()}
             {/* {renderOrder()} */}
-            {scanned ? renderOrder() : ""}
+            {scanned ? renderOrder() :renderInfo()}
         </SafeAreaView>
     )
 }

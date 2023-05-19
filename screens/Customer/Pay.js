@@ -48,6 +48,7 @@ const Pay = ({ navigation, route }) => {
         setRefreshing(true);
         setTimeout(() => {
             setRefreshing(false);
+            getOrderTotal()
         }, 2000);
     }, []);
 
@@ -107,39 +108,34 @@ const Pay = ({ navigation, route }) => {
                 price += item.price * item.prod_count
             )
             setTotalPrice(price)
+            tips(response.data.items[0].waiter_id, restId, userId);
+
         }, (error) => {
             setOrder([{}])
         });
     }
 
     async function tipWaiter() {
-        let restId = await AsyncStorage.getItem("restaurantId");
-        let tableId = await AsyncStorage.getItem("tableId");
-        let accessToken = await AsyncStorage.getItem("accessToken")
-        let userId = JSON.parse(accessToken);
-        getTableWaiter();
-        await tips(restId,userId);
+        await getTableWaiter();
     }
 
-    async function tips(restId,userId) {
-        console.log("x",parseInt(restId))
-        console.log("y",parseInt(userId.uid))
-        console.log("z", parseInt(waiterId))
-        console.log("w",tip)
+    async function tips(waiter_id, restId, userId) {
+        console.log("x", parseInt(restId))
+        console.log("y", parseInt(userId.uid))
+        console.log("z", parseInt(waiter_id))
+        console.log("w", tip)
         axios({
             method: 'post',
             url: Route.host + '/restaurants/waiters/tips',
             data: {
                 rest_id: parseInt(restId),
                 user_id: parseInt(userId.uid),
-                waiter_id: parseInt(waiterId),
+                waiter_id: parseInt(waiter_id),
                 tip: parseInt(tip)
             }
         }).then((response) => {
-            console.log(response);
         }, (error) => {
             console.log(error);
-
         })
     }
     React.useEffect(() => {
@@ -347,12 +343,14 @@ const Pay = ({ navigation, route }) => {
             {renderFooter()}
             <PrimaryButton
                 onPress={() => {
-                    if(/^\d{16}$/.test(cardNumber)){
-                        console.log("aa");
+                    if (cardNumberError === "" && cardNameError === "" && expiryDateError === "" && cvvError === "" &&
+                        cardNumber !== "" && cardName !== "" && expiryDate !== "" && cvv !== "") {
+                        navigation.navigate("Loading")
+                        updateOrders();
+                        if (tip === "" || tip <= 0) {
+                            tipWaiter()
+                        }
                     }
-                    // navigation.navigate("Loading")
-                    // tipWaiter()
-                    // updateOrders();
                 }}
                 title="PAY"
             />

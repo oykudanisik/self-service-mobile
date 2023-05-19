@@ -30,6 +30,23 @@ const Menu = ({ navigation, route }) => {
         setRefreshing(true);
         setTimeout(() => {
             setRefreshing(false);
+            var restId = "";
+            var tableId = "";
+
+            if (route.params.scanned) {
+                setScanned(true)
+                restId = route.params.restaurantId
+                console.log(route.params.restaurantName)
+                tableId = route.params.tableId
+                AsyncStorage.setItem("tableId", tableId);
+            } else {
+                restId = route.params.item.rest_id.toString()
+            }
+            AsyncStorage.setItem("restaurantId", restId);
+            getCategories(restId);
+            console.log(restId);
+            getMenuItems(restId);
+            getRestauranName(restId)
         }, 2000);
     }, []);
     setRestaurantName
@@ -183,7 +200,9 @@ const Menu = ({ navigation, route }) => {
     }
 
     function renderRestaurantList() {
-        const renderItem = ({ item }) => (
+        const renderItem = ({ item }) =>
+
+        (
             <TouchableOpacity
                 style={{
                     marginBottom: SIZES.padding * 2,
@@ -217,7 +236,12 @@ const Menu = ({ navigation, route }) => {
                             borderRadius: SIZES.radius
                         }}
                     />)}
-
+                    {/* Out of Stock */}
+                    {!item.availability && (
+                        <View style={styles.outOfStockContainer}>
+                            <Text style={styles.outOfStockText}>Out of Stock</Text>
+                        </View>
+                    )}
 
                     <View
                         style={{
@@ -291,6 +315,21 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 3,
         elevation: 1,
+    },
+    outOfStockContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        borderRadius: SIZES.radius
+    },
+    outOfStockText: {
+        color: COLORS.white,
+        ...FONTS.body2
     }
 })
 
