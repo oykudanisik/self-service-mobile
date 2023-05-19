@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     View,
@@ -36,11 +36,31 @@ const Cart = ({ navigation }) => {
             deneme();
         }, 2000);
     }, []);
-
+    const [ordersCount, setOrdersCount] = useState(0);
 
     let price = 0
     let cartList = [];
 
+    async function getOrderStatus() {
+        try {
+            let token = await AsyncStorage.getItem("accessToken");
+            token = JSON.parse(token);
+            let restId = await AsyncStorage.getItem("restaurantId");
+
+            console.log("a", token.uid);
+            console.log("b", restId);
+
+            const response = await axios.get(
+                Route.host + '/users/orders?userId=' + token.uid + '&resId=' + restId
+            );
+            setOrdersCount(response.data.count);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        getOrderStatus();
+    }, []);
     async function deneme() {
         let cartList = await AsyncStorage.getItem("item");
         console.log("ljqnhdwja", cartList)
@@ -52,18 +72,18 @@ const Cart = ({ navigation }) => {
 
         if (cartList) {
             const filteredCartList = cartList.filter((item) => item.rest_id === rest_id);
-            console.log("filtered",filteredCartList)
-            if(filteredCartList.length!=0){
+            console.log("filtered", filteredCartList)
+            if (filteredCartList.length != 0) {
                 filteredCartList.forEach((item) => {
                     totalPrice += item.price * item.count;
                 });
                 setTotalPrice(totalPrice);
                 setMyCartList(filteredCartList);
-            } else{
+            } else {
                 setTotalPrice(0);
                 setMyCartList([]);
             }
-            
+
         } else {
             setTotalPrice(0);
             setMyCartList([]);
@@ -99,14 +119,19 @@ const Cart = ({ navigation }) => {
                 order_status: "To do",
             }
         }).then((response) => {
-            //set the returned orderId to orderI
-            AsyncStorage.removeItem("item");
+            AsyncStorage.removeItem("item")
+                .then(() => {
+                    console.log('Item removed successfully');
+                })
+                .catch((error) => {
+                    console.log('Error removing item:', error);
+                });
         }, (error) => {
             console.log("e", error);
         });
     }
 
-    async function updateQuantityHandler(newQty, id) {
+  async function updateQuantityHandler(newQty, id) {
         if (newQty < 1) {
             await deleteItem(id);
             return;
@@ -278,7 +303,7 @@ const Cart = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {/* Header */}
-            <HeaderOrder navigation={navigation} ></HeaderOrder>
+            <HeaderOrder navigation={navigation} ordersCount={ordersCount} ></HeaderOrder>
             <Text style={{ ...FONTS.h2, textAlign: "center", alignItems: "center", justifyContent: "center", paddingTop: 20 }}> My Cart</Text>
             {/* Cart */}
             {renderCartList()}

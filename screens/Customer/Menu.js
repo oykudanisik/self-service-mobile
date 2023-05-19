@@ -1,5 +1,6 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import {
     SafeAreaView,
@@ -26,6 +27,8 @@ const Menu = ({ navigation, route }) => {
     const [scanned, setScanned] = React.useState(false);
     const [restaurantName, setRestaurantName] = React.useState("");
     const [refreshing, setRefreshing] = React.useState(false);
+    const [cartCount, setCartCount] = useState(0);
+    const isFocused = useIsFocused();
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
@@ -50,7 +53,6 @@ const Menu = ({ navigation, route }) => {
         }, 2000);
     }, []);
     setRestaurantName
-    let cartCount = 0;
 
     useEffect(() => {
         var restId = "";
@@ -125,6 +127,45 @@ const Menu = ({ navigation, route }) => {
             setProducts(response.data.items);
         });
     }
+    useEffect(() => {
+        const fetchCartCount = async () => {
+          try {
+            const items = await AsyncStorage.getItem("item");
+            if (items) {
+              const cartItems = JSON.parse(items);
+              let count = 0;
+              for (let i = 0; i < cartItems.length; i++) {
+                count += cartItems[i].count;
+              }
+              setCartCount(count);
+            }
+          } catch (error) {
+            console.log("Error fetching cart count:", error);
+          }
+        };
+    
+        fetchCartCount();
+      }, []);
+    
+      useEffect(() => {
+        const updateCartCount = async () => {
+          try {
+            const items = await AsyncStorage.getItem("item");
+            if (items) {
+              const cartItems = JSON.parse(items);
+              let count = 0;
+              for (let i = 0; i < cartItems.length; i++) {
+                count += cartItems[i].count;
+              }
+              setCartCount(count);
+            }
+          } catch (error) {
+            console.log("Error updating cart count:", error);
+          }
+        };
+    
+        updateCartCount();
+      }, [isFocused]);
 
     function renderMainCategories() {
         const renderItem = ({ item }) => {

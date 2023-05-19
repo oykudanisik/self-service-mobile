@@ -1,9 +1,12 @@
-import React from "react";
-import { View, Button, TouchableOpacity, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, TouchableOpacity, Image } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { icons, images, SIZES, COLORS, FONTS } from "../constants";
+import { icons, images, SIZES } from "../constants";
 import { CartQuantityButton } from '../components'
+
 const HeaderInside = ({ navigation, cartCount }) => {
+
   return (
     <View style={{ flexDirection: "row", height: "13%", marginBottom: 10 }}>
       <TouchableOpacity
@@ -22,7 +25,6 @@ const HeaderInside = ({ navigation, cartCount }) => {
             height: 25,
           }}
         />
-
       </TouchableOpacity>
 
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -35,7 +37,7 @@ const HeaderInside = ({ navigation, cartCount }) => {
             justifyContent: "center",
           }}
           source={images.logo}
-        ></Image>
+        />
       </View>
 
       <TouchableOpacity
@@ -55,4 +57,5 @@ const HeaderInside = ({ navigation, cartCount }) => {
     </View>
   );
 };
+
 export default HeaderInside;

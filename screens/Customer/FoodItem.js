@@ -8,6 +8,8 @@ import {
     Image,
     Animated,
 } from "react-native";
+import { useEffect, useState } from "react";
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import { HeaderInside } from '../../components';
@@ -17,6 +19,48 @@ const FoodItem = ({ route, navigation }) => {
     const scrollX = new Animated.Value(0);
     const [orderItems, setOrderItems] = React.useState([]);
     const [scanned, setScanned] = React.useState(route.params.scanned);
+    const [cartCount, setCartCount] = useState(0);
+
+
+    useEffect(() => {
+        const fetchCartCount = async () => {
+          try {
+            const items = await AsyncStorage.getItem("item");
+            if (items) {
+              const cartItems = JSON.parse(items);
+              let count = 0;
+              for (let i = 0; i < cartItems.length; i++) {
+                count += cartItems[i].count;
+              }
+              setCartCount(count);
+            }
+          } catch (error) {
+            console.log("Error fetching cart count:", error);
+          }
+        };
+    
+        fetchCartCount();
+      }, []);
+    
+      useEffect(() => {
+        const updateCartCount = async () => {
+          try {
+            const items = await AsyncStorage.getItem("item");
+            if (items) {
+              const cartItems = JSON.parse(items);
+              let count = 0;
+              for (let i = 0; i < cartItems.length; i++) {
+                count += cartItems[i].count;
+              }
+              setCartCount(count);
+            }
+          } catch (error) {
+            console.log("Error updating cart count:", error);
+          }
+        };
+    
+        updateCartCount();
+      }, [navigation]);
 
     function renderFoodInfo() {
         return (
@@ -194,7 +238,7 @@ const FoodItem = ({ route, navigation }) => {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <HeaderInside navigation={navigation} />
+            <HeaderInside navigation={navigation} cartCount={cartCount} />
             {renderFoodInfo()}
             {/* {renderOrder()} */}
             {scanned ? renderOrder() :renderInfo()}

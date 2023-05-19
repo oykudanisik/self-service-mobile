@@ -26,6 +26,7 @@ const OrderStatus = ({ navigation }) => {
     const [selectedCard, setSelectedCard] = React.useState(null)
     const [ordersCount, setOrdersCount] = React.useState()
     const [refreshing, setRefreshing] = React.useState(false);
+
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
@@ -49,6 +50,7 @@ const OrderStatus = ({ navigation }) => {
 
             console.log("c", response.data);
             setOrder(response.data.data);
+            setOrdersCount(response.data.count);
         } catch (error) {
             console.log(error);
         }
