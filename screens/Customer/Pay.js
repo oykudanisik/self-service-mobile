@@ -180,6 +180,8 @@ const Pay = ({ navigation, route }) => {
                         top: 40
                     }}
                 >
+                    <Text style={{ ...FONTS.h4 }}>Waiting to be Paid</Text>
+
                     {
                         order.map(({ prod_name, price, prod_count }) => {
                             return (
