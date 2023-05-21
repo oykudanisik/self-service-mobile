@@ -127,30 +127,30 @@ const Menu = ({ navigation, route }) => {
     }
     function getCategories(rest_id) {
         axios({
-          method: "get",
-          url: Route.host + "/restaurants/categories?resId=" + rest_id,
+            method: "get",
+            url: Route.host + "/restaurants/categories?resId=" + rest_id,
         })
-          .then(function (response) {
-            const newCategory = {
-              cat_desc: "",
-              cat_id: 0, // Assign a unique ID to the new category
-              cat_image: {
-                String: "https://cdn-icons-png.flaticon.com/512/5562/5562062.png",
-                Valid: false,
-              },
-              cat_name: "All", // Change the name to the desired category name
-              parent_cat_id: 1,
-              rest_id: 0,
-            };
-      
-            const updatedCategories = [newCategory, ...response.data.items];
-            setCategories(updatedCategories);
-            console.log("categoriessssss", updatedCategories);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
+            .then(function (response) {
+                const newCategory = {
+                    cat_desc: "",
+                    cat_id: 0, // Assign a unique ID to the new category
+                    cat_image: {
+                        String: "https://cdn-icons-png.flaticon.com/512/5562/5562062.png",
+                        Valid: false,
+                    },
+                    cat_name: "All", // Change the name to the desired category name
+                    parent_cat_id: 1,
+                    rest_id: 0,
+                };
+
+                const updatedCategories = [newCategory, ...response.data.items];
+                setCategories(updatedCategories);
+                console.log("categoriessssss", updatedCategories);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
     function getMenuItems(rest_id) {
         axios({
@@ -175,22 +175,28 @@ const Menu = ({ navigation, route }) => {
             restId = route.params.item.rest_id
         }
 
-        if(category.cat_id == 0){
+        if (category.cat_id == 0) {
             axios({
                 method: "get",
                 url: Route.host + '/restaurants/products?resId=' + restId,
             }).then(function (response) {
                 setProducts(response.data.items);
-            });
-        } else{
+            }),
+                (error) => {
+                    console.log(error);
+                };
+        } else {
             axios({
                 method: "get",
                 url: Route.host + '/restaurants/categories/products?resId=' + restId + '&catId=' + category.cat_id,
             }).then(function (response) {
                 setProducts(response.data.items);
-            });
+                console.log(response.data.items.length)
+            },(error) => {
+                setProducts([{}]);
+            })
         }
-        
+
     }
     useEffect(() => {
         const fetchCartCount = async () => {
@@ -307,7 +313,6 @@ const Menu = ({ navigation, route }) => {
 
     function renderRestaurantList() {
         const renderItem = ({ item }) =>
-
         (
             <TouchableOpacity
                 style={{
@@ -371,22 +376,30 @@ const Menu = ({ navigation, route }) => {
                 <Text style={{ ...FONTS.body2 }}>{item.prod_name}</Text>
             </TouchableOpacity>
         )
+        if (products.length === 0) {
+            return (
+                <View style={styles.container}>
+                    <Text style={styles.emptyText}>No products in this category</Text>
+                </View>
+            );
+        } else {
+            return (
+                <FlatList
+                    data={products}
+                    keyExtractor={item => `${item.prod_id}`}
+                    renderItem={renderItem}
+                    contentContainerStyle={{
+                        paddingHorizontal: SIZES.padding * 2,
+                        paddingBottom: 30,
+                    }}
+                    numColumns={2}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                />
+            )
+        }
 
-        return (
-            <FlatList
-                data={products}
-                keyExtractor={item => `${item.prod_id}`}
-                renderItem={renderItem}
-                contentContainerStyle={{
-                    paddingHorizontal: SIZES.padding * 2,
-                    paddingBottom: 30,
-                }}
-                numColumns={2}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
-            />
-        )
     }
 
     return (
@@ -421,6 +434,13 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 3,
         elevation: 1,
+    },
+    emptyText: {
+        textAlign: 'center',
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: COLORS.gray,
+        marginVertical: 20,
     },
     outOfStockContainer: {
         position: 'absolute',
