@@ -7,10 +7,10 @@ import { FoodItem, Menu, Cart, Home, RestaurantFavorites, OrderStatus, OrderStat
 import Tabs from './navigation/tabs'
 import Profile from "./screens/Profile/Profile";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { View, LogBox } from "react-native";
 const Stack = createStackNavigator();
 
-
+LogBox.ignoreAllLogs();
 const App = () => {
     const [loaded] = useFonts({
         "Roboto-Black": require('./assets/fonts/Roboto-Black.ttf'),
