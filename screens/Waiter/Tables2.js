@@ -58,6 +58,7 @@ const Tables2 = ({ navigation }) => {
         setRefreshing(true);
         setTimeout(() => {
             setRefreshing(false);
+            getWaiterTables()
         }, 2000);
     }, []);
     const toggleDialog2 = () => {
@@ -166,7 +167,7 @@ const Tables2 = ({ navigation }) => {
 
     const todoTitle = (
         <View>
-            <Text style={{ ...FONTS.h4 }} >To do</Text>
+            <Text style={{ ...FONTS.h4 }} >Waiting</Text>
         </View>
     )
 
@@ -195,9 +196,8 @@ const Tables2 = ({ navigation }) => {
                     <View style={styles.container}>
                         <Text style={{ ...FONTS.h2, paddingBottom: 20 }}>Order Details of My Tables</Text>
                         <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
-                        <Accordion title={completedTitle} >
-                            
-                            {
+                        <Accordion title={completedTitle}>
+                            {completedOrders.length !== 0 && (completedOrders.length !== 1 || Object.keys(completedOrders[0]).length !== 0) ? (
                                 completedOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
                                     return (
                                         <TouchableHighlight onPress={() => updateOrders(order_item_id)}>
@@ -205,7 +205,7 @@ const Tables2 = ({ navigation }) => {
                                                 style={{
                                                     width: "95%",
                                                     height: 30,
-                                                    marginLeft: 10
+                                                    marginLeft: 10,
                                                 }}
                                             >
                                                 <Text>{prod_name} / Table {table_id}</Text>
@@ -216,19 +216,22 @@ const Tables2 = ({ navigation }) => {
                                                     style={{
                                                         width: "65%",
                                                         height: "65%",
-                                                        position: 'absolute',
-                                                        left: 250
+                                                        position: "absolute",
+                                                        left: 250,
                                                     }}
                                                 />
                                             </View>
                                         </TouchableHighlight>
-                                    )
+                                    );
                                 })
-                            }
+                            ) : (
+                                <Text>No orders</Text>
+                            )}
                         </Accordion>
+
                         <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
                         <Accordion title={paidTitle} >
-                            {
+                            {toBePaidOrders.length !== 0 && (toBePaidOrders.length !== 1 || Object.keys(toBePaidOrders[0]).length !== 0) ? (
                                 toBePaidOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
                                     return (
                                         <TouchableHighlight onPress={() => approveOrder(order_item_id)}>
@@ -236,7 +239,7 @@ const Tables2 = ({ navigation }) => {
                                                 style={{
                                                     width: "95%",
                                                     height: 30,
-                                                    marginLeft: 10
+                                                    marginLeft: 10,
                                                 }}
                                             >
                                                 <Text>{prod_name} / Table {table_id}</Text>
@@ -247,23 +250,24 @@ const Tables2 = ({ navigation }) => {
                                                     style={{
                                                         width: "65%",
                                                         height: "65%",
-                                                        position: 'absolute',
-                                                        left: 250
+                                                        position: "absolute",
+                                                        left: 250,
                                                     }}
                                                 />
                                             </View>
                                         </TouchableHighlight>
-
-                                    )
+                                    );
                                 })
-                            }
+                            ) : (
+                                <Text>No orders</Text>
+                            )}
                         </Accordion>
                         <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
                         <Accordion title={inProgressTitle} >
-                            {
+                            {inprogressOrders.length !== 0 && (inprogressOrders.length !== 1 || Object.keys(inprogressOrders[0]).length !== 0) ? (
                                 inprogressOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
                                     return (
-                                        <View>
+                                        <View >
                                             <View
                                                 style={{
                                                     width: "95%",
@@ -272,16 +276,17 @@ const Tables2 = ({ navigation }) => {
                                                 }}
                                             >
                                                 <Text>{prod_name} / Table {table_id}</Text>
-
                                             </View>
                                         </View>
-                                    )
+                                    );
                                 })
-                            }
+                            ) : (
+                                <Text>No orders</Text>
+                            )}
                         </Accordion>
                         <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
                         <Accordion title={todoTitle} >
-                            {
+                            {todoOrders.length !== 0 && (todoOrders.length !== 1 || Object.keys(todoOrders[0]).length !== 0) ? (
                                 todoOrders.map(({ order_status, prod_name, order_item_id, table_id }) => {
                                     return (
                                         <View >
@@ -295,9 +300,11 @@ const Tables2 = ({ navigation }) => {
                                                 <Text>{prod_name} / Table {table_id}</Text>
                                             </View>
                                         </View>
-                                    )
+                                    );
                                 })
-                            }
+                            ) : (
+                                <Text>No orders</Text>
+                            )}
                         </Accordion>
                         <View style={{ alignItems: 'center' }} ><View style={styles.divider} /></View>
 

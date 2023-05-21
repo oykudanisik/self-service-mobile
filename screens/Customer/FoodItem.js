@@ -24,43 +24,43 @@ const FoodItem = ({ route, navigation }) => {
 
     useEffect(() => {
         const fetchCartCount = async () => {
-          try {
-            const items = await AsyncStorage.getItem("item");
-            if (items) {
-              const cartItems = JSON.parse(items);
-              let count = 0;
-              for (let i = 0; i < cartItems.length; i++) {
-                count += cartItems[i].count;
-              }
-              setCartCount(count);
+            try {
+                const items = await AsyncStorage.getItem("item");
+                if (items) {
+                    const cartItems = JSON.parse(items);
+                    let count = 0;
+                    for (let i = 0; i < cartItems.length; i++) {
+                        count += cartItems[i].count;
+                    }
+                    setCartCount(count);
+                }
+            } catch (error) {
+                console.log("Error fetching cart count:", error);
             }
-          } catch (error) {
-            console.log("Error fetching cart count:", error);
-          }
         };
-    
+
         fetchCartCount();
-      }, []);
-    
-      useEffect(() => {
+    }, []);
+
+    useEffect(() => {
         const updateCartCount = async () => {
-          try {
-            const items = await AsyncStorage.getItem("item");
-            if (items) {
-              const cartItems = JSON.parse(items);
-              let count = 0;
-              for (let i = 0; i < cartItems.length; i++) {
-                count += cartItems[i].count;
-              }
-              setCartCount(count);
+            try {
+                const items = await AsyncStorage.getItem("item");
+                if (items) {
+                    const cartItems = JSON.parse(items);
+                    let count = 0;
+                    for (let i = 0; i < cartItems.length; i++) {
+                        count += cartItems[i].count;
+                    }
+                    setCartCount(count);
+                }
+            } catch (error) {
+                console.log("Error updating cart count:", error);
             }
-          } catch (error) {
-            console.log("Error updating cart count:", error);
-          }
         };
-    
+
         updateCartCount();
-      }, [navigation]);
+    }, [navigation]);
 
     function renderFoodInfo() {
         return (
@@ -179,7 +179,7 @@ const FoodItem = ({ route, navigation }) => {
                                     await navigation.goBack();
                                 }}
                         >
-                            
+
                             <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Add to Cart</Text>
                         </TouchableOpacity>
                     </View>
@@ -211,13 +211,13 @@ const FoodItem = ({ route, navigation }) => {
                         borderTopRightRadius: 40,
                     }}
                 >
-                        <Text style={{
-                            padding:20,
-                            ...FONTS.h4,
-                            textAlign:"center"
-                        }}>To add items to your cart, please scan the QR Code on your table</Text>
+                    <Text style={{
+                        padding: 20,
+                        ...FONTS.h4,
+                        textAlign: "center"
+                    }}>To add items to your cart, please scan the QR Code on your table</Text>
 
-                    
+
                 </View>
 
                 {isIphoneX() &&
@@ -241,7 +241,7 @@ const FoodItem = ({ route, navigation }) => {
             <HeaderInside navigation={navigation} cartCount={cartCount} />
             {renderFoodInfo()}
             {/* {renderOrder()} */}
-            {scanned ? renderOrder() :renderInfo()}
+            {scanned ? renderOrder() : renderInfo()}
         </SafeAreaView>
     )
 }

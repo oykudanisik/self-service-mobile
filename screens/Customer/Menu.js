@@ -34,38 +34,14 @@ const Menu = ({ navigation, route }) => {
 
 
 
-    useEffect(() => {
-        const disableRightSwipe = () => {
-            navigation.setOptions({
-                gestureEnabled: false, // Disable swipe gestures
-            });
-        };
-
-        // Enable/disable swipe gestures when screen is focused/unfocused
-        if (isFocused) {
-            disableRightSwipe();
-        } else {
-            navigation.setOptions({
-                gestureEnabled: true, // Enable swipe gestures
-            });
-        }
-
-        // Handle Android back button press
-        const backAction = () => {
-            // Perform custom back button action if needed
-            // Return true to prevent the default back button action
-            return true;
-        };
-
-        const backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
-            backAction
-        );
-
-        return () => backHandler.remove(); // Clean up the event listener
-    }, [isFocused, navigation]);
-
-
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            fetchCartCount();
+          
+        });
+    
+        return unsubscribe;
+      }, [navigation]);
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
@@ -76,7 +52,6 @@ const Menu = ({ navigation, route }) => {
             if (route.params.scanned) {
                 setScanned(true)
                 restId = route.params.restaurantId
-                console.log(route.params.restaurantName)
                 tableId = route.params.tableId
                 AsyncStorage.setItem("tableId", tableId);
             } else {
@@ -84,12 +59,11 @@ const Menu = ({ navigation, route }) => {
             }
             AsyncStorage.setItem("restaurantId", restId);
             getCategories(restId);
-            console.log(restId);
             getMenuItems(restId);
             getRestauranName(restId)
-        }, 2000);
+            fetchCartCount();
+        }, 200);
     }, []);
-    setRestaurantName
 
     useEffect(() => {
         var restId = "";
@@ -98,7 +72,6 @@ const Menu = ({ navigation, route }) => {
         if (route.params.scanned) {
             setScanned(true)
             restId = route.params.restaurantId
-            console.log(route.params.restaurantName)
             tableId = route.params.tableId
             AsyncStorage.setItem("tableId", tableId);
         } else {
@@ -106,18 +79,17 @@ const Menu = ({ navigation, route }) => {
         }
         AsyncStorage.setItem("restaurantId", restId);
         getCategories(restId);
-        console.log(restId);
         getMenuItems(restId);
         getRestauranName(restId)
+        fetchCartCount();
     }, []);
+
     function getRestauranName(restId) {
-        console.log(restId);
         axios({
             method: "get",
             url: Route.host + "/restaurants/?resId=" + restId,
         }).then(
             function (response) {
-                console.log(response.data.items);
                 setRestaurantName(response.data.items[0].rest_name)
             },
             (error) => {
@@ -145,7 +117,6 @@ const Menu = ({ navigation, route }) => {
 
                 const updatedCategories = [newCategory, ...response.data.items];
                 setCategories(updatedCategories);
-                console.log("categoriessssss", updatedCategories);
             })
             .catch(function (error) {
                 console.log(error);
@@ -191,32 +162,28 @@ const Menu = ({ navigation, route }) => {
                 url: Route.host + '/restaurants/categories/products?resId=' + restId + '&catId=' + category.cat_id,
             }).then(function (response) {
                 setProducts(response.data.items);
-                console.log(response.data.items.length)
             }, (error) => {
                 setProducts([{}]);
             })
         }
 
     }
-    useEffect(() => {
-        const fetchCartCount = async () => {
-            try {
-                const items = await AsyncStorage.getItem("item");
-                if (items) {
-                    const cartItems = JSON.parse(items);
-                    let count = 0;
-                    for (let i = 0; i < cartItems.length; i++) {
-                        count += cartItems[i].count;
-                    }
-                    setCartCount(count);
+    const fetchCartCount = async () => {
+        try {
+            const items = await AsyncStorage.getItem("item");
+            if (items) {
+                const cartItems = JSON.parse(items);
+                let count = 0;
+                for (let i = 0; i < cartItems.length; i++) {
+                    count += cartItems[i].count;
                 }
-            } catch (error) {
-                console.log("Error fetching cart count:", error);
+                setCartCount(count);
             }
-        };
+        } catch (error) {
+            console.log("Error fetching cart count:", error);
+        }
+    };
 
-        fetchCartCount();
-    }, []);
 
     useEffect(() => {
         const updateCartCount = async () => {
@@ -312,7 +279,6 @@ const Menu = ({ navigation, route }) => {
     }
 
     function renderRestaurantList() {
-        console.log(products.length);
         if (products.length === 0 || (products.length === 1 && Object.keys(products[0]).length === 0)) {
             return (
                 <View style={styles.container}>

@@ -98,9 +98,8 @@ const Cart = ({ navigation }) => {
         let tableId = await AsyncStorage.getItem("tableId");
         // let orders = await AsyncStorage.getItem("item");
         // orders = JSON.parse(orders);
-
+        console.log("myasdasdıjdlfjsd", myCartList);
         myCartList.forEach((element, index, array) => {
-            console.log(element)
             details.push({ "prod_id": element.prod_id, "price": element.price, "prod_count": element.count })
         })
         console.log("details", JSON.stringify(details));
@@ -126,6 +125,8 @@ const Cart = ({ navigation }) => {
                 .catch((error) => {
                     console.log('Error removing item:', error);
                 });
+        deneme();
+
         }, (error) => {
             console.log("e", error);
         });

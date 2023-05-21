@@ -29,11 +29,10 @@ const OrderStatus = ({ navigation }) => {
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         getOrderStatus();
-
-        // setTimeout(() => {
-        //     setRefreshing(false);
-        //     getOrderStatus();
-        // }, 2000);
+        setTimeout(() => {
+            setRefreshing(false);
+            getOrderStatus();
+        }, 2000);
     }, []);
 
     async function getOrderStatus() {
@@ -127,23 +126,16 @@ const OrderStatus = ({ navigation }) => {
                             flex: 1
                         }}
                     >
-                        <Text style={{ ...FONTS.h4 }}>{item.prod_name}<Text style={{ ...FONTS.body3 }}> x{item.prod_count}</Text> </Text>
+                        <Text style={{ ...FONTS.h4 }}>
+                            {item.prod_name}<Text style={{ ...FONTS.body3 }}> x{item.prod_count}</Text>
+                        </Text>
                         <View
                             style={{
-                                position: 'absolute',
-                                bottom: -30,
-                                right: -20,
-                                height: 30,
-                                width: SIZES.width * 0.35,
-                                backgroundColor: COLORS.lightGray2,
-                                borderTopRightRadius: SIZES.radius,
-                                borderBottomLeftRadius: SIZES.radius,
+                                flexDirection: 'row',
                                 alignItems: 'center',
-                                justifyContent: 'center',
-                                ...styles.shadow
                             }}
                         >
-                            <Text style={{ ...FONTS.body4 }}>{item.order_status}</Text>
+                            <Text style={{ ...FONTS.body4 }}> {item.order_status === "To do" ? "Waiting" : item.order_status}   </Text>
                             {item.order_status === "To do" && (
                                 <SecondaryButton
                                     title="Cancel"
@@ -156,6 +148,7 @@ const OrderStatus = ({ navigation }) => {
                     </View>
                 </View>
             </TouchableOpacity>
+
         );
 
         return (
