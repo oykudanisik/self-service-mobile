@@ -4,7 +4,8 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { COLORS } from '../../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { SwipeListView } from 'react-native-swipe-list-view';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 export default function Scan({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
@@ -23,14 +24,21 @@ export default function Scan({ navigation }) {
   useEffect(() => {
     askForCameraPermission();
   }, []);
+  const config = {
+    velocityThreshold: 0.3,
+    directionalOffsetThreshold: 80
+  };
 
+  const onSwipeRight = () => {
+    navigation.navigate('Home');
+  };
   useEffect(() => {
-    AsyncStorage.setItem("tableId",tableId);
-    AsyncStorage.setItem("restaurantId",restaurantId);
+    AsyncStorage.setItem("tableId", tableId);
+    AsyncStorage.setItem("restaurantId", restaurantId);
 
     if (scanned) {
-      console.log("hehehe",restaurantId);
-      console.log("xxx",tableId);
+      console.log("hehehe", restaurantId);
+      console.log("xxx", tableId);
       navigation.navigate("Menu", {
         restaurantId,
         tableId,
@@ -43,7 +51,7 @@ export default function Scan({ navigation }) {
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
     setText(data)
-    console.log("asjkdhkajs",JSON.parse(data));
+    console.log("asjkdhkajs", JSON.parse(data));
     setRestaurantId(JSON.parse(data).rest_id.toString());
     setTableId(JSON.parse(data).table_no.toString());
   };
@@ -51,40 +59,61 @@ export default function Scan({ navigation }) {
   // Check permissions and return the screens
   if (hasPermission === null) {
     return (
-      <View style={styles.container}>
-        <Text>Requesting for camera permission</Text>
-      </View>)
+      <GestureRecognizer
+        onSwipeRight={onSwipeRight}
+        config={config}
+        style={styles.container}
+      >
+        <View style={styles.container}>
+          <Text>Requesting for camera permission</Text>
+        </View>
+      </GestureRecognizer>
+    )
   }
   if (hasPermission === false) {
     return (
-      <View style={styles.container}>
-        <Text style={{ margin: 10 }}>No access to camera</Text>
-        <Button title={'Allow Camera'} onPress={() => askForCameraPermission()} />
-      </View>)
+      <GestureRecognizer
+        onSwipeRight={onSwipeRight}
+        config={config}
+        style={styles.container}
+      >
+        <View style={styles.container}>
+          <Text style={{ margin: 10 }}>No access to camera</Text>
+          <Button title={'Allow Camera'} onPress={() => askForCameraPermission()} />
+        </View>
+      </GestureRecognizer>
+    )
+
   }
 
   // Return the View
   return (
-    <View style={styles.container}>
-      <Text style={styles.maintext}>Please scan the QR code</Text>
-      <View style={styles.barcodebox}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={{ height: 400, width: 400 }}
-        />
+    <GestureRecognizer
+      onSwipeRight={onSwipeRight}
+      config={config}
+      style={styles.container}
+    >
+      <View style={styles.container}>
+        <Text style={styles.maintext}>Please scan the QR code</Text>
+        <View style={styles.barcodebox}>
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={{ height: 400, width: 400 }}
+          />
+        </View>
+        {scanned && (
+          <Button
+            title={"Scan again?"}
+            onPress={() => {
+              setScanned(false);
+              setRestaurantId(null);
+              setTableId(null);
+            }}
+            color={COLORS.primary}
+          />
+        )}
       </View>
-      {scanned && (
-        <Button
-          title={"Scan again?"}
-          onPress={() => {
-            setScanned(false);
-            setRestaurantId(null);
-            setTableId(null);
-          }}
-          color={COLORS.primary}
-        />
-      )}
-    </View>
+    </GestureRecognizer>
   );
 }
 

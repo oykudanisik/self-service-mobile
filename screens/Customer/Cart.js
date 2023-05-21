@@ -31,6 +31,7 @@ const Cart = ({ navigation }) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
+        getOrderStatus()
         setTimeout(() => {
             setRefreshing(false);
             deneme();
@@ -63,7 +64,6 @@ const Cart = ({ navigation }) => {
     }, []);
     async function deneme() {
         let cartList = await AsyncStorage.getItem("item");
-        console.log("ljqnhdwja", cartList)
         let rest_id = await AsyncStorage.getItem("restaurantId");
         rest_id = parseInt(rest_id);
         cartList = JSON.parse(cartList);
@@ -131,30 +131,30 @@ const Cart = ({ navigation }) => {
         });
     }
 
-  async function updateQuantityHandler(newQty, id) {
+    async function updateQuantityHandler(newQty, id) {
         if (newQty < 1) {
             await deleteItem(id);
             return;
         }
-    
+
         const newMyCartList = myCartList.map((item) =>
             item.prod_id === id ? { ...item, count: newQty } : item
         );
-    
+
         setMyCartList(newMyCartList);
-    
+
         let cartList = await AsyncStorage.getItem("item");
         let cartItems = JSON.parse(cartList);
-    
+
         for (var i = 0; i < cartItems.length; i++) {
             if (cartItems[i].prod_id === id) {
                 cartItems[i].count = newQty;
                 break; // Break the loop after updating the count
             }
         }
-    
+
         await AsyncStorage.setItem("item", JSON.stringify(cartItems));
-    
+
         // Recalculate the total price
         let totalPrice = 0;
         newMyCartList.forEach((item) => {
@@ -166,21 +166,28 @@ const Cart = ({ navigation }) => {
     async function deleteItem(id) {
         let cartList = await AsyncStorage.getItem("item");
         let cartItems = JSON.parse(cartList);
-    
+
         // Filter out the item with the specified prod_id
         cartItems = cartItems.filter((item) => item.prod_id !== id);
-    
+
         await AsyncStorage.setItem("item", JSON.stringify(cartItems));
-    
+
         setMyCartList(cartItems);
         deneme();
     }
     React.useEffect(() => {
         deneme();
+        console.log("aslkdnaklsjdklasjdkladf", myCartList.length)
+
     }, []);
     function renderCartList() {
         return (
             <SwipeListView
+                onRowOpen={(rowKey, rowMap, toValue) => {
+                    if (toValue < -75) {
+                        navigation.navigate('Menu'); // Redirect to the Menu screen
+                    }
+                }}
                 data={myCartList}
                 keyExtractor={item => `${item.prod_id}`}
                 contentContainerStyle={{
@@ -299,8 +306,8 @@ const Cart = ({ navigation }) => {
             />
         )
     }
-
     return (
+        
         <SafeAreaView style={styles.container}>
             {/* Header */}
             <HeaderOrder navigation={navigation} ordersCount={ordersCount} ></HeaderOrder>
@@ -313,6 +320,11 @@ const Cart = ({ navigation }) => {
                 onPress={() => {
                     placeOrder();
                     navigation.navigate("OrderStatus")
+
+                }}
+                disabled={myCartList.length == 0} // Disable the button if the cart is empty
+                buttonStyle={{
+                    backgroundColor: myCartList.length == 0 ? COLORS.lightGray : COLORS.primary,
                 }}
                 title="ORDER"
             />

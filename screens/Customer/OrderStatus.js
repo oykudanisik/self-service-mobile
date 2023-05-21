@@ -10,10 +10,9 @@ import {
     TouchableOpacity,
     TouchableHighlight,
     RefreshControl,
-
 } from 'react-native';
 import Slider from '@react-native-community/slider'
-import { HeaderOrder, PrimaryButton } from '../../components';
+import { HeaderOrder, PrimaryButton, SecondaryButton } from '../../components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Route from '../../routes/Route';
@@ -29,10 +28,12 @@ const OrderStatus = ({ navigation }) => {
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        setTimeout(() => {
-            setRefreshing(false);
-            getOrderStatus();
-        }, 2000);
+        getOrderStatus();
+
+        // setTimeout(() => {
+        //     setRefreshing(false);
+        //     getOrderStatus();
+        // }, 2000);
     }, []);
 
     async function getOrderStatus() {
@@ -55,7 +56,25 @@ const OrderStatus = ({ navigation }) => {
             console.log(error);
         }
     }
+    async function cancelOrder(orderId) {
+        let restId = await AsyncStorage.getItem("restaurantId");
+        console.log("rr", restId);
+        axios({
+            method: 'post',
+            url: Route.host + '/restaurants/orders/alter',
+            data: {
+                order_status: "cancelled",
+                rest_id: parseInt(restId),
+                order_item_id: parseInt(orderId)
+            }
+        }).then((response) => {
+            console.log(response);
+            getOrderStatus();
 
+        }, (error) => {
+            console.log(error);
+        });
+    }
     useEffect(() => {
         getOrderStatus();
     }, []);
@@ -125,13 +144,19 @@ const OrderStatus = ({ navigation }) => {
                             }}
                         >
                             <Text style={{ ...FONTS.body4 }}>{item.order_status}</Text>
+                            {item.order_status === "To do" && (
+                                <SecondaryButton
+                                    title="Cancel"
+                                    onPress={() => {
+                                        cancelOrder(item.order_item_id);
+                                    }}
+                                />
+                            )}
                         </View>
                     </View>
-
                 </View>
-
             </TouchableOpacity>
-        )
+        );
 
         return (
             <FlatList
@@ -146,7 +171,7 @@ const OrderStatus = ({ navigation }) => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             />
-        )
+        );
     }
 
     return (
@@ -174,7 +199,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.lightGray5,
     }
-})
-
+});
 
 export default OrderStatus;

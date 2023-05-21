@@ -138,6 +138,33 @@ const Pay = ({ navigation, route }) => {
             console.log(error);
         })
     }
+    function isExpiryDateValid(expiryDate) {
+        // Check if the input is in the 'MM/YY' format using a regular expression
+        const validFormat = /^\d{2}\/\d{2}$/.test(expiryDate);
+
+        if (!validFormat) {
+            return false; // Invalid format
+        }
+
+        const currentDate = new Date();
+        const [month, year] = expiryDate.split('/');
+
+        // Get the current year's last two digits
+        const currentYear = currentDate.getFullYear() % 100;
+
+        // Convert the two-digit year to a four-digit year
+        const expiryYear = parseInt(year) + 2000;
+
+        // Convert the expiry date to a JavaScript Date object
+        const expiry = new Date(expiryYear, parseInt(month) - 1, 1);
+
+        // Compare the expiry date with the current date
+        if (expiry < currentDate || expiryYear < currentYear) {
+            return false; // Expiry date has passed
+        }
+
+        return true; // Expiry date is valid
+    }
     React.useEffect(() => {
         getOrderTotal()
     }, [])
@@ -251,6 +278,9 @@ const Pay = ({ navigation, route }) => {
                             if (/^[0-9/]*$/.test(value)) { // Check if the value contains only numbers and '/'
                                 validation.validateInput(value, 5, setExpiryDateError);
                                 setExpiryDate(value);
+                                if (!isExpiryDateValid(value)) {
+                                    console.log("eski")
+                                }
                             }
                         }}
                         appendComponent={
@@ -287,19 +317,6 @@ const Pay = ({ navigation, route }) => {
                     />
                 </View>
 
-                {/* Remember */}
-                <View
-                    style={{
-                        alignItems: 'flex-start',
-                        marginTop: SIZES.padding * 2.5
-                    }}
-                >
-                    <RadioButton
-                        label="Remember this card details."
-                        isSelected={isRemember}
-                        onPress={() => setIsRemember(!isRemember)}
-                    />
-                </View>
                 <FormInput
                     label="Tip to waiter"
                     value={tip}

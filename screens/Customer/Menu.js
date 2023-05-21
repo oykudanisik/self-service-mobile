@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import {
     SafeAreaView,
     View,
@@ -12,6 +12,7 @@ import {
     FlatList,
     TextInput,
     RefreshControl,
+    BackHandler
 
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,8 +21,19 @@ import { icons, images, SIZES, COLORS, FONTS } from '../../constants'
 import { HeaderInside } from '../../components';
 import Route from "../../routes/Route";
 
+
 const Menu = ({ navigation, route }) => {
-    const [categories, setCategories] = React.useState([{}]);
+    const [categories, setCategories] = useState([{
+        cat_desc: "",
+        cat_id: 0,
+        cat_image:  {
+          String: "",
+          Valid: false,
+        },
+        cat_name: "All",
+        parent_cat_id: 1,
+        rest_id: 0,
+      }]);
     const [selectedCategory, setSelectedCategory] = React.useState(null);
     const [products, setProducts] = React.useState([{}]);
     const [scanned, setScanned] = React.useState(false);
@@ -29,6 +41,41 @@ const Menu = ({ navigation, route }) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const [cartCount, setCartCount] = useState(0);
     const isFocused = useIsFocused();
+
+
+
+    useEffect(() => {
+        const disableRightSwipe = () => {
+            navigation.setOptions({
+                gestureEnabled: false, // Disable swipe gestures
+            });
+        };
+
+        // Enable/disable swipe gestures when screen is focused/unfocused
+        if (isFocused) {
+            disableRightSwipe();
+        } else {
+            navigation.setOptions({
+                gestureEnabled: true, // Enable swipe gestures
+            });
+        }
+
+        // Handle Android back button press
+        const backAction = () => {
+            // Perform custom back button action if needed
+            // Return true to prevent the default back button action
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove(); // Clean up the event listener
+    }, [isFocused, navigation]);
+
+
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
@@ -94,6 +141,7 @@ const Menu = ({ navigation, route }) => {
             url: Route.host + "/restaurants/categories?resId=" + rest_id
         }).then(function (response) {
             setCategories(response.data.items);
+            console.log("categoriessssss", response.data.items)
         });
     }
 
@@ -129,43 +177,43 @@ const Menu = ({ navigation, route }) => {
     }
     useEffect(() => {
         const fetchCartCount = async () => {
-          try {
-            const items = await AsyncStorage.getItem("item");
-            if (items) {
-              const cartItems = JSON.parse(items);
-              let count = 0;
-              for (let i = 0; i < cartItems.length; i++) {
-                count += cartItems[i].count;
-              }
-              setCartCount(count);
+            try {
+                const items = await AsyncStorage.getItem("item");
+                if (items) {
+                    const cartItems = JSON.parse(items);
+                    let count = 0;
+                    for (let i = 0; i < cartItems.length; i++) {
+                        count += cartItems[i].count;
+                    }
+                    setCartCount(count);
+                }
+            } catch (error) {
+                console.log("Error fetching cart count:", error);
             }
-          } catch (error) {
-            console.log("Error fetching cart count:", error);
-          }
         };
-    
+
         fetchCartCount();
-      }, []);
-    
-      useEffect(() => {
+    }, []);
+
+    useEffect(() => {
         const updateCartCount = async () => {
-          try {
-            const items = await AsyncStorage.getItem("item");
-            if (items) {
-              const cartItems = JSON.parse(items);
-              let count = 0;
-              for (let i = 0; i < cartItems.length; i++) {
-                count += cartItems[i].count;
-              }
-              setCartCount(count);
+            try {
+                const items = await AsyncStorage.getItem("item");
+                if (items) {
+                    const cartItems = JSON.parse(items);
+                    let count = 0;
+                    for (let i = 0; i < cartItems.length; i++) {
+                        count += cartItems[i].count;
+                    }
+                    setCartCount(count);
+                }
+            } catch (error) {
+                console.log("Error updating cart count:", error);
             }
-          } catch (error) {
-            console.log("Error updating cart count:", error);
-          }
         };
-    
+
         updateCartCount();
-      }, [isFocused]);
+    }, [navigation]);
 
     function renderMainCategories() {
         const renderItem = ({ item }) => {
