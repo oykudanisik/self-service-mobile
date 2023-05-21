@@ -192,7 +192,7 @@ const Menu = ({ navigation, route }) => {
             }).then(function (response) {
                 setProducts(response.data.items);
                 console.log(response.data.items.length)
-            },(error) => {
+            }, (error) => {
                 setProducts([{}]);
             })
         }
@@ -312,6 +312,30 @@ const Menu = ({ navigation, route }) => {
     }
 
     function renderRestaurantList() {
+        console.log(products.length);
+        if (products.length === 0 || (products.length === 1 && Object.keys(products[0]).length === 0)) {
+            return (
+                <View style={styles.container}>
+                    <View style={{
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Image
+                            source={images.empty}
+                            resizeMode="cover"
+                            style={{
+                                width: "75%",
+                                height: "75%",
+                                borderRadius: SIZES.radius
+                            }}
+                        />
+                        <Text style={{ ...FONTS.h3, marginTop: 10, textAlign: 'center' }}>No products in this category</Text>
+                    </View>
+                </View>
+
+
+            );
+        }
         const renderItem = ({ item }) =>
         (
             <TouchableOpacity
@@ -376,29 +400,21 @@ const Menu = ({ navigation, route }) => {
                 <Text style={{ ...FONTS.body2 }}>{item.prod_name}</Text>
             </TouchableOpacity>
         )
-        if (products.length === 0) {
-            return (
-                <View style={styles.container}>
-                    <Text style={styles.emptyText}>No products in this category</Text>
-                </View>
-            );
-        } else {
-            return (
-                <FlatList
-                    data={products}
-                    keyExtractor={item => `${item.prod_id}`}
-                    renderItem={renderItem}
-                    contentContainerStyle={{
-                        paddingHorizontal: SIZES.padding * 2,
-                        paddingBottom: 30,
-                    }}
-                    numColumns={2}
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                    }
-                />
-            )
-        }
+        return (
+            <FlatList
+                data={products}
+                keyExtractor={item => `${item.prod_id}`}
+                renderItem={renderItem}
+                contentContainerStyle={{
+                    paddingHorizontal: SIZES.padding * 2,
+                    paddingBottom: 30,
+                }}
+                numColumns={2}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            />
+        )
 
     }
 

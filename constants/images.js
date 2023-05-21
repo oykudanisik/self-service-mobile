@@ -7,6 +7,7 @@ const customerpp = require("../assets/images/customerpp.png");
 const success = require("../assets/images/success.png");
 const emptycart = require("../assets/images/emptycart.png");
 
+const empty = require("../assets/images/empty.png");
 
 export default {
   logo,
@@ -16,5 +17,6 @@ export default {
   waiterpp,
   customerpp,
   success,
-  emptycart
+  emptycart,
+  empty
 };
