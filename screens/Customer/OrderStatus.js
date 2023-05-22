@@ -21,7 +21,7 @@ import { images, SIZES, COLORS, FONTS, icons } from '../../constants'
 
 const OrderStatus = ({ navigation }) => {
     const [orderStatus, setOrderStatus] = React.useState();
-    const [order, setOrder] = React.useState();
+    const [order, setOrder] = React.useState([{}]);
     const [selectedCard, setSelectedCard] = React.useState(null)
     const [ordersCount, setOrdersCount] = React.useState()
     const [refreshing, setRefreshing] = React.useState(false);
@@ -76,17 +76,33 @@ const OrderStatus = ({ navigation }) => {
     }
     useEffect(() => {
         getOrderStatus();
+        console.log("oluto");
     }, []);
-    useEffect(() => {
-        getOrderStatus();
-        console.log("d", order);
-        // const interval = setInterval(() => {
-        //     getOrderStatus();
-        // }, 10000);
-        // return () => clearInterval(interval);
-    }, [])
+
 
     function renderTable() {
+        if (order.length === 0 || (order.length === 1 && Object.keys(order[0]).length === 0)) {
+            return (
+                <View style={styles.container}>
+                    <View style={{
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Image
+                            source={images.emptycart}
+                            resizeMode="cover"
+                            style={{
+                                width: "70%",
+                                height: "70%",
+                            }}
+                        />
+                        <Text style={{ ...FONTS.h3, marginTop: 10, textAlign: 'center' }}>No orders found</Text>
+                    </View>
+                </View>
+
+
+            );
+        }
         const renderItem = ({ item }) => (
             <TouchableOpacity
                 style={{

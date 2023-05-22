@@ -37,11 +37,10 @@ const Menu = ({ navigation, route }) => {
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             fetchCartCount();
-          
         });
-    
         return unsubscribe;
-      }, [navigation]);
+    }, [navigation]);
+
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {

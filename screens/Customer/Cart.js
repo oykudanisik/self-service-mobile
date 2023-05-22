@@ -182,6 +182,28 @@ const Cart = ({ navigation }) => {
 
     }, []);
     function renderCartList() {
+        if (myCartList.length === 0 || (myCartList.length === 1 && Object.keys(myCartList[0]).length === 0)) {
+            return (
+                <View style={styles.container}>
+                    <View style={{
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Image
+                            source={images.emptycart}
+                            resizeMode="cover"
+                            style={{
+                                width: "70%",
+                                height: "70%",
+                            }}
+                        />
+                        <Text style={{ ...FONTS.h3, marginTop: 10, textAlign: 'center' }}>No items in the cart</Text>
+                    </View>
+                </View>
+
+
+            );
+        }
         return (
             <SwipeListView
                 onRowOpen={(rowKey, rowMap, toValue) => {
