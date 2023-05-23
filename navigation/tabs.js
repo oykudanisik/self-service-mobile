@@ -154,8 +154,8 @@ const Tabs = () => {
                             resizeMode="contain"
                             style={{
                                 marginBottom: 10,
-                                width: 35,
-                                height: 35,
+                                width: 40,
+                                height: 40,
                                 tintColor: focused ? COLORS.primary : COLORS.black
                             }}
                         />

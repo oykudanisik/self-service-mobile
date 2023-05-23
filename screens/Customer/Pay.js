@@ -276,7 +276,7 @@ const Pay = ({ navigation, route }) => {
                     }}
                 >
                     <FormInput
-                        label="Expiry Date"
+                        label="Expiry Date (MM/YY)"
                         value={expiryDate}
 
                         placeholder="MM/YY"
@@ -286,12 +286,13 @@ const Pay = ({ navigation, route }) => {
                         }}
                         onChange={(value) => {
                             if (/^[0-9/]*$/.test(value)) { // Check if the value contains only numbers and '/'
-                                setExpiryDate(value);
-                                validation.validateInput(value, 5, setExpiryDateError);
-
-                                isExpiryDateValid(value)
-   
-
+                                let formattedValue = value;
+                                if (value.length === 2) {
+                                    formattedValue += '/';
+                                }
+                                setExpiryDate(formattedValue);
+                                validation.validateInput(formattedValue, 5, setExpiryDateError);
+                                isExpiryDateValid(formattedValue);
                             }
                         }}
 
@@ -377,7 +378,7 @@ const Pay = ({ navigation, route }) => {
                         cardNumber !== "" && cardName !== "" && expiryDate !== "" && cvv !== "") {
                         navigation.navigate("Loading")
                         updateOrders();
-                        if (tip === "" || tip <= 0) {
+                        if (tip === "" || tip >= 0) {
                             tipWaiter()
                         }
                     }
