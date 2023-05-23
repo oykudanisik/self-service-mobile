@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     TouchableHighlight,
     RefreshControl,
+    ScrollView
 } from 'react-native';
 import Slider from '@react-native-community/slider'
 import { HeaderOrder, PrimaryButton, SecondaryButton } from '../../components';
@@ -83,22 +84,27 @@ const OrderStatus = ({ navigation }) => {
     function renderTable() {
         if (order.length === 0 || (order.length === 1 && Object.keys(order[0]).length === 0)) {
             return (
-                <View style={styles.container}>
+                <ScrollView
+                    contentContainerStyle={styles.container}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                >
                     <View style={{
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
                         <Image
-                            source={images.emptycart}
+                            source={images.noorder}
                             resizeMode="cover"
                             style={{
                                 width: "70%",
                                 height: "70%",
                             }}
                         />
-                        <Text style={{ ...FONTS.h3, marginTop: 10, textAlign: 'center' }}>No orders found</Text>
+                        <Text style={{ ...FONTS.h3, marginTop: 10, textAlign: 'center' }}>No orders at the moment</Text>
                     </View>
-                </View>
+                </ScrollView>
 
 
             );

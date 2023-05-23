@@ -44,6 +44,10 @@ const Pay = ({ navigation, route }) => {
     const [totalPrice, setTotalPrice] = React.useState(0);
     const [isRemember, setIsRemember] = React.useState(false)
     const [refreshing, setRefreshing] = React.useState(false);
+    const [orderTotalPrice, setOrderTotalPrice] = React.useState(0);
+
+
+
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
@@ -87,6 +91,7 @@ const Pay = ({ navigation, route }) => {
                 price += item.price * item.prod_count
             )
             setTotalPrice(price)
+            setOrderTotalPrice(price)
         }, (error) => {
             setOrder([{}])
         });
@@ -103,11 +108,11 @@ const Pay = ({ navigation, route }) => {
             // set the returned order status to orderStatus
             setOrder(response.data.items)
             setWaiterId(response.data.items[0].waiter_id);
-            let price = 0;
-            response.data.items.map(item =>
-                price += item.price * item.prod_count
-            )
-            setTotalPrice(price)
+            // let price = 0;
+            // response.data.items.map(item =>
+            //     price += item.price * item.prod_count
+            // )
+            // setTotalPrice(price)
             tips(response.data.items[0].waiter_id, restId, userId);
 
         }, (error) => {
@@ -139,7 +144,6 @@ const Pay = ({ navigation, route }) => {
         })
     }
     function isExpiryDateValid(expiryDate) {
-        // Check if the input is in the 'MM/YY' format using a regular expression
         const validFormat = /^\d{2}\/\d{2}$/.test(expiryDate);
 
         if (!validFormat) {
@@ -149,25 +153,29 @@ const Pay = ({ navigation, route }) => {
         const currentDate = new Date();
         const [month, year] = expiryDate.split('/');
 
-        // Get the current year's last two digits
         const currentYear = currentDate.getFullYear() % 100;
 
-        // Convert the two-digit year to a four-digit year
         const expiryYear = parseInt(year) + 2000;
 
-        // Convert the expiry date to a JavaScript Date object
         const expiry = new Date(expiryYear, parseInt(month) - 1, 1);
 
-        // Compare the expiry date with the current date
-        if (expiry < currentDate || expiryYear < currentYear) {
-            return false; // Expiry date has passed
-        }
+        if (expiry < currentDate || (expiryYear === currentYear && expiry < currentDate)) {
+            setExpiryDateError("error")
 
+        }
         return true; // Expiry date is valid
     }
+
     React.useEffect(() => {
         getOrderTotal()
     }, [])
+
+    React.useEffect(() => {
+        // Calculate the new total price by adding the tip to the existing total
+        const newTotalPrice = orderTotalPrice + parseFloat(tip);
+        // Update the total price state
+        setTotalPrice(newTotalPrice);
+    }, [tip]);
 
     function renderOrderDetails() {
         return (
@@ -278,13 +286,15 @@ const Pay = ({ navigation, route }) => {
                         }}
                         onChange={(value) => {
                             if (/^[0-9/]*$/.test(value)) { // Check if the value contains only numbers and '/'
-                                validation.validateInput(value, 5, setExpiryDateError);
                                 setExpiryDate(value);
-                                if (!isExpiryDateValid(value)) {
-                                    console.log("eski")
-                                }
+                                validation.validateInput(value, 5, setExpiryDateError);
+
+                                isExpiryDateValid(value)
+   
+
                             }
                         }}
+
                         appendComponent={
                             <FormInputCheck
                                 value={expiryDate}
@@ -310,6 +320,7 @@ const Pay = ({ navigation, route }) => {
                             }
 
                         }}
+
                         appendComponent={
                             <FormInputCheck
                                 value={cvv}

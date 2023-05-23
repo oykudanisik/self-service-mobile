@@ -59,6 +59,7 @@ const Tables2 = ({ navigation }) => {
         setTimeout(() => {
             setRefreshing(false);
             getWaiterTables()
+
         }, 2000);
     }, []);
     const toggleDialog2 = () => {
@@ -159,10 +160,10 @@ const Tables2 = ({ navigation }) => {
     }
     useEffect(() => {
         getWaiterTables();
-        // const interval = setInterval(() => {
-        //     getWaiterTables();
-        // }, 10000);
-        // return () => clearInterval(interval);
+        const interval = setInterval(() => {
+            getWaiterTables();
+        }, 10000);
+        return () => clearInterval(interval);
     }, []);
 
     const todoTitle = (

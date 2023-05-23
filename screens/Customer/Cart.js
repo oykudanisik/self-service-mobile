@@ -6,7 +6,7 @@ import {
     Image,
     StyleSheet,
     RefreshControl,
-
+    ScrollView
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -125,7 +125,7 @@ const Cart = ({ navigation }) => {
                 .catch((error) => {
                     console.log('Error removing item:', error);
                 });
-        deneme();
+            deneme();
 
         }, (error) => {
             console.log("e", error);
@@ -184,7 +184,12 @@ const Cart = ({ navigation }) => {
     function renderCartList() {
         if (myCartList.length === 0 || (myCartList.length === 1 && Object.keys(myCartList[0]).length === 0)) {
             return (
-                <View style={styles.container}>
+                <ScrollView
+                    contentContainerStyle={styles.container}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                >
                     <View style={{
                         justifyContent: 'center',
                         alignItems: 'center'
@@ -199,8 +204,7 @@ const Cart = ({ navigation }) => {
                         />
                         <Text style={{ ...FONTS.h3, marginTop: 10, textAlign: 'center' }}>No items in the cart</Text>
                     </View>
-                </View>
-
+                </ScrollView>
 
             );
         }
@@ -330,7 +334,7 @@ const Cart = ({ navigation }) => {
         )
     }
     return (
-        
+
         <SafeAreaView style={styles.container}>
             {/* Header */}
             <HeaderOrder navigation={navigation} ordersCount={ordersCount} ></HeaderOrder>
@@ -340,14 +344,13 @@ const Cart = ({ navigation }) => {
             {/* Footer */}
             {renderFooter()}
             <PrimaryButton
-                onPress={() => {
-                    placeOrder();
-                    navigation.navigate("OrderStatus")
-
+                onPress={async () => {
+                    await placeOrder();
+                    navigation.navigate("OrderStatus");
                 }}
-                disabled={myCartList.length == 0} // Disable the button if the cart is empty
+                disabled={myCartList.length === 0}
                 buttonStyle={{
-                    backgroundColor: myCartList.length == 0 ? COLORS.lightGray : COLORS.primary,
+                    backgroundColor: myCartList.length === 0 ? COLORS.lightGray : COLORS.primary,
                 }}
                 title="ORDER"
             />

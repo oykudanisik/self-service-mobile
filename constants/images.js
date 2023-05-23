@@ -8,6 +8,8 @@ const success = require("../assets/images/success.png");
 const emptycart = require("../assets/images/emptycart.png");
 
 const empty = require("../assets/images/empty.png");
+const noorder = require("../assets/images/noorder.png");
+
 
 export default {
   logo,
@@ -18,5 +20,6 @@ export default {
   customerpp,
   success,
   emptycart,
-  empty
+  empty,
+  noorder
 };
