@@ -59,8 +59,7 @@ const Tables2 = ({ navigation }) => {
         setTimeout(() => {
             setRefreshing(false);
             getWaiterTables()
-
-        }, 2000);
+        }, 5000);
     }, []);
     const toggleDialog2 = () => {
         setVisible2(!visible2);
@@ -162,7 +161,7 @@ const Tables2 = ({ navigation }) => {
         getWaiterTables();
         const interval = setInterval(() => {
             getWaiterTables();
-        }, 10000);
+        }, 5000);
         return () => clearInterval(interval);
     }, []);
 
