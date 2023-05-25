@@ -161,7 +161,7 @@ const Tables2 = ({ navigation }) => {
         getWaiterTables();
         const interval = setInterval(() => {
             getWaiterTables();
-        }, 5000);
+        }, 1000);
         return () => clearInterval(interval);
     }, []);
 
